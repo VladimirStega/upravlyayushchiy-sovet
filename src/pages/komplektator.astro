@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DocumentChecklist from "../components/DocumentChecklist.astro";
+import { criteria } from "../data/criteria";
+---
+
+<BaseLayout
+  title="Комплектатор материалов — Управляющий совет"
+  description="Рабочая таблица подготовки материалов по 30 критериям конкурса."
+  current="Комплектатор"
+>
+  <section class="inner-hero">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>→</span><span>Комплектатор</span></nav>
+      <div class="inner-hero-grid">
+        <div>
+          <p class="eyebrow eyebrow-light"><span></span> Рабочий инструмент</p>
+          <h1>Комплектатор<br /><em>материалов сайта</em></h1>
+        </div>
+        <p>
+          Все 30 критериев экспертизы собраны в одной таблице. После получения документов
+          здесь можно отмечать готовность и контролировать, какие материалы ещё необходимо подготовить.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="section checklist-section">
+    <div class="container">
+      <DocumentChecklist items={criteria} />
+      <div class="checklist-help">
+        <div>
+          <span class="help-number">60</span>
+          <div><strong>максимальных баллов</strong><p>Каждый полностью подтверждённый критерий приносит 2 балла.</p></div>
+        </div>
+        <a class="button button-primary" href="/">Вернуться на главную <span>↗</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

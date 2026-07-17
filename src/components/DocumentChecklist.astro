@@ -1,0 +1,105 @@
+---
+import type { Criterion } from "../data/criteria";
+
+interface Props {
+  items: Criterion[];
+}
+
+const { items } = Astro.props;
+const sections = Array.from(new Set(items.map((item) => item.section)));
+const ready = items.filter((item) => item.status === "Готово").length;
+const progress = items.filter((item) => item.status === "В работе").length;
+---
+
+<div class="checklist" data-checklist>
+  <div class="checklist-summary">
+    <div><strong data-total>{items.length}</strong><span>критериев</span></div>
+    <div><strong>{progress}</strong><span>в работе</span></div>
+    <div><strong>{ready}</strong><span>готово</span></div>
+    <div><strong>{ready * 2}/60</strong><span>подтверждено баллов</span></div>
+  </div>
+
+  <div class="checklist-controls" aria-label="Фильтры комплектатора">
+    <label class="search-field">
+      <span class="sr-only">Поиск</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m2.3-5.2A7.5 7.5 0 1 1 4 11.5a7.5 7.5 0 0 1 15 0Z"></path></svg>
+      <input data-search type="search" placeholder="Найти критерий или материал" />
+    </label>
+    <label>
+      <span class="sr-only">Раздел</span>
+      <select data-section>
+        <option value="Все">Все разделы</option>
+        {sections.map((section) => <option value={section}>{section}</option>)}
+      </select>
+    </label>
+    <label>
+      <span class="sr-only">Статус</span>
+      <select data-status>
+        <option>Все</option>
+        <option>Не начато</option>
+        <option>В работе</option>
+        <option>Готово</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="table-shell">
+    <table>
+      <thead>
+        <tr><th>№</th><th>Критерий</th><th>Что необходимо</th><th>Раздел сайта</th><th>Готовность</th></tr>
+      </thead>
+      <tbody>
+        {items.map((item) => (
+          <tr
+            data-row
+            data-search-value={`${item.title} ${item.material} ${item.section}`.toLowerCase()}
+            data-row-section={item.section}
+            data-row-status={item.status}
+          >
+            <td class="criterion-number">{String(item.id).padStart(2, "0")}</td>
+            <td><strong>{item.title}</strong></td>
+            <td>{item.material}</td>
+            <td><span class="section-label">{item.section}</span></td>
+            <td>
+              <span class:list={["status-pill", { waiting: item.status === "Не начато", active: item.status === "В работе", done: item.status === "Готово" }]}>
+                <i></i>{item.status}
+              </span>
+            </td>
+          </tr>
+        ))}
+        <tr data-empty hidden><td colspan="5" class="empty-result">По выбранным фильтрам ничего не найдено.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="checklist-note">
+    Статусы сейчас демонстрационные. После получения материалов таблица станет рабочим планом наполнения сайта.
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll("[data-checklist]").forEach((root) => {
+    const search = root.querySelector<HTMLInputElement>("[data-search]");
+    const section = root.querySelector<HTMLSelectElement>("[data-section]");
+    const status = root.querySelector<HTMLSelectElement>("[data-status]");
+    const rows = Array.from(root.querySelectorAll<HTMLElement>("[data-row]"));
+    const empty = root.querySelector<HTMLElement>("[data-empty]");
+
+    const filterRows = () => {
+      const query = search?.value.trim().toLowerCase() ?? "";
+      let visible = 0;
+      rows.forEach((row) => {
+        const matchesSearch = !query || (row.dataset.searchValue ?? "").includes(query);
+        const matchesSection = section?.value === "Все" || row.dataset.rowSection === section?.value;
+        const matchesStatus = status?.value === "Все" || row.dataset.rowStatus === status?.value;
+        const show = matchesSearch && matchesSection && matchesStatus;
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (empty) empty.hidden = visible !== 0;
+    };
+
+    search?.addEventListener("input", filterRows);
+    section?.addEventListener("change", filterRows);
+    status?.addEventListener("change", filterRows);
+  });
+</script>
