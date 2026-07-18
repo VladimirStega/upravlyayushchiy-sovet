@@ -41,7 +41,7 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
           ["05", "Поддержка инициатив", "Содействие проектам обучающихся, родителей, педагогов и партнёров."],
           ["06", "Обратная связь", "Сбор предложений, проведение опросов и учёт мнения участников образовательных отношений."]
         ].map(([number, title, text]) => (
-          <article class="content-card">
+          <article class="content-card task-card">
             <h3>{title}</h3>
             <p>{text}</p>
           </article>
@@ -63,11 +63,6 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
           Совет объединяет представителей школьного сообщества, рассматривает инициативы,
           принимает решения, поддерживает проекты и контролирует достигнутые результаты.
         </p>
-        <div class="video-notes">
-          <span>Структура и принципы</span>
-          <span>Проекты и результаты</span>
-          <span>Стратегия развития</span>
-        </div>
       </article>
     </div>
   </section>

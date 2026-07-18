@@ -55,7 +55,7 @@ import PageHero from "../components/PageHero.astro";
               <span class="placeholder-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="17" r="9"></circle><path d="M8 43c1-11 7-17 16-17s15 6 16 17"></path></svg></span>
               <strong>Фотография участника УС</strong>
             </div>
-            <div><span class="structure-role">Руководство</span><h3>{role}</h3><strong>Фамилия Имя Отчество</strong><p>{description}</p></div>
+            <div><h3>{role}</h3><strong>Фамилия Имя Отчество</strong><p>{description}</p></div>
           </article>
         ))}
       </div>
@@ -71,7 +71,7 @@ import PageHero from "../components/PageHero.astro";
         ].map(([title, description]) => (
           <article class="commission-card">
             <div class="photo-placeholder commission-photo"><strong>Фотография руководителя комиссии</strong></div>
-            <div><span class="structure-role">Комиссия</span><h3>{title}</h3><strong>Фамилия Имя Отчество</strong><p>{description}</p></div>
+            <div><h3>{title}</h3><strong>Фамилия Имя Отчество</strong><p>{description}</p></div>
           </article>
         ))}
       </div>
