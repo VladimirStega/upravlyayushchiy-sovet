@@ -7,12 +7,13 @@ interface Props {
 }
 
 const { eyebrow, title, accent, description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <section class="inner-hero">
   <div class="container">
     <nav class="breadcrumbs" aria-label="Хлебные крошки">
-      <a href="/">Главная</a><span>→</span><span>{title} {accent}</span>
+      <a href={`${base}/`}>Главная</a><span>→</span><span>{title} {accent}</span>
     </nav>
     <div class="inner-hero-grid">
       <div>

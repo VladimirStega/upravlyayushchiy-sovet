@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import DocumentChecklist from "../components/DocumentChecklist.astro";
 import { criteria } from "../data/criteria";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <BaseLayout
@@ -11,7 +12,7 @@ import { criteria } from "../data/criteria";
 >
   <section class="inner-hero">
     <div class="container">
-      <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>→</span><span>Комплектатор</span></nav>
+      <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href={`${base}/`}>Главная</a><span>→</span><span>Комплектатор</span></nav>
       <div class="inner-hero-grid">
         <div>
           <p class="eyebrow eyebrow-light"><span></span> Рабочий инструмент</p>
@@ -32,7 +33,7 @@ import { criteria } from "../data/criteria";
           <span class="help-number">60</span>
           <div><strong>максимальных баллов</strong><p>Каждый полностью подтверждённый критерий приносит 2 балла.</p></div>
         </div>
-        <a class="button button-primary" href="/">Вернуться на главную <span>↗</span></a>
+        <a class="button button-primary" href={`${base}/`}>Вернуться на главную <span>↗</span></a>
       </div>
     </div>
   </section>
