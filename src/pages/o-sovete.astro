@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+---
+
+<BaseLayout title="О совете — Управляющий совет" current="О совете">
+  <PageHero
+    eyebrow="Открытость и участие"
+    title="О нашем"
+    accent="Управляющем совете"
+    description="Здесь будет собрана полная информация о назначении совета, его полномочиях, принципах работы, процедуре формирования и истории."
+  />
+
+  <section class="section content-section">
+    <div class="container page-intro-grid">
+      <div>
+        <p class="eyebrow eyebrow-dark"><span></span> Миссия</p>
+        <h2>Объединяем интересы<br /><em>школьного сообщества</em></h2>
+      </div>
+      <p>
+        Здесь будет официальный текст миссии Управляющего совета. В нём следует объяснить,
+        как родители, обучающиеся, работники, учредитель и партнёры участвуют в развитии
+        образовательной организации.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="page-section-heading">
+        <h2>Основные <em>задачи</em></h2>
+        <p>Формулировки будут приведены в соответствие с Положением об Управляющем совете.</p>
+      </div>
+      <div class="content-grid">
+        {[
+          ["01", "Стратегическое развитие", "Участие в определении приоритетов и направлений развития образовательной организации."],
+          ["02", "Качество образования", "Обсуждение условий обучения, воспитания и реализации образовательных программ."],
+          ["03", "Безопасная среда", "Рассмотрение вопросов безопасности, здоровья и комфортной школьной среды."],
+          ["04", "Открытость решений", "Информирование сообщества о принятых решениях и результатах их исполнения."],
+          ["05", "Поддержка инициатив", "Содействие проектам обучающихся, родителей, педагогов и партнёров."],
+          ["06", "Обратная связь", "Сбор предложений, проведение опросов и учёт мнения участников образовательных отношений."]
+        ].map(([number, title, text]) => (
+          <article class="content-card">
+            <span class="content-card-number">{number}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section impact-section">
+    <div class="container content-grid two-columns about-media-grid">
+      <PhotoPlaceholder
+        title="Главная фотография Управляющего совета"
+        note="Общий снимок участников совета или фотография совместной работы"
+      />
+      <article class="content-card dark about-media-copy">
+        <span class="content-card-number">Главное о работе совета</span>
+        <h2>Диалог, ответственность и прозрачность</h2>
+        <p>
+          Совет объединяет представителей школьного сообщества, рассматривает инициативы,
+          принимает решения, поддерживает проекты и контролирует достигнутые результаты.
+        </p>
+        <div class="video-notes">
+          <span><i>01</i> Структура и принципы</span>
+          <span><i>02</i> Проекты и результаты</span>
+          <span><i>03</i> Стратегия развития</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="page-section-heading"><h2>Как формируется <em>совет</em></h2></div>
+      <div class="content-grid">
+        <article class="content-card"><span class="content-card-number">01</span><h3>Выдвижение кандидатов</h3><p>Добавить описание сроков, категорий и порядка выдвижения.</p></article>
+        <article class="content-card"><span class="content-card-number">02</span><h3>Выборы и назначение</h3><p>Добавить процедуру голосования и утверждения результатов.</p></article>
+        <article class="content-card"><span class="content-card-number">03</span><h3>Начало полномочий</h3><p>Добавить срок полномочий и документ об утверждении состава.</p></article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

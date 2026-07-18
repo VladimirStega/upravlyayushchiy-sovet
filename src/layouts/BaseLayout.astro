@@ -5,23 +5,38 @@ interface Props {
   title: string;
   description?: string;
   current?: string;
+  pageClass?: string;
 }
 
 const {
   title,
   description = "Официальный сайт Управляющего совета образовательной организации",
-  current = ""
+  pageClass = ""
 } = Astro.props;
 
 const navigation = [
-  ["О совете", "/#about"],
-  ["Состав", "/#people"],
-  ["Решения", "/#decisions"],
-  ["Проекты", "/#projects"],
-  ["Документы", "/#documents"],
-  ["Новости", "/#news"],
-  ["Комплектатор", "/komplektator/"]
+  ["Главная", "/"],
+  ["О совете", "/o-sovete/"],
+  ["Состав", "/sostav/"],
+  ["Документы", "/dokumenty/"],
+  ["Новости", "/novosti/"],
+  ["Видео", "/video/"]
 ];
+
+const activityNavigation = [
+  ["Обзор деятельности", "/deyatelnost/"],
+  ["Решения и заседания", "/deyatelnost/resheniya/"],
+  ["Проекты", "/deyatelnost/proekty/"],
+  ["Опросы", "/deyatelnost/oprosy/"],
+  ["Цифровая практика", "/deyatelnost/cifrovaya-praktika/"]
+];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === "/" || href === "/deyatelnost/") return path === href;
+  return path.startsWith(href);
+};
+const activityActive = path.startsWith("/deyatelnost/");
 ---
 
 <!doctype html>
@@ -30,17 +45,16 @@ const navigation = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#123e52" />
+    <meta name="theme-color" content="#174a8b" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>
-  <body>
+  <body class={pageClass}>
     <a class="skip-link" href="#main">Перейти к содержанию</a>
     <div class="topline">
       <div class="container topline-inner">
-        <span>Официальный сайт Управляющего совета</span>
         <div class="topline-actions">
-          <button class="text-button" id="contrast-toggle" type="button" aria-pressed="false">
+          <button class="text-button" id="accessibility-toggle" type="button" aria-expanded="false" aria-controls="accessibility-panel">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/></svg>
             Версия для слабовидящих
           </button>
@@ -61,12 +75,39 @@ const navigation = [
           <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
         </button>
         <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
-          {navigation.map(([label, href]) => (
-            <a href={href} class:list={{ active: current === label }}>{label}</a>
+          {navigation.slice(0, 3).map(([label, href]) => (
+            <a href={href} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+          ))}
+          <details class="nav-more">
+            <summary class:list={{ active: activityActive }}>Деятельность <span aria-hidden="true">⌄</span></summary>
+            <div class="nav-submenu">
+              {activityNavigation.map(([label, href]) => (
+                <a href={href} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+              ))}
+            </div>
+          </details>
+          {navigation.slice(3).map(([label, href]) => (
+            <a href={href} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
           ))}
         </nav>
       </div>
     </header>
+    <aside class="accessibility-panel" id="accessibility-panel" aria-label="Настройки версии для слабовидящих" hidden>
+      <div class="container accessibility-panel-inner">
+        <fieldset>
+          <legend>Размер текста</legend>
+          <div class="accessibility-options" role="group">
+            <button type="button" data-font="normal" class="is-selected">А</button>
+            <button type="button" data-font="large">А+</button>
+            <button type="button" data-font="extra">А++</button>
+          </div>
+        </fieldset>
+        <label><input type="checkbox" id="accessibility-contrast" /> Высокий контраст</label>
+        <label><input type="checkbox" id="accessibility-spacing" /> Увеличить интервалы</label>
+        <label><input type="checkbox" id="accessibility-images" /> Скрыть изображения</label>
+        <button class="accessibility-reset" id="accessibility-reset" type="button">Сбросить настройки</button>
+      </div>
+    </aside>
     <main id="main">
       <slot />
     </main>
@@ -115,10 +156,71 @@ const navigation = [
         });
       });
 
-      const contrast = document.querySelector("#contrast-toggle");
-      contrast?.addEventListener("click", () => {
-        const enabled = document.documentElement.classList.toggle("high-contrast");
-        contrast.setAttribute("aria-pressed", String(enabled));
+      const accessibilityToggle = document.querySelector("#accessibility-toggle");
+      const accessibilityPanel = document.querySelector("#accessibility-panel");
+      const contrastInput = document.querySelector("#accessibility-contrast");
+      const spacingInput = document.querySelector("#accessibility-spacing");
+      const imagesInput = document.querySelector("#accessibility-images");
+      const resetButton = document.querySelector("#accessibility-reset");
+      const fontButtons = document.querySelectorAll("[data-font]");
+      const storageKey = "governing-council-accessibility";
+
+      const defaultSettings = { font: "normal", contrast: false, spacing: false, images: false };
+      let settings = { ...defaultSettings };
+
+      try {
+        settings = { ...settings, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+      } catch {
+        settings = { ...defaultSettings };
+      }
+
+      const applyAccessibility = () => {
+        const root = document.documentElement;
+        root.classList.toggle("a11y-on", settings.font !== "normal" || settings.contrast || settings.spacing || settings.images);
+        root.classList.toggle("a11y-font-large", settings.font === "large");
+        root.classList.toggle("a11y-font-extra", settings.font === "extra");
+        root.classList.toggle("a11y-contrast", settings.contrast);
+        root.classList.toggle("a11y-spacing", settings.spacing);
+        root.classList.toggle("a11y-images-hidden", settings.images);
+
+        if (contrastInput instanceof HTMLInputElement) contrastInput.checked = settings.contrast;
+        if (spacingInput instanceof HTMLInputElement) spacingInput.checked = settings.spacing;
+        if (imagesInput instanceof HTMLInputElement) imagesInput.checked = settings.images;
+        fontButtons.forEach((button) => {
+          button.classList.toggle("is-selected", button.getAttribute("data-font") === settings.font);
+          button.setAttribute("aria-pressed", String(button.getAttribute("data-font") === settings.font));
+        });
+        localStorage.setItem(storageKey, JSON.stringify(settings));
+      };
+
+      applyAccessibility();
+
+      accessibilityToggle?.addEventListener("click", () => {
+        if (!(accessibilityPanel instanceof HTMLElement)) return;
+        const opening = accessibilityPanel.hidden;
+        accessibilityPanel.hidden = !opening;
+        accessibilityToggle.setAttribute("aria-expanded", String(opening));
+      });
+
+      fontButtons.forEach((button) => button.addEventListener("click", () => {
+        settings.font = button.getAttribute("data-font") || "normal";
+        applyAccessibility();
+      }));
+      contrastInput?.addEventListener("change", () => {
+        settings.contrast = contrastInput instanceof HTMLInputElement && contrastInput.checked;
+        applyAccessibility();
+      });
+      spacingInput?.addEventListener("change", () => {
+        settings.spacing = spacingInput instanceof HTMLInputElement && spacingInput.checked;
+        applyAccessibility();
+      });
+      imagesInput?.addEventListener("change", () => {
+        settings.images = imagesInput instanceof HTMLInputElement && imagesInput.checked;
+        applyAccessibility();
+      });
+      resetButton?.addEventListener("click", () => {
+        settings = { ...defaultSettings };
+        applyAccessibility();
       });
     </script>
   </body>

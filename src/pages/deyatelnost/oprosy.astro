@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+---
+
+<BaseLayout title="Опросы и решения — Управляющий совет" current="Деятельность">
+  <PageHero eyebrow="Мнение сообщества" title="Опросы и" accent="принятые решения" description="Здесь будут публиковаться анкеты, обезличенные результаты, аналитика и решения, которые совет принял на их основе." />
+  <section class="section content-section">
+    <div class="container content-grid">
+      <article class="content-card accent"><span class="content-card-number">Активный опрос</span><h2>Название текущего опроса</h2><p>Добавить цель, аудиторию, сроки и кнопку участия.</p><a class="text-link" href="#">Пройти опрос <span>→</span></a></article>
+      <article class="content-card"><span class="content-card-number">Результаты</span><h2>Название завершённого опроса</h2><p>Добавить количество участников и основные выводы.</p></article>
+      <article class="content-card dark"><span class="content-card-number">Решение совета</span><h2>Что изменилось после опроса</h2><p>Добавить принятое решение, номер протокола и фактический результат.</p></article>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container page-cta"><h2>Схема публикации: <em>опрос → выводы → решение → результат</em></h2><p>Так эксперт и посетитель увидят прямую связь между мнением сообщества и работой Управляющего совета.</p></div>
+  </section>
+</BaseLayout>

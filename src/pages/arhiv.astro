@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+---
+
+<BaseLayout title="Архив — Управляющий совет" current="Архив">
+  <PageHero eyebrow="Материалы прошлых лет" title="Архив" accent="Управляющего совета" description="Составы, планы, протоколы, отчёты, проекты и новости прошлых учебных лет." />
+  <section class="section content-section">
+    <div class="container timeline">
+      <article class="timeline-item"><time>2025/26 учебный год</time><h3>Архив материалов за 2025/26 год</h3><p>Состав, план, протоколы, отчёт, проекты, опросы и новости.</p></article>
+      <article class="timeline-item"><time>2024/25 учебный год</time><h3>Архив материалов за 2024/25 год</h3><p>Добавить доступные документы и публикации.</p></article>
+      <article class="timeline-item"><time>2023/24 учебный год</time><h3>Архив материалов за 2023/24 год</h3><p>Добавить доступные документы и публикации.</p></article>
+    </div>
+  </section>
+</BaseLayout>

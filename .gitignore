@@ -1,5 +1,7 @@
 node_modules/
 dist/
+astro-dist/
 .astro/
+src/generated/
 .DS_Store
 *.log

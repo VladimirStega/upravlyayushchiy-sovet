@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+---
+
+<BaseLayout title="Состав и структура — Управляющий совет" current="Состав">
+  <PageHero
+    eyebrow="Люди совета"
+    title="Состав и"
+    accent="структура"
+    description="Полный состав Управляющего совета с категориями участников, ролями, комиссиями и сроками полномочий."
+  />
+
+  <section class="section content-section">
+    <div class="container">
+      <div class="page-section-heading">
+        <div><p class="eyebrow eyebrow-dark"><span></span> Текущий состав</p><h2>Представители <em>всего сообщества</em></h2></div>
+        <p>После получения утверждённого состава здесь будут размещены все участники, а не только несколько человек с главной страницы.</p>
+      </div>
+      <div class="category-filter" aria-label="Будущие фильтры состава">
+        <span>Все участники</span><span>Родители</span><span>Обучающиеся</span><span>Работники</span><span>Учредитель</span><span>Кооптированные</span>
+      </div>
+      <div class="member-directory">
+        {[
+          ["Председатель совета", "Фамилия Имя Отчество", "Фотография председателя УС", true],
+          ["Заместитель председателя", "Фамилия Имя Отчество", "Фотография участника УС", false],
+          ["Секретарь совета", "Фамилия Имя Отчество", "Фотография участника УС", false],
+          ["Представитель родителей", "Фамилия Имя Отчество", "Фотография участника УС", false],
+          ["Представитель обучающихся", "Фамилия Имя Отчество", "Фотография участника УС", false],
+          ["Представитель работников", "Фамилия Имя Отчество", "Фотография участника УС", false],
+          ["Представитель учредителя", "Фамилия Имя Отчество", "Фотография участника УС", false]
+        ].map(([role, name, photo, featured]) => (
+          <article class:list={["person-card", { "person-card-featured": featured }]}>
+            <div class="photo-placeholder person-photo">
+              <span class="placeholder-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="17" r="9"></circle><path d="M8 43c1-11 7-17 16-17s15 6 16 17"></path></svg></span>
+              <strong>{photo}</strong>
+            </div>
+            <div class="person-info"><span>{role}</span><h3>{name}</h3><p>Добавить категорию, комиссию и краткое описание роли.</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Организация работы</p><h2>Структура <em>совета</em></h2></div><p>Схема будет уточнена после получения Положения и актуального состава комиссий.</p></div>
+      <div class="structure-map">
+        <div class="structure-node primary"><span>Руководство</span><strong>Председатель совета</strong></div>
+        <div class="structure-node"><span>Комиссия</span><strong>По стратегии и развитию</strong></div>
+        <div class="structure-node"><span>Комиссия</span><strong>По качеству образования</strong></div>
+        <div class="structure-node"><span>Комиссия</span><strong>По безопасности и здоровью</strong></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+---
+
+<BaseLayout title="Решения и заседания — Управляющий совет" current="Деятельность">
+  <PageHero eyebrow="Контроль исполнения" title="Решения и" accent="заседания" description="Календарь заседаний, повестки, протоколы и публичный реестр исполнения решений Управляющего совета." />
+  <section class="section content-section">
+    <div class="container">
+      <div class="page-section-heading"><h2>Ближайшие <em>заседания</em></h2><p>Добавить утверждённый календарь, темы и порядок направления предложений в повестку.</p></div>
+      <div class="directory-list">
+        <div class="directory-row"><time>Указать дату</time><strong>Тема ближайшего заседания Управляющего совета</strong><small>Добавить повестку</small><span class="status-pill active"><i></i>Запланировано</span></div>
+        <div class="directory-row"><time>Указать дату</time><strong>Тема следующего заседания Управляющего совета</strong><small>Добавить повестку</small><span class="status-pill waiting"><i></i>Проект</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="page-section-heading"><h2>Реестр <em>решений</em></h2><p>Каждая запись будет связана с протоколом, ответственным и подтверждённым результатом.</p></div>
+      <div class="directory-list">
+        <div class="directory-row"><time>№ __ · дата</time><strong>Название принятого решения</strong><small>Ответственный: указать</small><span class="status-pill active"><i></i>В работе</span></div>
+        <div class="directory-row"><time>№ __ · дата</time><strong>Название выполненного решения</strong><small>Результат: добавить</small><span class="status-pill done"><i></i>Выполнено</span></div>
+        <div class="directory-row"><time>№ __ · дата</time><strong>Название решения на контроле</strong><small>Срок: указать</small><span class="status-pill waiting"><i></i>Принято</span></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
