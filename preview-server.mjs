@@ -23,7 +23,13 @@ const contentTypes = {
 };
 
 const server = createServer((request, response) => {
-  const requested = decodeURIComponent((request.url ?? "/").split("?")[0]);
+  const basePath = "/upravlyayushchiy-sovet";
+  const pathname = decodeURIComponent((request.url ?? "/").split("?")[0]);
+  const requested = pathname === basePath
+    ? "/"
+    : pathname.startsWith(`${basePath}/`)
+      ? pathname.slice(basePath.length)
+      : pathname;
   const relative = normalize(requested).replace(/^([/\\])+/, "");
   let target = join(root, relative);
 

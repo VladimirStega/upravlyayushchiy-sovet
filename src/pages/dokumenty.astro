@@ -7,18 +7,22 @@ import PageHero from "../components/PageHero.astro";
   <PageHero eyebrow="Открытая документация" title="Документы и" accent="отчётность" description="Нормативные документы, планы, протоколы, отчёты и материалы комиссий с фильтрацией по категориям и учебным годам." />
   <section class="section content-section">
     <div class="container">
+      <div class="document-filter-heading">
+        <div><p class="eyebrow eyebrow-dark"><span></span> Фильтр документов</p><h2>Выберите <em>категорию</em></h2></div>
+        <button class="document-filter-reset active" type="button" data-document-filter="all" aria-pressed="true">Все документы</button>
+      </div>
       <div class="document-category-grid">
         {[
-          ["01", "Нормативная база", "Устав, Положение об УС, регламенты и локальные акты"],
-          ["02", "Планы работы", "Текущий план и планы прошлых учебных лет"],
-          ["03", "Протоколы", "Протоколы заседаний и публичные выписки"],
-          ["04", "Отчёты", "Годовые отчёты совета и комиссий"],
-          ["05", "Состав и выборы", "Приказы, результаты выборов и утверждённый состав"],
-          ["06", "Проектные документы", "Решения о поддержке и подтверждающие материалы"],
-          ["07", "Материалы комиссий", "Планы, заключения и рабочие документы"],
-          ["08", "Архив", "Документы прошлых учебных лет"]
-        ].map(([number, title, text]) => (
-          <article class="document-category"><span>{number}</span><h3>{title}</h3><p>{text}</p></article>
+          ["normative", "Нормативная база", "Устав, Положение об УС, регламенты и локальные акты"],
+          ["plans", "Планы работы", "Текущий план и планы прошлых учебных лет"],
+          ["protocols", "Протоколы", "Протоколы заседаний и публичные выписки"],
+          ["reports", "Отчёты", "Годовые отчёты совета и комиссий"],
+          ["elections", "Состав и выборы", "Приказы, результаты выборов и утверждённый состав"],
+          ["projects", "Проектные документы", "Решения о поддержке и подтверждающие материалы"],
+          ["training", "Обучение и стажировки", "Повышение квалификации и стажировки членов совета"],
+          ["archive", "Архив", "Документы прошлых учебных лет"]
+        ].map(([key, title, text]) => (
+          <button class="document-category" type="button" data-document-filter={key} aria-pressed="false"><h3>{title}</h3><p>{text}</p><span>Показать документы →</span></button>
         ))}
       </div>
     </div>
@@ -27,10 +31,41 @@ import PageHero from "../components/PageHero.astro";
     <div class="container">
       <div class="page-section-heading"><h2>Последние <em>документы</em></h2><p>После загрузки появятся реальные даты, размеры файлов и кнопки просмотра или скачивания.</p></div>
       <div class="document-list standalone-documents">
-        {["Положение об Управляющем совете", "План работы на 2026/27 учебный год", "Протокол последнего заседания", "Годовой отчёт Управляющего совета"].map((title) => (
-          <a href="#"><span class="file-icon">PDF</span><span><strong>{title}</strong><small>Загрузить актуальный документ · PDF · указать размер</small></span><i>↓</i></a>
+        {[
+          ["normative", "Положение об Управляющем совете"],
+          ["plans", "План работы на 2026/27 учебный год"],
+          ["protocols", "Протокол последнего заседания"],
+          ["reports", "Годовой отчёт Управляющего совета"],
+          ["elections", "Документ об утверждении текущего состава"],
+          ["projects", "Решение о поддержке проекта"],
+          ["training", "Документы о повышении квалификации и стажировках"],
+          ["archive", "Комплект документов за прошлый учебный год"]
+        ].map(([category, title]) => (
+          <a href="#" data-document-category={category}><span class="file-icon">PDF</span><span><strong>{title}</strong><small>Загрузить актуальный документ · PDF · указать размер</small></span><i>↓</i></a>
         ))}
       </div>
     </div>
   </section>
+
+  <script>
+    const setupDocumentFilters = () => {
+      const buttons = document.querySelectorAll("[data-document-filter]");
+      const documents = document.querySelectorAll("[data-document-category]");
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const filter = button.getAttribute("data-document-filter") || "all";
+          buttons.forEach((item) => {
+            const selected = item === button;
+            item.classList.toggle("active", selected);
+            item.setAttribute("aria-pressed", String(selected));
+          });
+          documents.forEach((documentItem) => {
+            const visible = filter === "all" || documentItem.getAttribute("data-document-category") === filter;
+            documentItem.toggleAttribute("hidden", !visible);
+          });
+        });
+      });
+    };
+    document.addEventListener("astro:page-load", setupDocumentFilters);
+  </script>
 </BaseLayout>

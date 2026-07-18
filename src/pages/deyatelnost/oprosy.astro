@@ -6,13 +6,82 @@ import PageHero from "../../components/PageHero.astro";
 <BaseLayout title="Опросы и решения — Управляющий совет" current="Деятельность">
   <PageHero eyebrow="Мнение сообщества" title="Опросы и" accent="принятые решения" description="Здесь будут публиковаться анкеты, обезличенные результаты, аналитика и решения, которые совет принял на их основе." />
   <section class="section content-section">
-    <div class="container content-grid">
-      <article class="content-card accent"><span class="content-card-number">Активный опрос</span><h2>Название текущего опроса</h2><p>Добавить цель, аудиторию, сроки и кнопку участия.</p><a class="text-link" href="#">Пройти опрос <span>→</span></a></article>
-      <article class="content-card"><span class="content-card-number">Результаты</span><h2>Название завершённого опроса</h2><p>Добавить количество участников и основные выводы.</p></article>
-      <article class="content-card dark"><span class="content-card-number">Решение совета</span><h2>Что изменилось после опроса</h2><p>Добавить принятое решение, номер протокола и фактический результат.</p></article>
+    <div class="container">
+      <div class="survey-toolbar">
+        <div>
+          <p class="eyebrow eyebrow-dark"><span></span> Сейчас проводится</p>
+          <h2>Актуальный <em>опрос</em></h2>
+        </div>
+        <div class="category-filter survey-filters" aria-label="Фильтры опросов">
+          <button type="button" class="active">Все</button>
+          <button type="button">Активные</button>
+          <button type="button">Завершённые</button>
+          <button type="button">Архив</button>
+        </div>
+      </div>
+
+      <article class="survey-featured">
+        <div>
+          <span class="survey-status active">Идёт сбор ответов</span>
+          <h2>Название текущего опроса Управляющего совета</h2>
+          <p>Здесь будет кратко сформулирована цель опроса и объяснено, на какое решение смогут повлиять ответы участников.</p>
+          <dl class="survey-meta">
+            <div><dt>Аудитория</dt><dd>Родители, обучающиеся и работники</dd></div>
+            <div><dt>Срок проведения</dt><dd>Указать даты</dd></div>
+            <div><dt>Заполнение</dt><dd>Примерно 5 минут</dd></div>
+          </dl>
+          <a class="button button-primary" href="#">Принять участие</a>
+        </div>
+        <div class="survey-featured-visual">
+          <strong>Вопросы опроса</strong>
+          <span></span><span></span><span></span><span></span>
+          <small>Здесь будет ссылка на анкету со свободным доступом</small>
+        </div>
+      </article>
     </div>
   </section>
-  <section class="section">
-    <div class="container page-cta"><h2>Схема публикации: <em>опрос → выводы → решение → результат</em></h2><p>Так эксперт и посетитель увидят прямую связь между мнением сообщества и работой Управляющего совета.</p></div>
+
+  <section class="section survey-results-section">
+    <div class="container">
+      <div class="page-section-heading">
+        <div><p class="eyebrow eyebrow-dark"><span></span> Завершённые исследования</p><h2>Результаты и <em>решения</em></h2></div>
+        <p>Каждая публикация связывает данные опроса с конкретным решением совета и итогом его исполнения.</p>
+      </div>
+      <div class="survey-results-grid">
+        {[
+          ["Организация школьного пространства", "___ участников", "Большинство участников поддержало предложенное изменение.", "Принято решение с указанием номера протокола.", "Добавить подтверждённый результат исполнения."],
+          ["Выбор направлений внеурочной деятельности", "___ участников", "Определены наиболее востребованные направления.", "План работы скорректирован по результатам опроса.", "Добавить перечень запущенных направлений."],
+          ["Безопасность и комфорт", "___ участников", "Собраны замечания и предложения школьного сообщества.", "Утверждён перечень первоочередных мер.", "Добавить статус выполнения и фотографии."]
+        ].map(([title, participants, conclusion, decision, result]) => (
+          <article class="survey-result-card">
+            <header><span class="survey-status done">Опрос завершён</span><time>Указать дату</time></header>
+            <h3>{title}</h3>
+            <p class="survey-participants">{participants}</p>
+            <div class="survey-chart" aria-label="Заглушка диаграммы результатов"><i style="width: 74%"></i><i style="width: 52%"></i><i style="width: 31%"></i></div>
+            <dl>
+              <div><dt>Основной вывод</dt><dd>{conclusion}</dd></div>
+              <div><dt>Решение совета</dt><dd>{decision}</dd></div>
+              <div><dt>Результат</dt><dd>{result}</dd></div>
+            </dl>
+            <a class="text-link" href="#">Посмотреть результаты <span>→</span></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section survey-process-section">
+    <div class="container">
+      <div class="page-section-heading">
+        <h2>Как мнение становится <em>решением</em></h2>
+        <p>Понятный путь от сбора ответов до публичного отчёта о выполненной работе.</p>
+      </div>
+      <div class="survey-publication-flow">
+        <article><span>Опрос</span><h3>Собираем мнения</h3><p>Публикуем цель, аудиторию, сроки и ссылку на анкету.</p></article>
+        <article><span>Результаты</span><h3>Показываем данные</h3><p>Размещаем обезличенную статистику, диаграммы и основные выводы.</p></article>
+        <article><span>Решение</span><h3>Фиксируем действие</h3><p>Указываем решение совета, протокол, сроки и ответственных.</p></article>
+        <article><span>Исполнение</span><h3>Подтверждаем результат</h3><p>Добавляем итог, документы, фотографии и статус выполнения.</p></article>
+      </div>
+    </div>
   </section>
 </BaseLayout>

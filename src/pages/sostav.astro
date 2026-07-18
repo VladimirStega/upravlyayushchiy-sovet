@@ -18,7 +18,7 @@ import PageHero from "../components/PageHero.astro";
         <p>После получения утверждённого состава здесь будут размещены все участники, а не только несколько человек с главной страницы.</p>
       </div>
       <div class="category-filter" aria-label="Будущие фильтры состава">
-        <span>Все участники</span><span>Родители</span><span>Обучающиеся</span><span>Работники</span><span>Учредитель</span><span>Кооптированные</span>
+        <span>Все участники</span><span>Родители</span><span>Обучающиеся</span><span>Работники</span>
       </div>
       <div class="member-directory">
         {[
@@ -27,8 +27,7 @@ import PageHero from "../components/PageHero.astro";
           ["Секретарь совета", "Фамилия Имя Отчество", "Фотография участника УС", false],
           ["Представитель родителей", "Фамилия Имя Отчество", "Фотография участника УС", false],
           ["Представитель обучающихся", "Фамилия Имя Отчество", "Фотография участника УС", false],
-          ["Представитель работников", "Фамилия Имя Отчество", "Фотография участника УС", false],
-          ["Представитель учредителя", "Фамилия Имя Отчество", "Фотография участника УС", false]
+          ["Представитель работников", "Фамилия Имя Отчество", "Фотография участника УС", false]
         ].map(([role, name, photo, featured]) => (
           <article class:list={["person-card", { "person-card-featured": featured }]}>
             <div class="photo-placeholder person-photo">
@@ -44,12 +43,37 @@ import PageHero from "../components/PageHero.astro";
 
   <section class="section">
     <div class="container">
-      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Организация работы</p><h2>Структура <em>совета</em></h2></div><p>Схема будет уточнена после получения Положения и актуального состава комиссий.</p></div>
-      <div class="structure-map">
-        <div class="structure-node primary"><span>Руководство</span><strong>Председатель совета</strong></div>
-        <div class="structure-node"><span>Комиссия</span><strong>По стратегии и развитию</strong></div>
-        <div class="structure-node"><span>Комиссия</span><strong>По качеству образования</strong></div>
-        <div class="structure-node"><span>Комиссия</span><strong>По безопасности и здоровью</strong></div>
+      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Организация работы</p><h2>Кто за что <em>отвечает</em></h2></div><p>После получения Положения названия должностей, комиссий и полномочия будут приведены в соответствие с официальной структурой.</p></div>
+      <div class="structure-leadership">
+        {[
+          ["Председатель совета", "Координирует работу совета, ведёт заседания и представляет принятые решения."],
+          ["Заместитель председателя", "Помогает организовывать работу и замещает председателя при необходимости."],
+          ["Секретарь совета", "Готовит материалы заседаний, ведёт протоколы и контролирует публикацию документов."]
+        ].map(([role, description]) => (
+          <article class="structure-person-card">
+            <div class="photo-placeholder structure-person-photo">
+              <span class="placeholder-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="17" r="9"></circle><path d="M8 43c1-11 7-17 16-17s15 6 16 17"></path></svg></span>
+              <strong>Фотография участника УС</strong>
+            </div>
+            <div><span class="structure-role">Руководство</span><h3>{role}</h3><strong>Фамилия Имя Отчество</strong><p>{description}</p></div>
+          </article>
+        ))}
+      </div>
+      <div class="structure-commissions-heading">
+        <h3>Комиссии и рабочие группы</h3>
+        <p>Руководители направлений и краткое описание задач каждой комиссии.</p>
+      </div>
+      <div class="structure-commissions">
+        {[
+          ["По стратегии и развитию", "Готовит предложения по приоритетам развития образовательной организации."],
+          ["По качеству образования", "Рассматривает условия обучения, воспитания и результаты образовательной деятельности."],
+          ["По безопасности и здоровью", "Работает с вопросами безопасности, здоровья и комфортной школьной среды."]
+        ].map(([title, description]) => (
+          <article class="commission-card">
+            <div class="photo-placeholder commission-photo"><strong>Фотография руководителя комиссии</strong></div>
+            <div><span class="structure-role">Комиссия</span><h3>{title}</h3><strong>Фамилия Имя Отчество</strong><p>{description}</p></div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
