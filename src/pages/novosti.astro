@@ -2,27 +2,81 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+import { currentNews } from "../data/news";
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-const newsHref = `${base}/novosti/zagolovok-novosti/`;
+const categories = [
+  ["all", "Все новости"],
+  ["meetings", "Заседания"],
+  ["projects", "Проекты"],
+  ["achievements", "Достижения"],
+  ["education", "Образовательные практики"],
+  ["community", "Школьное сообщество"]
+];
 ---
 
 <BaseLayout title="Новости — Управляющий совет" current="Новости">
-  <PageHero eyebrow="Регулярное обновление" title="Новости" accent="Управляющего совета" description="Заседания, проекты, опросы, достижения и результаты работы совета в единой новостной ленте." />
+  <PageHero
+    eyebrow="Регулярное обновление"
+    title="Новости"
+    accent="Управляющего совета"
+    description="Заседания, проекты, достижения и события школьного сообщества за 2024–2025 годы. Более ранние публикации перенесены в архив."
+  />
   <section class="section content-section">
     <div class="container">
-      <div class="category-filter"><span>Все новости</span><span>Заседания</span><span>Проекты</span><span>Опросы</span><span>Достижения</span><span>2026</span></div>
+      <div class="category-filter news-filter" aria-label="Фильтр новостей">
+        {categories.map(([key, label], index) => (
+          <button class:list={{ active: index === 0 }} type="button" data-news-filter={key} aria-pressed={index === 0 ? "true" : "false"}>{label}</button>
+        ))}
+      </div>
+
       <div class="editorial-news-grid news-catalog">
-        <article class="editorial-news-card editorial-news-featured">
-          <PhotoPlaceholder title="Фотография к главной новости" className="editorial-news-image" />
-          <div><time>Указать дату публикации</time><h3>Заголовок главной новости Управляющего совета</h3><p>Добавить краткий анонс события, решения или проекта.</p><a class="text-link" href={newsHref}>Читать новость <span>→</span></a></div>
-        </article>
-        {["Заголовок новости о заседании", "Заголовок новости о проекте", "Заголовок публикации о результатах опроса", "Заголовок новости о достижении", "Заголовок новости о принятом решении"].map((title) => (
-          <article class="editorial-news-card">
-            <PhotoPlaceholder title="Фотография к новости" className="editorial-news-image" />
-            <div><time>Указать дату</time><h3>{title}</h3><p>Краткий анонс публикации Управляющего совета.</p><a href={newsHref} aria-label={`Читать: ${title}`}>Читать <span>→</span></a></div>
+        {currentNews.map((item, index) => (
+          <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]} data-news-category={item.category}>
+            <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
+            <div>
+              <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
+              <h3>{item.title}</h3>
+              <p>{item.excerpt}</p>
+              <div class="news-card-actions">
+                <a href={`${base}/novosti/${item.slug}/`}>Читать новость <span>→</span></a>
+                <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>
+              </div>
+            </div>
           </article>
         ))}
       </div>
+      <p class="document-empty" data-news-empty hidden>В этой категории публикаций пока нет.</p>
+      <div class="news-archive-link">
+        <p>Материалы за 2018–2023 годы собраны отдельно, чтобы основная лента оставалась актуальной.</p>
+        <a class="button button-primary" href={`${base}/arhiv/`}>Перейти в архив</a>
+      </div>
     </div>
   </section>
+
+  <script>
+    const setupNewsFilters = () => {
+      const buttons = document.querySelectorAll("[data-news-filter]");
+      const cards = document.querySelectorAll("[data-news-category]");
+      const emptyState = document.querySelector("[data-news-empty]");
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const filter = button.getAttribute("data-news-filter") || "all";
+          let visibleCount = 0;
+          buttons.forEach((item) => {
+            const selected = item === button;
+            item.classList.toggle("active", selected);
+            item.setAttribute("aria-pressed", String(selected));
+          });
+          cards.forEach((card) => {
+            const visible = filter === "all" || card.getAttribute("data-news-category") === filter;
+            card.toggleAttribute("hidden", !visible);
+            if (visible) visibleCount += 1;
+          });
+          emptyState?.toggleAttribute("hidden", visibleCount > 0);
+        });
+      });
+    };
+    document.addEventListener("astro:page-load", setupNewsFilters);
+  </script>
 </BaseLayout>

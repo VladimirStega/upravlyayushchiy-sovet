@@ -2,6 +2,10 @@ node_modules/
 dist/
 astro-dist/
 .astro/
+.next/
 src/generated/
+next-env.d.ts
+public/_astro/
+public/site.css
 .DS_Store
 *.log

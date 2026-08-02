@@ -1,6 +1,28 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const documents = [
+  {
+    category: "normative",
+    title: "Положение об Управляющем совете",
+    meta: "Согласовано 29 августа 2025 года · изменения от 29 сентября 2025 года · PDF · 3,5 МБ",
+    href: `${base}/documents/polozhenie-ob-upravlyayushchem-sovete.pdf`
+  },
+  {
+    category: "elections",
+    title: "Состав Управляющего совета на 2025–2026 учебный год",
+    meta: "Утверждён приказом от 1 сентября 2025 года № 159 · PDF · 411 КБ",
+    href: `${base}/documents/sostav-upravlyayushchego-soveta-2025-2026.pdf`
+  },
+  {
+    category: "elections",
+    title: "Положение о выборах в Управляющий совет",
+    meta: "Согласовано 26 февраля 2026 года · PDF · 1,4 МБ",
+    href: `${base}/documents/polozhenie-o-vyborah-v-upravlyayushchiy-sovet.pdf`
+  }
+];
 ---
 
 <BaseLayout title="Документы — Управляющий совет" current="Документы">
@@ -29,21 +51,17 @@ import PageHero from "../components/PageHero.astro";
   </section>
   <section class="section">
     <div class="container">
-      <div class="page-section-heading"><h2>Последние <em>документы</em></h2><p>После загрузки появятся реальные даты, размеры файлов и кнопки просмотра или скачивания.</p></div>
+      <div class="page-section-heading"><h2>Последние <em>документы</em></h2><p>Официальные документы Управляющего совета доступны для просмотра и скачивания в формате PDF.</p></div>
       <div class="document-list standalone-documents">
-        {[
-          ["normative", "Положение об Управляющем совете"],
-          ["plans", "План работы на 2026/27 учебный год"],
-          ["protocols", "Протокол последнего заседания"],
-          ["reports", "Годовой отчёт Управляющего совета"],
-          ["elections", "Документ об утверждении текущего состава"],
-          ["projects", "Решение о поддержке проекта"],
-          ["training", "Документы о повышении квалификации и стажировках"],
-          ["archive", "Комплект документов за прошлый учебный год"]
-        ].map(([category, title]) => (
-          <a href="#" data-document-category={category}><span class="file-icon">PDF</span><span><strong>{title}</strong><small>Загрузить актуальный документ · PDF · указать размер</small></span><i>↓</i></a>
+        {documents.map(({ category, title, meta, href }) => (
+          <a href={href} data-document-category={category} target="_blank" rel="noopener">
+            <span class="file-icon">PDF</span>
+            <span><strong>{title}</strong><small>{meta}</small></span>
+            <i aria-hidden="true">↓</i>
+          </a>
         ))}
       </div>
+      <p class="document-empty" data-document-empty hidden>В этой категории документы пока не опубликованы.</p>
     </div>
   </section>
 
@@ -51,9 +69,11 @@ import PageHero from "../components/PageHero.astro";
     const setupDocumentFilters = () => {
       const buttons = document.querySelectorAll("[data-document-filter]");
       const documents = document.querySelectorAll("[data-document-category]");
+      const emptyState = document.querySelector("[data-document-empty]");
       buttons.forEach((button) => {
         button.addEventListener("click", () => {
           const filter = button.getAttribute("data-document-filter") || "all";
+          let visibleCount = 0;
           buttons.forEach((item) => {
             const selected = item === button;
             item.classList.toggle("active", selected);
@@ -62,7 +82,9 @@ import PageHero from "../components/PageHero.astro";
           documents.forEach((documentItem) => {
             const visible = filter === "all" || documentItem.getAttribute("data-document-category") === filter;
             documentItem.toggleAttribute("hidden", !visible);
+            if (visible) visibleCount += 1;
           });
+          emptyState?.toggleAttribute("hidden", visibleCount > 0);
         });
       });
     };

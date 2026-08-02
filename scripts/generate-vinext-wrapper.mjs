@@ -27,8 +27,25 @@ const findCss = async (directory) => {
   return null;
 };
 
-const homeHtml = await readFile(join(astroDir, "index.html"), "utf8");
-const checklistHtml = await readFile(join(astroDir, "komplektator", "index.html"), "utf8");
+const collectPages = async (directory, relative = "") => {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const pages = {};
+  for (const entry of entries) {
+    const target = join(directory, entry.name);
+    const targetRelative = join(relative, entry.name);
+    if (entry.isDirectory()) {
+      Object.assign(pages, await collectPages(target, targetRelative));
+    } else if (entry.name === "index.html") {
+      const routeDirectory = dirname(targetRelative).replaceAll("\\", "/");
+      const route = routeDirectory === "." ? "/" : `/${routeDirectory}/`;
+      const html = await readFile(target, "utf8");
+      pages[route] = extractBody(html).replaceAll("/upravlyayushchiy-sovet", "");
+    }
+  }
+  return pages;
+};
+
+const pages = await collectPages(astroDir);
 
 await rm(join(publicDir, "_astro"), { recursive: true, force: true });
 await cp(join(astroDir, "_astro"), join(publicDir, "_astro"), { recursive: true });
@@ -40,8 +57,9 @@ await cp(cssFile, join(publicDir, "site.css"));
 await mkdir(generatedDir, { recursive: true });
 await writeFile(
   join(generatedDir, "site-pages.js"),
-  `export const homeBody = ${JSON.stringify(extractBody(homeHtml))};\n` +
-    `export const checklistBody = ${JSON.stringify(extractBody(checklistHtml))};\n`,
+  `export const sitePages = ${JSON.stringify(pages)};\n` +
+    `export const homeBody = sitePages["/"];\n` +
+    `export const checklistBody = sitePages["/komplektator/"];\n`,
   "utf8"
 );
 

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { currentNews } from "../data/news";
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const sitePath = (href: string) => `${base}${href}`;
 ---
@@ -49,7 +50,7 @@ const sitePath = (href: string) => `${base}${href}`;
         </p>
       </div>
       <div class="stats-grid">
-        <article><span class="stat-value">__</span><strong>членов совета</strong><p>Родители, ученики, педагоги, учредитель и партнёры</p></article>
+        <article><span class="stat-value">12</span><strong>членов совета</strong><p>Утверждённый состав на 2025–2026 учебный год</p></article>
         <article><span class="stat-value">__</span><strong>заседаний за год</strong><p>Здесь будет подтверждённое число проведённых заседаний</p></article>
         <article class="stat-accent"><span class="stat-value">__</span><strong>реализованных проектов</strong><p>Количество инициатив с измеримым результатом</p></article>
         <article><span class="stat-value">__</span><strong>участников опросов</strong><p>Обучающиеся, родители и работники образовательной организации</p></article>
@@ -95,28 +96,23 @@ const sitePath = (href: string) => `${base}${href}`;
         <a class="text-link" href={sitePath("/novosti/")}>Все новости <span>→</span></a>
       </div>
       <div class="editorial-news-grid">
-        <article class="editorial-news-card editorial-news-featured">
-          <div class="photo-placeholder editorial-news-image">
-            <span class="placeholder-icon">
-              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m6 37 11-13 8 8 6-7 11 12"/><circle cx="34" cy="14" r="5"/></svg>
-            </span>
-            <strong>Фотография к главной новости</strong>
-          </div>
-          <div>
-            <time>Указать дату публикации</time>
-            <h3>Заголовок актуальной новости Управляющего совета</h3>
-            <p>Краткий анонс события, заседания, проекта или принятого решения.</p>
-            <a href={sitePath("/novosti/zagolovok-novosti/")}>Читать новость <span>→</span></a>
-          </div>
-        </article>
-        <article class="editorial-news-card">
-          <div class="photo-placeholder editorial-news-image"><strong>Фотография к новости</strong></div>
-          <div><time>Указать дату</time><h3>Заголовок новости о заседании совета</h3><p>Краткий анонс материала.</p><a href={sitePath("/novosti/zagolovok-novosti/")}>Читать <span>→</span></a></div>
-        </article>
-        <article class="editorial-news-card">
-          <div class="photo-placeholder editorial-news-image"><strong>Фотография к новости</strong></div>
-          <div><time>Указать дату</time><h3>Заголовок публикации о проекте или опросе</h3><p>Краткий анонс материала.</p><a href={sitePath("/novosti/zagolovok-novosti/")}>Читать <span>→</span></a></div>
-        </article>
+        {currentNews.slice(0, 3).map((item, index) => (
+          <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]}>
+            <div class="photo-placeholder editorial-news-image">
+              <span class="placeholder-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m6 37 11-13 8 8 6-7 11 12"/><circle cx="34" cy="14" r="5"/></svg></span>
+              <strong>{item.mediaLabel}</strong>
+            </div>
+            <div>
+              <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
+              <h3>{item.title}</h3>
+              <p>{item.excerpt}</p>
+              <div class="news-card-actions">
+                <a href={sitePath(`/novosti/${item.slug}/`)}>Читать новость <span>→</span></a>
+                <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   </section>

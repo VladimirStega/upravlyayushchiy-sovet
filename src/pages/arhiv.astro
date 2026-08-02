@@ -1,15 +1,46 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
+import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+import { archivedNews } from "../data/news";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const years = [...new Set(archivedNews.map((item) => item.year))].sort((a, b) => b - a);
 ---
 
 <BaseLayout title="Архив — Управляющий совет" current="Архив">
-  <PageHero eyebrow="Материалы прошлых лет" title="Архив" accent="Управляющего совета" description="Составы, планы, протоколы, отчёты, проекты и новости прошлых учебных лет." />
+  <PageHero
+    eyebrow="Материалы прошлых лет"
+    title="Архив"
+    accent="Управляющего совета"
+    description="Публикации о заседаниях, проектах и работе школьного сообщества за 2018–2023 годы."
+  />
   <section class="section content-section">
-    <div class="container timeline">
-      <article class="timeline-item"><time>2025/26 учебный год</time><h3>Архив материалов за 2025/26 год</h3><p>Состав, план, протоколы, отчёт, проекты, опросы и новости.</p></article>
-      <article class="timeline-item"><time>2024/25 учебный год</time><h3>Архив материалов за 2024/25 год</h3><p>Добавить доступные документы и публикации.</p></article>
-      <article class="timeline-item"><time>2023/24 учебный год</time><h3>Архив материалов за 2023/24 год</h3><p>Добавить доступные документы и публикации.</p></article>
+    <div class="container archive-news-sections">
+      {years.map((year) => (
+        <section class="archive-year" aria-labelledby={`archive-${year}`}>
+          <div class="archive-year-heading">
+            <h2 id={`archive-${year}`}>{year} <em>год</em></h2>
+            <span>{archivedNews.filter((item) => item.year === year).length} публикации</span>
+          </div>
+          <div class="editorial-news-grid archive-news-grid">
+            {archivedNews.filter((item) => item.year === year).map((item) => (
+              <article class="editorial-news-card">
+                <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
+                <div>
+                  <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
+                  <h3>{item.title}</h3>
+                  <p>{item.excerpt}</p>
+                  <div class="news-card-actions">
+                    <a href={`${base}/novosti/${item.slug}/`}>Читать публикацию <span>→</span></a>
+                    <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   </section>
 </BaseLayout>
