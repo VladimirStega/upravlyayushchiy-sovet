@@ -146,10 +146,13 @@ const sitePath = (href: string) => `${base}${href}`;
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let width = 0;
       let height = 0;
+      let worldHeight = 0;
       let pixelRatio = 1;
       let animationFrame = 0;
-      type NodeKind = "person" | "dialog" | "book" | "document" | "idea" | "result" | "school";
-      let nodes: Array<{ x: number; y: number; phase: number; speed: number; radius: number; amplitude: number; emphasis: boolean; kind: NodeKind }> = [];
+      let previousScroll = window.scrollY;
+      let scrollEnergy = 0;
+      type NodeKind = "dot" | "person" | "dialog" | "book" | "document" | "idea" | "result" | "school";
+      let nodes: Array<{ x: number; worldY: number; phase: number; speed: number; radius: number; amplitude: number; emphasis: boolean; kind: NodeKind; velocityX: number; lifeOffset: number; lifeSpeed: number; linePhase: number }> = [];
 
       const seeded = (seed: number) => {
         const value = Math.sin(seed * 9283.17 + 78.23) * 43758.5453;
@@ -157,30 +160,32 @@ const sitePath = (href: string) => `${base}${href}`;
       };
 
       const createNodes = () => {
-        const count = width < 560 ? 9 : width < 900 ? 13 : 18;
-        const kinds: NodeKind[] = ["person", "dialog", "book", "document", "idea", "result", "school"];
+        const main = document.querySelector("main");
+        worldHeight = Math.max(main?.scrollHeight || height, height);
+        const visibleCount = width < 560 ? 13 : width < 900 ? 18 : 24;
+        const count = Math.ceil((worldHeight / height) * visibleCount);
+        const kinds: NodeKind[] = ["dot", "person", "dot", "dot", "dialog", "dot", "book", "dot", "dot", "document", "dot", "idea", "dot", "dot", "result", "dot", "school", "dot"];
         const placed: typeof nodes = [];
         for (let index = 0; index < count; index += 1) {
-          const radius = (width < 560 ? 13 : 16) + seeded(index * 7 + 3) * (width < 560 ? 9 : 15);
-          let x = width * (0.07 + seeded(index * 11 + 5) * 0.86);
-          let y = height * (0.08 + seeded(index * 13 + 9) * 0.84);
-
-          for (let attempt = 0; attempt < 24; attempt += 1) {
-            const overlaps = placed.some((node) => Math.hypot(node.x - x, node.y - y) < node.radius + radius + 32);
-            if (!overlaps) break;
-            x = width * (0.06 + seeded(index * 31 + attempt * 17 + 2) * 0.88);
-            y = height * (0.07 + seeded(index * 37 + attempt * 19 + 4) * 0.86);
-          }
+          const kind = kinds[index % kinds.length];
+          const radius = kind === "dot"
+            ? 3.5 + seeded(index * 7 + 3) * 4.5
+            : (width < 560 ? 12 : 15) + seeded(index * 7 + 3) * (width < 560 ? 8 : 14);
+          const direction = seeded(index * 29 + 12) > 0.5 ? 1 : -1;
 
           placed.push({
-            x,
-            y,
+            x: width * (0.04 + seeded(index * 11 + 5) * 0.92),
+            worldY: ((index + seeded(index * 13 + 9) * 0.8) / count) * worldHeight,
             phase: seeded(index * 17 + 6) * Math.PI * 2,
             speed: 0.72 + seeded(index * 19 + 8) * 0.56,
             radius,
-            amplitude: 12 + seeded(index * 23 + 10) * 14,
-            emphasis: index % 4 === 0,
-            kind: kinds[index % kinds.length]
+            amplitude: (kind === "dot" ? 18 : 34) + seeded(index * 23 + 10) * (kind === "dot" ? 25 : 48),
+            emphasis: kind !== "dot" && index % 5 === 0,
+            kind,
+            velocityX: direction * (0.004 + seeded(index * 31 + 14) * 0.007),
+            lifeOffset: seeded(index * 37 + 16),
+            lifeSpeed: 0.000018 + seeded(index * 41 + 18) * 0.000014,
+            linePhase: seeded(index * 43 + 20) * Math.PI * 2
           });
         }
         nodes = placed;
@@ -199,24 +204,47 @@ const sitePath = (href: string) => `${base}${href}`;
         if (reducedMotion.matches) draw(0);
       };
 
+      const smoothstep = (start: number, end: number, value: number) => {
+        const normalized = Math.max(0, Math.min(1, (value - start) / (end - start)));
+        return normalized * normalized * (3 - 2 * normalized);
+      };
+
       const positionsAt = (time: number) => nodes.map((node) => {
-        const driftX = reducedMotion.matches ? 0 : Math.sin(time * 0.00017 * node.speed + node.phase) * node.amplitude;
-        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.00013 * node.speed + node.phase * 1.37) * node.amplitude * 0.72;
+        const lifecycle = (time * node.lifeSpeed + node.lifeOffset) % 1;
+        const alpha = reducedMotion.matches
+          ? 1
+          : smoothstep(0.02, 0.14, lifecycle) * (1 - smoothstep(0.76, 0.92, lifecycle));
+        const trackWidth = width + 180;
+        const movingX = reducedMotion.matches ? node.x : ((node.x + time * node.velocityX + 90) % trackWidth + trackWidth) % trackWidth - 90;
+        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.000095 * node.speed + node.phase * 1.37) * node.amplitude * 0.62;
+        const wave = reducedMotion.matches ? 0 : Math.sin(node.worldY * 0.008 + node.phase) * scrollEnergy * 3.5;
         return {
           ...node,
-          drawX: node.x + driftX,
-          drawY: node.y + driftY
+          alpha,
+          drawX: movingX,
+          drawY: node.worldY - window.scrollY + driftY + wave
         };
       });
 
       const drawNode = (point: ReturnType<typeof positionsAt>[number]) => {
         const { drawX, drawY, radius, emphasis, kind } = point;
         context.save();
+        context.globalAlpha = point.alpha;
         context.translate(drawX, drawY);
+
+        if (kind === "dot") {
+          context.fillStyle = "#0d253f";
+          context.beginPath();
+          context.arc(0, 0, radius, 0, Math.PI * 2);
+          context.fill();
+          context.restore();
+          return;
+        }
+
         context.shadowColor = "rgba(4, 17, 32, 0.28)";
         context.shadowBlur = emphasis ? 18 : 10;
-        context.fillStyle = emphasis ? "rgba(221, 239, 246, 0.3)" : "rgba(218, 232, 241, 0.19)";
-        context.strokeStyle = emphasis ? "rgba(8, 25, 43, 0.96)" : "rgba(9, 29, 49, 0.86)";
+        context.fillStyle = emphasis ? "#d9eee6" : "#c8d9df";
+        context.strokeStyle = "#0d253f";
         context.lineWidth = emphasis ? 1.6 : 1.1;
         context.beginPath();
         context.arc(0, 0, radius, 0, Math.PI * 2);
@@ -323,7 +351,7 @@ const sitePath = (href: string) => `${base}${href}`;
       const draw = (time: number) => {
         if (!canvas.isConnected || controller.signal.aborted) return;
         context.clearRect(0, 0, width, height);
-        const points = positionsAt(time);
+        const points = positionsAt(time).filter((point) => point.alpha > 0.015 && point.drawY > -120 && point.drawY < height + 120);
         const connectionDistance = width < 560 ? 270 : 390;
 
         context.lineWidth = 1;
@@ -333,16 +361,35 @@ const sitePath = (href: string) => `${base}${href}`;
             const dy = points[i].drawY - points[j].drawY;
             const distance = Math.hypot(dx, dy);
             if (distance > connectionDistance) continue;
-            const opacity = 0.07 + (1 - distance / connectionDistance) * 0.27;
-            context.strokeStyle = `rgba(7, 27, 48, ${opacity})`;
+            const primary = (i * 7 + j * 11) % 4 === 0;
+            const pulse = (Math.sin(time * 0.000075 + points[i].linePhase + points[j].linePhase) + 1) / 2;
+            const visibility = primary ? 0.68 + pulse * 0.32 : smoothstep(0.25, 0.72, pulse);
+            const opacity = (primary ? 0.12 : 0.055) + (1 - distance / connectionDistance) * (primary ? 0.25 : 0.13);
+            const lineAlpha = opacity * visibility * Math.min(points[i].alpha, points[j].alpha);
+            context.strokeStyle = `rgba(13, 37, 63, ${lineAlpha})`;
             context.beginPath();
             context.moveTo(points[i].drawX, points[i].drawY);
             context.lineTo(points[j].drawX, points[j].drawY);
             context.stroke();
+
+            if (primary && (i * 5 + j * 3) % 9 === 0 && !reducedMotion.matches) {
+              const progress = (time * 0.00011 + points[i].lifeOffset) % 1;
+              context.fillStyle = `rgba(174, 235, 214, ${Math.min(points[i].alpha, points[j].alpha) * 0.9})`;
+              context.beginPath();
+              context.arc(
+                points[i].drawX + (points[j].drawX - points[i].drawX) * progress,
+                points[i].drawY + (points[j].drawY - points[i].drawY) * progress,
+                2.2,
+                0,
+                Math.PI * 2
+              );
+              context.fill();
+            }
           }
         }
 
         points.forEach(drawNode);
+        scrollEnergy *= 0.91;
 
         if (!reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
       };
@@ -353,11 +400,28 @@ const sitePath = (href: string) => `${base}${href}`;
         else animationFrame = requestAnimationFrame(draw);
       };
 
+      const onScroll = () => {
+        const delta = window.scrollY - previousScroll;
+        scrollEnergy = Math.min(1, scrollEnergy + Math.abs(delta) / 180);
+        previousScroll = window.scrollY;
+        if (reducedMotion.matches) draw(0);
+      };
+
       window.addEventListener("resize", resize, { passive: true, signal: controller.signal });
+      window.addEventListener("scroll", onScroll, { passive: true, signal: controller.signal });
       reducedMotion.addEventListener("change", onMotionChange, { signal: controller.signal });
+      const main = document.querySelector("main");
+      const mainObserver = main instanceof HTMLElement ? new ResizeObserver(() => {
+        const nextHeight = Math.max(main.scrollHeight, window.innerHeight);
+        if (Math.abs(nextHeight - worldHeight) > 40) createNodes();
+      }) : null;
+      if (main instanceof HTMLElement) mainObserver?.observe(main);
       resize();
       if (!reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
-      controller.signal.addEventListener("abort", () => cancelAnimationFrame(animationFrame), { once: true });
+      controller.signal.addEventListener("abort", () => {
+        cancelAnimationFrame(animationFrame);
+        mainObserver?.disconnect();
+      }, { once: true });
     };
 
     document.addEventListener("astro:page-load", setupCouncilNetwork);
