@@ -5477,11 +5477,9 @@ select {
   min-height: 740px;
   margin: 0 16px 24px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid transparent;
   border-radius: 0 0 38px 38px;
-  background: rgba(9, 39, 76, 0.66);
-  box-shadow: 0 28px 80px rgba(7, 27, 48, 0.18);
-  backdrop-filter: blur(7px);
+  background: transparent;
 }
 
 .home-network-page .hero-video-visual::after {
@@ -5501,22 +5499,42 @@ select {
 .home-network-page .decisions-section {
   margin: 24px 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid transparent;
   border-radius: 38px;
-  background:
-    linear-gradient(115deg, rgba(8, 35, 69, 0.69), rgba(12, 50, 94, 0.58));
-  box-shadow: 0 28px 80px rgba(7, 27, 48, 0.18);
-  backdrop-filter: blur(7px);
+  background: transparent;
 }
 
 .home-network-page .cta-section {
   margin: 24px 16px 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid transparent;
   border-radius: 38px 38px 0 0;
-  background: rgba(9, 39, 76, 0.68);
-  box-shadow: 0 28px 80px rgba(7, 27, 48, 0.18);
-  backdrop-filter: blur(7px);
+  background: transparent;
+}
+
+.home-network-page .hero-content :is(h1, .hero-lead, .eyebrow),
+.home-network-page .decisions-grid > div:first-child :is(h2, .section-lead, .eyebrow),
+.home-network-page .cta-inner :is(h2, p, .eyebrow) {
+  text-shadow:
+    0 2px 3px rgba(4, 20, 42, 0.72),
+    0 12px 32px rgba(4, 20, 42, 0.48);
+}
+
+.home-network-page .hero-video-main {
+  box-shadow:
+    0 26px 65px rgba(4, 20, 42, 0.38),
+    0 0 0 1px rgba(214, 241, 232, 0.12);
+}
+
+.home-network-page .hero-actions .button,
+.home-network-page .cta-section .button {
+  box-shadow: 0 14px 34px rgba(4, 20, 42, 0.32);
+}
+
+.home-network-page .decision-list article {
+  box-shadow:
+    0 20px 48px rgba(4, 20, 42, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
 }
 
 .home-network-page .photo-placeholder-main {
