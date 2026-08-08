@@ -8,10 +8,10 @@ const sitePath = (href: string) => `${base}${href}`;
 <BaseLayout
   title="Управляющий совет — решения, которые меняют школу"
   description="Решения и новости Управляющего совета образовательной организации."
+  pageClass="home-network-page"
 >
+  <canvas class="home-network-canvas" id="home-network-canvas" aria-hidden="true"></canvas>
   <section class="hero">
-    <div class="hero-orbit hero-orbit-one"></div>
-    <div class="hero-orbit hero-orbit-two"></div>
     <div class="container hero-grid">
       <div class="hero-content">
         <p class="eyebrow"><span></span> Управляющий совет</p>
@@ -129,4 +129,139 @@ const sitePath = (href: string) => `${base}${href}`;
       </div>
     </div>
   </section>
+
+  <script>
+    const setupCouncilNetwork = () => {
+      const canvas = document.querySelector("#home-network-canvas");
+      if (!(canvas instanceof HTMLCanvasElement)) return;
+
+      const previousController = (window as any).__councilNetworkController as AbortController | undefined;
+      previousController?.abort();
+      const controller = new AbortController();
+      (window as any).__councilNetworkController = controller;
+
+      const context = canvas.getContext("2d");
+      if (!context) return;
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let width = 0;
+      let height = 0;
+      let pixelRatio = 1;
+      let animationFrame = 0;
+      let previousScroll = window.scrollY;
+      let scrollWave = 0;
+      let scrollDirection = 1;
+      let nodes: Array<{ x: number; y: number; phase: number; speed: number; size: number; ring: boolean }> = [];
+
+      const createNodes = () => {
+        const count = width < 560 ? 13 : width < 900 ? 19 : 28;
+        nodes = Array.from({ length: count }, (_, index) => {
+          const columnCount = width < 560 ? 3 : width < 900 ? 4 : 6;
+          const column = index % columnCount;
+          const row = Math.floor(index / columnCount);
+          const randomX = ((index * 47) % 31) / 31;
+          const randomY = ((index * 73) % 37) / 37;
+          return {
+            x: ((column + 0.28 + randomX * 0.48) / columnCount) * width,
+            y: ((row + 0.22 + randomY * 0.55) / Math.ceil(count / columnCount)) * height,
+            phase: index * 0.83,
+            speed: 0.55 + (index % 5) * 0.09,
+            size: index % 7 === 0 ? 4.4 : index % 3 === 0 ? 3.1 : 2.2,
+            ring: index % 6 === 0
+          };
+        });
+      };
+
+      const resize = () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = Math.round(width * pixelRatio);
+        canvas.height = Math.round(height * pixelRatio);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        createNodes();
+        if (reducedMotion.matches) draw(0);
+      };
+
+      const positionsAt = (time: number) => nodes.map((node, index) => {
+        const driftX = reducedMotion.matches ? 0 : Math.sin(time * 0.00018 * node.speed + node.phase) * 7;
+        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.00015 * node.speed + node.phase * 1.3) * 6;
+        const wave = Math.sin(node.y * 0.018 + window.scrollY * 0.006 + index * 0.45);
+        return {
+          ...node,
+          drawX: node.x + driftX + wave * scrollWave * scrollDirection * 12,
+          drawY: node.y + driftY + Math.cos(node.x * 0.012 + index) * scrollWave * 5
+        };
+      });
+
+      const draw = (time: number) => {
+        if (!canvas.isConnected || controller.signal.aborted) return;
+        context.clearRect(0, 0, width, height);
+        const points = positionsAt(time);
+        const connectionDistance = width < 560 ? 220 : 300;
+
+        context.lineWidth = 0.8;
+        for (let i = 0; i < points.length; i += 1) {
+          for (let j = i + 1; j < points.length; j += 1) {
+            const dx = points[i].drawX - points[j].drawX;
+            const dy = points[i].drawY - points[j].drawY;
+            const distance = Math.hypot(dx, dy);
+            if (distance > connectionDistance) continue;
+            const opacity = 0.04 + (1 - distance / connectionDistance) * 0.38;
+            context.strokeStyle = `rgba(7, 27, 48, ${opacity})`;
+            context.beginPath();
+            context.moveTo(points[i].drawX, points[i].drawY);
+            context.lineTo(points[j].drawX, points[j].drawY);
+            context.stroke();
+          }
+        }
+
+        points.forEach((point) => {
+          context.fillStyle = "rgba(7, 27, 48, 0.72)";
+          context.beginPath();
+          context.arc(point.drawX, point.drawY, point.size, 0, Math.PI * 2);
+          context.fill();
+          if (point.ring) {
+            context.strokeStyle = "rgba(7, 27, 48, 0.38)";
+            context.lineWidth = 1;
+            context.beginPath();
+            context.arc(point.drawX, point.drawY, point.size + 7, 0, Math.PI * 2);
+            context.stroke();
+          }
+        });
+
+        scrollWave *= 0.925;
+        if (!reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
+      };
+
+      const onScroll = () => {
+        const currentScroll = window.scrollY;
+        const delta = currentScroll - previousScroll;
+        if (Math.abs(delta) > 0.5) {
+          scrollDirection = delta > 0 ? 1 : -1;
+          scrollWave = Math.min(1, scrollWave + Math.abs(delta) / 75);
+        }
+        previousScroll = currentScroll;
+        if (reducedMotion.matches) draw(0);
+      };
+
+      const onMotionChange = () => {
+        cancelAnimationFrame(animationFrame);
+        if (reducedMotion.matches) draw(0);
+        else animationFrame = requestAnimationFrame(draw);
+      };
+
+      window.addEventListener("resize", resize, { passive: true, signal: controller.signal });
+      window.addEventListener("scroll", onScroll, { passive: true, signal: controller.signal });
+      reducedMotion.addEventListener("change", onMotionChange, { signal: controller.signal });
+      resize();
+      if (!reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
+      controller.signal.addEventListener("abort", () => cancelAnimationFrame(animationFrame), { once: true });
+    };
+
+    document.addEventListener("astro:page-load", setupCouncilNetwork);
+    setupCouncilNetwork();
+  </script>
 </BaseLayout>
