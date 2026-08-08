@@ -148,28 +148,42 @@ const sitePath = (href: string) => `${base}${href}`;
       let height = 0;
       let pixelRatio = 1;
       let animationFrame = 0;
-      let previousScroll = window.scrollY;
-      let scrollWave = 0;
-      let scrollDirection = 1;
-      let nodes: Array<{ x: number; y: number; phase: number; speed: number; size: number; ring: boolean }> = [];
+      type NodeKind = "person" | "dialog" | "book" | "document" | "idea" | "result" | "school";
+      let nodes: Array<{ x: number; y: number; phase: number; speed: number; radius: number; amplitude: number; emphasis: boolean; kind: NodeKind }> = [];
+
+      const seeded = (seed: number) => {
+        const value = Math.sin(seed * 9283.17 + 78.23) * 43758.5453;
+        return value - Math.floor(value);
+      };
 
       const createNodes = () => {
-        const count = width < 560 ? 13 : width < 900 ? 19 : 28;
-        nodes = Array.from({ length: count }, (_, index) => {
-          const columnCount = width < 560 ? 3 : width < 900 ? 4 : 6;
-          const column = index % columnCount;
-          const row = Math.floor(index / columnCount);
-          const randomX = ((index * 47) % 31) / 31;
-          const randomY = ((index * 73) % 37) / 37;
-          return {
-            x: ((column + 0.28 + randomX * 0.48) / columnCount) * width,
-            y: ((row + 0.22 + randomY * 0.55) / Math.ceil(count / columnCount)) * height,
-            phase: index * 0.83,
-            speed: 0.55 + (index % 5) * 0.09,
-            size: index % 7 === 0 ? 4.4 : index % 3 === 0 ? 3.1 : 2.2,
-            ring: index % 6 === 0
-          };
-        });
+        const count = width < 560 ? 9 : width < 900 ? 13 : 18;
+        const kinds: NodeKind[] = ["person", "dialog", "book", "document", "idea", "result", "school"];
+        const placed: typeof nodes = [];
+        for (let index = 0; index < count; index += 1) {
+          const radius = (width < 560 ? 13 : 16) + seeded(index * 7 + 3) * (width < 560 ? 9 : 15);
+          let x = width * (0.07 + seeded(index * 11 + 5) * 0.86);
+          let y = height * (0.08 + seeded(index * 13 + 9) * 0.84);
+
+          for (let attempt = 0; attempt < 24; attempt += 1) {
+            const overlaps = placed.some((node) => Math.hypot(node.x - x, node.y - y) < node.radius + radius + 32);
+            if (!overlaps) break;
+            x = width * (0.06 + seeded(index * 31 + attempt * 17 + 2) * 0.88);
+            y = height * (0.07 + seeded(index * 37 + attempt * 19 + 4) * 0.86);
+          }
+
+          placed.push({
+            x,
+            y,
+            phase: seeded(index * 17 + 6) * Math.PI * 2,
+            speed: 0.72 + seeded(index * 19 + 8) * 0.56,
+            radius,
+            amplitude: 7 + seeded(index * 23 + 10) * 12,
+            emphasis: index % 4 === 0,
+            kind: kinds[index % kinds.length]
+          });
+        }
+        nodes = placed;
       };
 
       const resize = () => {
@@ -185,31 +199,141 @@ const sitePath = (href: string) => `${base}${href}`;
         if (reducedMotion.matches) draw(0);
       };
 
-      const positionsAt = (time: number) => nodes.map((node, index) => {
-        const driftX = reducedMotion.matches ? 0 : Math.sin(time * 0.00018 * node.speed + node.phase) * 7;
-        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.00015 * node.speed + node.phase * 1.3) * 6;
-        const wave = Math.sin(node.y * 0.018 + window.scrollY * 0.006 + index * 0.45);
+      const positionsAt = (time: number) => nodes.map((node) => {
+        const driftX = reducedMotion.matches ? 0 : Math.sin(time * 0.000075 * node.speed + node.phase) * node.amplitude;
+        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.000061 * node.speed + node.phase * 1.37) * node.amplitude * 0.72;
         return {
           ...node,
-          drawX: node.x + driftX + wave * scrollWave * scrollDirection * 12,
-          drawY: node.y + driftY + Math.cos(node.x * 0.012 + index) * scrollWave * 5
+          drawX: node.x + driftX,
+          drawY: node.y + driftY
         };
       });
+
+      const drawNode = (point: ReturnType<typeof positionsAt>[number]) => {
+        const { drawX, drawY, radius, emphasis, kind } = point;
+        context.save();
+        context.translate(drawX, drawY);
+        context.shadowColor = "rgba(4, 17, 32, 0.28)";
+        context.shadowBlur = emphasis ? 18 : 10;
+        context.fillStyle = emphasis ? "rgba(221, 239, 246, 0.2)" : "rgba(218, 232, 241, 0.12)";
+        context.strokeStyle = emphasis ? "rgba(8, 25, 43, 0.88)" : "rgba(9, 29, 49, 0.72)";
+        context.lineWidth = emphasis ? 1.6 : 1.1;
+        context.beginPath();
+        context.arc(0, 0, radius, 0, Math.PI * 2);
+        context.fill();
+        context.stroke();
+        context.shadowBlur = 0;
+
+        const scale = radius / 22;
+        context.scale(scale, scale);
+        context.strokeStyle = "rgba(8, 27, 47, 0.82)";
+        context.fillStyle = "rgba(8, 27, 47, 0.78)";
+        context.lineWidth = 1.7 / scale;
+        context.lineCap = "round";
+        context.lineJoin = "round";
+
+        if (kind === "person") {
+          context.beginPath();
+          context.arc(0, -5, 4, 0, Math.PI * 2);
+          context.fill();
+          context.beginPath();
+          context.moveTo(-9, 10);
+          context.quadraticCurveTo(-7, 1, 0, 1);
+          context.quadraticCurveTo(7, 1, 9, 10);
+          context.closePath();
+          context.fill();
+        } else if (kind === "dialog") {
+          context.beginPath();
+          context.roundRect(-11, -8, 22, 15, 4);
+          context.moveTo(-3, 7);
+          context.lineTo(-7, 12);
+          context.lineTo(2, 7);
+          context.stroke();
+          [-6, 0, 6].forEach((x) => {
+            context.beginPath();
+            context.arc(x, -1, 1.25, 0, Math.PI * 2);
+            context.fill();
+          });
+        } else if (kind === "book") {
+          context.beginPath();
+          context.moveTo(0, -8);
+          context.quadraticCurveTo(-5, -11, -11, -8);
+          context.lineTo(-11, 9);
+          context.quadraticCurveTo(-5, 6, 0, 10);
+          context.quadraticCurveTo(5, 6, 11, 9);
+          context.lineTo(11, -8);
+          context.quadraticCurveTo(5, -11, 0, -8);
+          context.lineTo(0, 10);
+          context.stroke();
+        } else if (kind === "document") {
+          context.strokeRect(-8, -11, 16, 22);
+          [-5, 0, 5].forEach((y, index) => {
+            context.beginPath();
+            context.moveTo(-4, y);
+            context.lineTo(index === 2 ? 3 : 5, y);
+            context.stroke();
+          });
+        } else if (kind === "idea") {
+          context.beginPath();
+          context.arc(0, -3, 7, Math.PI * 0.15, Math.PI * 0.85, true);
+          context.quadraticCurveTo(-5, 3, -3, 6);
+          context.lineTo(3, 6);
+          context.quadraticCurveTo(5, 3, 6.2, 0);
+          context.stroke();
+          context.beginPath();
+          context.moveTo(-3, 9);
+          context.lineTo(3, 9);
+          context.moveTo(-1.8, 12);
+          context.lineTo(1.8, 12);
+          context.stroke();
+        } else if (kind === "result") {
+          context.beginPath();
+          context.arc(0, 0, 11, 0, Math.PI * 2);
+          context.moveTo(-5, 0);
+          context.lineTo(-1, 5);
+          context.lineTo(7, -5);
+          context.stroke();
+        } else {
+          context.beginPath();
+          context.moveTo(-11, -3);
+          context.lineTo(0, -11);
+          context.lineTo(11, -3);
+          context.moveTo(-8, -3);
+          context.lineTo(-8, 10);
+          context.lineTo(8, 10);
+          context.lineTo(8, -3);
+          context.moveTo(-3, 10);
+          context.lineTo(-3, 2);
+          context.lineTo(3, 2);
+          context.lineTo(3, 10);
+          context.stroke();
+        }
+
+        if (emphasis) {
+          context.scale(1 / scale, 1 / scale);
+          context.strokeStyle = "rgba(221, 239, 246, 0.28)";
+          context.lineWidth = 1;
+          context.beginPath();
+          context.arc(0, 0, radius + 6, 0, Math.PI * 2);
+          context.stroke();
+        }
+        context.restore();
+      };
 
       const draw = (time: number) => {
         if (!canvas.isConnected || controller.signal.aborted) return;
         context.clearRect(0, 0, width, height);
         const points = positionsAt(time);
-        const connectionDistance = width < 560 ? 220 : 300;
+        const connectionDistance = width < 560 ? 230 : 335;
 
-        context.lineWidth = 0.8;
+        context.lineWidth = 0.75;
         for (let i = 0; i < points.length; i += 1) {
           for (let j = i + 1; j < points.length; j += 1) {
             const dx = points[i].drawX - points[j].drawX;
             const dy = points[i].drawY - points[j].drawY;
             const distance = Math.hypot(dx, dy);
             if (distance > connectionDistance) continue;
-            const opacity = 0.04 + (1 - distance / connectionDistance) * 0.38;
+            const opacity = 0.035 + (1 - distance / connectionDistance) * 0.19;
             context.strokeStyle = `rgba(7, 27, 48, ${opacity})`;
             context.beginPath();
             context.moveTo(points[i].drawX, points[i].drawY);
@@ -218,33 +342,9 @@ const sitePath = (href: string) => `${base}${href}`;
           }
         }
 
-        points.forEach((point) => {
-          context.fillStyle = "rgba(7, 27, 48, 0.72)";
-          context.beginPath();
-          context.arc(point.drawX, point.drawY, point.size, 0, Math.PI * 2);
-          context.fill();
-          if (point.ring) {
-            context.strokeStyle = "rgba(7, 27, 48, 0.38)";
-            context.lineWidth = 1;
-            context.beginPath();
-            context.arc(point.drawX, point.drawY, point.size + 7, 0, Math.PI * 2);
-            context.stroke();
-          }
-        });
+        points.forEach(drawNode);
 
-        scrollWave *= 0.925;
         if (!reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
-      };
-
-      const onScroll = () => {
-        const currentScroll = window.scrollY;
-        const delta = currentScroll - previousScroll;
-        if (Math.abs(delta) > 0.5) {
-          scrollDirection = delta > 0 ? 1 : -1;
-          scrollWave = Math.min(1, scrollWave + Math.abs(delta) / 75);
-        }
-        previousScroll = currentScroll;
-        if (reducedMotion.matches) draw(0);
       };
 
       const onMotionChange = () => {
@@ -254,7 +354,6 @@ const sitePath = (href: string) => `${base}${href}`;
       };
 
       window.addEventListener("resize", resize, { passive: true, signal: controller.signal });
-      window.addEventListener("scroll", onScroll, { passive: true, signal: controller.signal });
       reducedMotion.addEventListener("change", onMotionChange, { signal: controller.signal });
       resize();
       if (!reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
