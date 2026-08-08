@@ -151,7 +151,7 @@ const sitePath = (href: string) => `${base}${href}`;
       let animationFrame = 0;
       let previousScroll = window.scrollY;
       let scrollEnergy = 0;
-      type NodeKind = "dot" | "person" | "dialog" | "book" | "document" | "idea" | "result" | "school";
+      type NodeKind = "dot" | "person" | "group" | "handshake" | "dialog" | "book" | "document" | "idea" | "result" | "school";
       let nodes: Array<{ id: number; x: number; worldY: number; phase: number; speed: number; radius: number; amplitude: number; emphasis: boolean; kind: NodeKind; velocityX: number; lifeOffset: number; lifeSpeed: number; linePhase: number }> = [];
 
       const seeded = (seed: number) => {
@@ -164,7 +164,7 @@ const sitePath = (href: string) => `${base}${href}`;
         worldHeight = Math.max(main?.scrollHeight || height, height);
         const visibleCount = width < 560 ? 13 : width < 900 ? 18 : 24;
         const count = Math.ceil((worldHeight / height) * visibleCount);
-        const kinds: NodeKind[] = ["dot", "person", "dot", "dialog", "dot", "book", "document", "dot", "idea", "dot", "result", "school", "dot", "person", "dot", "dialog", "dot", "document"];
+        const kinds: NodeKind[] = ["dot", "person", "dot", "dialog", "group", "dot", "book", "handshake", "dot", "document", "dot", "idea", "dot", "result", "school", "dot", "group", "dot", "handshake", "dot"];
         const placed: typeof nodes = [];
         for (let index = 0; index < count; index += 1) {
           const kind = kinds[index % kinds.length];
@@ -243,13 +243,19 @@ const sitePath = (href: string) => `${base}${href}`;
           return;
         }
 
-        context.shadowColor = "rgba(4, 17, 32, 0.38)";
-        context.shadowBlur = emphasis ? 17 : 10;
-        context.fillStyle = emphasis ? "#123f6d" : "#0d3158";
-        context.strokeStyle = emphasis ? "#a7ead3" : "#79cdb4";
+        const plateGradient = context.createLinearGradient(-radius, -radius, radius, radius);
+        plateGradient.addColorStop(0, emphasis ? "#164b7b" : "#123f6d");
+        plateGradient.addColorStop(1, emphasis ? "#0a294d" : "#082744");
+        const edgeGradient = context.createLinearGradient(-radius, -radius, radius, radius);
+        edgeGradient.addColorStop(0, emphasis ? "#afeed8" : "#86d9c0");
+        edgeGradient.addColorStop(1, emphasis ? "#78b9e6" : "#5d99c8");
+        context.shadowColor = emphasis ? "rgba(111, 221, 188, 0.25)" : "rgba(4, 17, 32, 0.4)";
+        context.shadowBlur = emphasis ? 18 : 11;
+        context.fillStyle = plateGradient;
+        context.strokeStyle = edgeGradient;
         context.lineWidth = emphasis ? 1.8 : 1.35;
         context.beginPath();
-        context.arc(0, 0, radius, 0, Math.PI * 2);
+        context.roundRect(-radius, -radius, radius * 2, radius * 2, Math.max(7, radius * 0.42));
         context.fill();
         context.stroke();
         context.shadowBlur = 0;
@@ -265,13 +271,47 @@ const sitePath = (href: string) => `${base}${href}`;
         if (kind === "person") {
           context.beginPath();
           context.arc(0, -5, 4, 0, Math.PI * 2);
-          context.fill();
-          context.beginPath();
           context.moveTo(-9, 10);
-          context.quadraticCurveTo(-7, 1, 0, 1);
-          context.quadraticCurveTo(7, 1, 9, 10);
-          context.closePath();
-          context.fill();
+          context.quadraticCurveTo(-8, 2, 0, 2);
+          context.quadraticCurveTo(8, 2, 9, 10);
+          context.stroke();
+        } else if (kind === "group") {
+          context.beginPath();
+          context.moveTo(3.5, -6);
+          context.arc(0, -6, 3.5, 0, Math.PI * 2);
+          context.moveTo(-4.7, -2.5);
+          context.arc(-7.5, -2.5, 2.8, 0, Math.PI * 2);
+          context.moveTo(10.3, -2.5);
+          context.arc(7.5, -2.5, 2.8, 0, Math.PI * 2);
+          context.moveTo(-6.5, 10);
+          context.quadraticCurveTo(-6, 1, 0, 1);
+          context.quadraticCurveTo(6, 1, 6.5, 10);
+          context.moveTo(-12, 9);
+          context.quadraticCurveTo(-11, 3, -7, 3);
+          context.moveTo(12, 9);
+          context.quadraticCurveTo(11, 3, 7, 3);
+          context.stroke();
+        } else if (kind === "handshake") {
+          context.beginPath();
+          context.moveTo(-12, -5);
+          context.lineTo(-8, -9);
+          context.lineTo(-2, -4);
+          context.lineTo(-5, -1);
+          context.lineTo(-12, -5);
+          context.moveTo(12, -5);
+          context.lineTo(8, -9);
+          context.lineTo(2, -4);
+          context.lineTo(5, -1);
+          context.lineTo(12, -5);
+          context.moveTo(-5, -1);
+          context.lineTo(-1, 3);
+          context.quadraticCurveTo(0, 4.5, 1.5, 3);
+          context.lineTo(5, -1);
+          context.moveTo(-3, 1);
+          context.lineTo(1.5, 6);
+          context.quadraticCurveTo(3, 7.5, 4.5, 6);
+          context.lineTo(8, 2);
+          context.stroke();
         } else if (kind === "dialog") {
           context.beginPath();
           context.roundRect(-11, -8, 22, 15, 4);
@@ -282,6 +322,7 @@ const sitePath = (href: string) => `${base}${href}`;
           [-6, 0, 6].forEach((x) => {
             context.beginPath();
             context.arc(x, -1, 1.25, 0, Math.PI * 2);
+            context.fillStyle = "rgba(134, 217, 192, 0.96)";
             context.fill();
           });
         } else if (kind === "book") {
@@ -296,7 +337,9 @@ const sitePath = (href: string) => `${base}${href}`;
           context.lineTo(0, 10);
           context.stroke();
         } else if (kind === "document") {
-          context.strokeRect(-8, -11, 16, 22);
+          context.beginPath();
+          context.roundRect(-8, -11, 16, 22, 2.5);
+          context.stroke();
           [-5, 0, 5].forEach((y, index) => {
             context.beginPath();
             context.moveTo(-4, y);
@@ -344,7 +387,7 @@ const sitePath = (href: string) => `${base}${href}`;
           context.strokeStyle = "rgba(167, 234, 211, 0.48)";
           context.lineWidth = 1;
           context.beginPath();
-          context.arc(0, 0, radius + 6, 0, Math.PI * 2);
+          context.roundRect(-radius - 5, -radius - 5, radius * 2 + 10, radius * 2 + 10, Math.max(9, radius * 0.48));
           context.stroke();
         }
         context.restore();
