@@ -243,11 +243,11 @@ const sitePath = (href: string) => `${base}${href}`;
           return;
         }
 
-        context.shadowColor = "rgba(4, 17, 32, 0.28)";
-        context.shadowBlur = emphasis ? 18 : 10;
-        context.fillStyle = emphasis ? "#d9eee6" : "#c8d9df";
-        context.strokeStyle = "#0d253f";
-        context.lineWidth = emphasis ? 1.6 : 1.1;
+        context.shadowColor = "rgba(4, 17, 32, 0.38)";
+        context.shadowBlur = emphasis ? 17 : 10;
+        context.fillStyle = emphasis ? "#123f6d" : "#0d3158";
+        context.strokeStyle = emphasis ? "#a7ead3" : "#79cdb4";
+        context.lineWidth = emphasis ? 1.8 : 1.35;
         context.beginPath();
         context.arc(0, 0, radius, 0, Math.PI * 2);
         context.fill();
@@ -256,8 +256,8 @@ const sitePath = (href: string) => `${base}${href}`;
 
         const scale = radius / 22;
         context.scale(scale, scale);
-        context.strokeStyle = "rgba(8, 27, 47, 0.94)";
-        context.fillStyle = "rgba(8, 27, 47, 0.9)";
+        context.strokeStyle = "rgba(239, 255, 249, 0.95)";
+        context.fillStyle = "rgba(239, 255, 249, 0.94)";
         context.lineWidth = 1.7 / scale;
         context.lineCap = "round";
         context.lineJoin = "round";
@@ -341,7 +341,7 @@ const sitePath = (href: string) => `${base}${href}`;
 
         if (emphasis) {
           context.scale(1 / scale, 1 / scale);
-          context.strokeStyle = "rgba(221, 239, 246, 0.42)";
+          context.strokeStyle = "rgba(167, 234, 211, 0.48)";
           context.lineWidth = 1;
           context.beginPath();
           context.arc(0, 0, radius + 6, 0, Math.PI * 2);
