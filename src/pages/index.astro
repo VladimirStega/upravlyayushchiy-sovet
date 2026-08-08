@@ -178,7 +178,7 @@ const sitePath = (href: string) => `${base}${href}`;
             phase: seeded(index * 17 + 6) * Math.PI * 2,
             speed: 0.72 + seeded(index * 19 + 8) * 0.56,
             radius,
-            amplitude: 7 + seeded(index * 23 + 10) * 12,
+            amplitude: 12 + seeded(index * 23 + 10) * 14,
             emphasis: index % 4 === 0,
             kind: kinds[index % kinds.length]
           });
@@ -200,8 +200,8 @@ const sitePath = (href: string) => `${base}${href}`;
       };
 
       const positionsAt = (time: number) => nodes.map((node) => {
-        const driftX = reducedMotion.matches ? 0 : Math.sin(time * 0.000075 * node.speed + node.phase) * node.amplitude;
-        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.000061 * node.speed + node.phase * 1.37) * node.amplitude * 0.72;
+        const driftX = reducedMotion.matches ? 0 : Math.sin(time * 0.00017 * node.speed + node.phase) * node.amplitude;
+        const driftY = reducedMotion.matches ? 0 : Math.cos(time * 0.00013 * node.speed + node.phase * 1.37) * node.amplitude * 0.72;
         return {
           ...node,
           drawX: node.x + driftX,
@@ -215,8 +215,8 @@ const sitePath = (href: string) => `${base}${href}`;
         context.translate(drawX, drawY);
         context.shadowColor = "rgba(4, 17, 32, 0.28)";
         context.shadowBlur = emphasis ? 18 : 10;
-        context.fillStyle = emphasis ? "rgba(221, 239, 246, 0.2)" : "rgba(218, 232, 241, 0.12)";
-        context.strokeStyle = emphasis ? "rgba(8, 25, 43, 0.88)" : "rgba(9, 29, 49, 0.72)";
+        context.fillStyle = emphasis ? "rgba(221, 239, 246, 0.3)" : "rgba(218, 232, 241, 0.19)";
+        context.strokeStyle = emphasis ? "rgba(8, 25, 43, 0.96)" : "rgba(9, 29, 49, 0.86)";
         context.lineWidth = emphasis ? 1.6 : 1.1;
         context.beginPath();
         context.arc(0, 0, radius, 0, Math.PI * 2);
@@ -226,8 +226,8 @@ const sitePath = (href: string) => `${base}${href}`;
 
         const scale = radius / 22;
         context.scale(scale, scale);
-        context.strokeStyle = "rgba(8, 27, 47, 0.82)";
-        context.fillStyle = "rgba(8, 27, 47, 0.78)";
+        context.strokeStyle = "rgba(8, 27, 47, 0.94)";
+        context.fillStyle = "rgba(8, 27, 47, 0.9)";
         context.lineWidth = 1.7 / scale;
         context.lineCap = "round";
         context.lineJoin = "round";
@@ -311,7 +311,7 @@ const sitePath = (href: string) => `${base}${href}`;
 
         if (emphasis) {
           context.scale(1 / scale, 1 / scale);
-          context.strokeStyle = "rgba(221, 239, 246, 0.28)";
+          context.strokeStyle = "rgba(221, 239, 246, 0.42)";
           context.lineWidth = 1;
           context.beginPath();
           context.arc(0, 0, radius + 6, 0, Math.PI * 2);
@@ -324,16 +324,16 @@ const sitePath = (href: string) => `${base}${href}`;
         if (!canvas.isConnected || controller.signal.aborted) return;
         context.clearRect(0, 0, width, height);
         const points = positionsAt(time);
-        const connectionDistance = width < 560 ? 230 : 335;
+        const connectionDistance = width < 560 ? 270 : 390;
 
-        context.lineWidth = 0.75;
+        context.lineWidth = 1;
         for (let i = 0; i < points.length; i += 1) {
           for (let j = i + 1; j < points.length; j += 1) {
             const dx = points[i].drawX - points[j].drawX;
             const dy = points[i].drawY - points[j].drawY;
             const distance = Math.hypot(dx, dy);
             if (distance > connectionDistance) continue;
-            const opacity = 0.035 + (1 - distance / connectionDistance) * 0.19;
+            const opacity = 0.07 + (1 - distance / connectionDistance) * 0.27;
             context.strokeStyle = `rgba(7, 27, 48, ${opacity})`;
             context.beginPath();
             context.moveTo(points[i].drawX, points[i].drawY);

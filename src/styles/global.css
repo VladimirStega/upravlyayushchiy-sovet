@@ -5477,8 +5477,7 @@ select {
   min-height: 740px;
   margin: 0 16px 24px;
   border-radius: 0 0 38px 38px;
-  background:
-    linear-gradient(100deg, rgba(23, 74, 139, 0.62) 0%, rgba(23, 74, 139, 0.38) 52%, rgba(23, 74, 139, 0.14) 100%);
+  background: transparent;
 }
 
 .home-network-page .hero-video-visual::after {
@@ -5501,7 +5500,7 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 38px;
   background:
-    linear-gradient(115deg, rgba(7, 33, 65, 0.9), rgba(12, 50, 94, 0.64));
+    linear-gradient(115deg, rgba(9, 39, 76, 0.38), rgba(12, 50, 94, 0.12));
   backdrop-filter: blur(1px);
 }
 
@@ -5510,7 +5509,7 @@ select {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 38px 38px 0 0;
-  background: rgba(10, 45, 88, 0.58);
+  background: rgba(10, 45, 88, 0.2);
   backdrop-filter: blur(1px);
 }
 
