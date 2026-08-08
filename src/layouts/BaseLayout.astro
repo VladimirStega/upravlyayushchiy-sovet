@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
+import CouncilNetwork from "../components/CouncilNetwork.astro";
 
 interface Props {
   title: string;
@@ -38,6 +39,20 @@ const isActive = (href: string) => {
   return path.startsWith(href);
 };
 const activityActive = path.startsWith("/deyatelnost/");
+const isHomeNetwork = pageClass.includes("home-network-page");
+const networkMode = isHomeNetwork
+  ? "home"
+  : path.startsWith("/sostav") || path.startsWith("/o-sovete")
+    ? "people"
+  : path.startsWith("/deyatelnost")
+    ? "process"
+    : path.startsWith("/novosti")
+      ? "news"
+      : path.startsWith("/dokumenty") || path.startsWith("/arhiv") || path.startsWith("/komplektator")
+        ? "documents"
+        : path.startsWith("/video") || path.startsWith("/dostizheniya")
+          ? "media"
+          : "standard";
 ---
 
 <!doctype html>
@@ -51,19 +66,9 @@ const activityActive = path.startsWith("/deyatelnost/");
     <ClientRouter />
     <title>{title}</title>
   </head>
-  <body class={pageClass}>
+  <body class:list={[pageClass, { "network-page": !isHomeNetwork }]}>
     <a class="skip-link" href="#main">Перейти к содержанию</a>
-    <div class="topline">
-      <div class="container topline-inner">
-        <div class="topline-actions">
-          <button class="text-button" id="accessibility-toggle" type="button" aria-expanded="false" aria-controls="accessibility-panel">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/></svg>
-            Версия для слабовидящих
-          </button>
-          <a href="#contacts">Связаться с советом</a>
-        </div>
-      </div>
-    </div>
+    <CouncilNetwork mode={networkMode} />
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href={sitePath("/")} aria-label="На главную">
@@ -91,6 +96,13 @@ const activityActive = path.startsWith("/deyatelnost/");
           {navigation.slice(3).map(([label, href]) => (
             <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
           ))}
+          <div class="nav-utility-actions">
+            <button class="nav-utility-button" id="accessibility-toggle" type="button" aria-expanded="false" aria-controls="accessibility-panel">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/></svg>
+              <span>Для слабовидящих</span>
+            </button>
+            <a class="nav-contact-link" href="#contacts">Связаться</a>
+          </div>
         </nav>
       </div>
     </header>
