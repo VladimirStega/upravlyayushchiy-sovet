@@ -15,7 +15,7 @@ import PageHero from "../components/PageHero.astro";
     <div class="container video-grid">
       <div class="video-placeholder">
         <div class="video-screen">
-          <button type="button" aria-label="Здесь будет презентационный ролик">▶</button>
+          <span class="video-play-placeholder" aria-hidden="true">▶</span>
           <strong>Презентационный ролик Управляющего совета</strong>
           <small>Ссылка на просмотр · 16:9 · до 5 минут · добавить субтитры</small>
         </div>
@@ -43,7 +43,7 @@ import PageHero from "../components/PageHero.astro";
         ].map(([title, description]) => (
           <article class="video-card">
             <div class="video-card-preview"><span>▶</span><strong>Обложка видеоролика</strong><small>Продолжительность: __:__</small></div>
-            <div><time>Указать дату</time><h3>{title}</h3><p>{description}</p><a href="#">Смотреть видео <span>→</span></a></div>
+            <div><time>Указать дату</time><h3>{title}</h3><p>{description}</p><span class="video-link-pending">Ссылка появится после публикации</span></div>
           </article>
         ))}
       </div>

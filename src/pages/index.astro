@@ -28,7 +28,7 @@ const sitePath = (href: string) => `${base}${href}`;
 
       <div class="hero-visual hero-video-visual">
         <div class="photo-placeholder photo-placeholder-main hero-video-main">
-          <button type="button" aria-label="Здесь будет воспроизводиться презентационный ролик">▶</button>
+          <a class="video-play-link" href={sitePath("/video/")} aria-label="Перейти к видеоматериалам">▶</a>
           <strong>Презентационный ролик</strong>
           <small>Видео об Управляющем совете · до 5 минут · 16:9</small>
         </div>

@@ -13,14 +13,14 @@ import PageHero from "../../components/PageHero.astro";
           <h2>Актуальный <em>опрос</em></h2>
         </div>
         <div class="category-filter survey-filters" aria-label="Фильтры опросов">
-          <button type="button" class="active">Все</button>
-          <button type="button">Активные</button>
-          <button type="button">Завершённые</button>
-          <button type="button">Архив</button>
+          <button type="button" class="active" data-survey-filter="all" aria-pressed="true">Все</button>
+          <button type="button" data-survey-filter="active" aria-pressed="false">Активные</button>
+          <button type="button" data-survey-filter="done" aria-pressed="false">Завершённые</button>
+          <button type="button" data-survey-filter="archive" aria-pressed="false">Архив</button>
         </div>
       </div>
 
-      <article class="survey-featured">
+      <article class="survey-featured" data-survey-item="active">
         <div>
           <span class="survey-status active">Идёт сбор ответов</span>
           <h2>Название текущего опроса Управляющего совета</h2>
@@ -30,7 +30,7 @@ import PageHero from "../../components/PageHero.astro";
             <div><dt>Срок проведения</dt><dd>Указать даты</dd></div>
             <div><dt>Заполнение</dt><dd>Примерно 5 минут</dd></div>
           </dl>
-          <a class="button button-primary" href="#">Принять участие</a>
+          <span class="button button-primary button-disabled" aria-disabled="true">Опрос пока не опубликован</span>
         </div>
         <div class="survey-featured-visual">
           <strong>Вопросы опроса</strong>
@@ -53,7 +53,7 @@ import PageHero from "../../components/PageHero.astro";
           ["Выбор направлений внеурочной деятельности", "___ участников", "Определены наиболее востребованные направления.", "План работы скорректирован по результатам опроса.", "Добавить перечень запущенных направлений."],
           ["Безопасность и комфорт", "___ участников", "Собраны замечания и предложения школьного сообщества.", "Утверждён перечень первоочередных мер.", "Добавить статус выполнения и фотографии."]
         ].map(([title, participants, conclusion, decision, result]) => (
-          <article class="survey-result-card">
+          <article class="survey-result-card" data-survey-item="done">
             <header><span class="survey-status done">Опрос завершён</span><time>Указать дату</time></header>
             <h3>{title}</h3>
             <p class="survey-participants">{participants}</p>
@@ -63,10 +63,11 @@ import PageHero from "../../components/PageHero.astro";
               <div><dt>Решение совета</dt><dd>{decision}</dd></div>
               <div><dt>Результат</dt><dd>{result}</dd></div>
             </dl>
-            <a class="text-link" href="#">Посмотреть результаты <span>→</span></a>
+            <span class="text-link text-link-disabled">Результаты будут добавлены после получения материалов</span>
           </article>
         ))}
       </div>
+      <p class="survey-empty" data-survey-empty hidden>В этой категории пока нет опубликованных материалов.</p>
     </div>
   </section>
 
@@ -84,4 +85,33 @@ import PageHero from "../../components/PageHero.astro";
       </div>
     </div>
   </section>
+
+  <script>
+    const setupSurveyFilters = () => {
+      const buttons = document.querySelectorAll("[data-survey-filter]");
+      const items = document.querySelectorAll("[data-survey-item]");
+      const empty = document.querySelector("[data-survey-empty]");
+      buttons.forEach((button) => {
+        if (!(button instanceof HTMLElement) || button.dataset.bound) return;
+        button.dataset.bound = "true";
+        button.addEventListener("click", () => {
+          const filter = button.getAttribute("data-survey-filter") || "all";
+          let visibleCount = 0;
+          buttons.forEach((item) => {
+            const selected = item === button;
+            item.classList.toggle("active", selected);
+            item.setAttribute("aria-pressed", String(selected));
+          });
+          items.forEach((item) => {
+            const visible = filter === "all" || item.getAttribute("data-survey-item") === filter;
+            item.toggleAttribute("hidden", !visible);
+            if (visible) visibleCount += 1;
+          });
+          if (empty instanceof HTMLElement) empty.hidden = visibleCount !== 0;
+        });
+      });
+    };
+    document.addEventListener("astro:page-load", setupSurveyFilters);
+    setupSurveyFilters();
+  </script>
 </BaseLayout>
