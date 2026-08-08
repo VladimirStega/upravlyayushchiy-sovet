@@ -7,5 +7,6 @@ src/generated/
 next-env.d.ts
 public/_astro/
 public/site.css
+tmp/
 .DS_Store
 *.log

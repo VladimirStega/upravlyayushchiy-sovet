@@ -44,7 +44,7 @@ const activityActive = path.startsWith("/deyatelnost/");
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#174a8b" />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
@@ -148,87 +148,122 @@ const activityActive = path.startsWith("/deyatelnost/");
         document.addEventListener("astro:page-load", () => window.scrollTo(0, 0));
       }
 
-      const toggle = document.querySelector("#menu-toggle");
-      const nav = document.querySelector("#main-nav");
-      toggle?.addEventListener("click", () => {
-        const open = toggle.getAttribute("aria-expanded") === "true";
-        toggle.setAttribute("aria-expanded", String(!open));
-        nav?.classList.toggle("open", !open);
-      });
-
-      nav?.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          toggle?.setAttribute("aria-expanded", "false");
-          nav.classList.remove("open");
-        });
-      });
-
-      const accessibilityToggle = document.querySelector("#accessibility-toggle");
-      const accessibilityPanel = document.querySelector("#accessibility-panel");
-      const contrastInput = document.querySelector("#accessibility-contrast");
-      const spacingInput = document.querySelector("#accessibility-spacing");
-      const imagesInput = document.querySelector("#accessibility-images");
-      const resetButton = document.querySelector("#accessibility-reset");
-      const fontButtons = document.querySelectorAll("[data-font]");
       const storageKey = "governing-council-accessibility";
-
       const defaultSettings = { font: "normal", contrast: false, spacing: false, images: false };
-      let settings = { ...defaultSettings };
 
-      try {
-        settings = { ...settings, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
-      } catch {
-        settings = { ...defaultSettings };
-      }
-
-      const applyAccessibility = () => {
-        const root = document.documentElement;
-        root.classList.toggle("a11y-on", settings.font !== "normal" || settings.contrast || settings.spacing || settings.images);
-        root.classList.toggle("a11y-font-large", settings.font === "large");
-        root.classList.toggle("a11y-font-extra", settings.font === "extra");
-        root.classList.toggle("a11y-contrast", settings.contrast);
-        root.classList.toggle("a11y-spacing", settings.spacing);
-        root.classList.toggle("a11y-images-hidden", settings.images);
-
-        if (contrastInput instanceof HTMLInputElement) contrastInput.checked = settings.contrast;
-        if (spacingInput instanceof HTMLInputElement) spacingInput.checked = settings.spacing;
-        if (imagesInput instanceof HTMLInputElement) imagesInput.checked = settings.images;
-        fontButtons.forEach((button) => {
-          button.classList.toggle("is-selected", button.getAttribute("data-font") === settings.font);
-          button.setAttribute("aria-pressed", String(button.getAttribute("data-font") === settings.font));
-        });
-        localStorage.setItem(storageKey, JSON.stringify(settings));
+      const closeMobileMenu = () => {
+        const toggle = document.querySelector("#menu-toggle");
+        const nav = document.querySelector("#main-nav");
+        toggle?.setAttribute("aria-expanded", "false");
+        nav?.classList.remove("open");
+        document.body.classList.remove("menu-open");
       };
 
-      applyAccessibility();
+      const initializeLayout = () => {
+        const toggle = document.querySelector("#menu-toggle");
+        const nav = document.querySelector("#main-nav");
 
-      accessibilityToggle?.addEventListener("click", () => {
-        if (!(accessibilityPanel instanceof HTMLElement)) return;
-        const opening = accessibilityPanel.hidden;
-        accessibilityPanel.hidden = !opening;
-        accessibilityToggle.setAttribute("aria-expanded", String(opening));
-      });
+        if (toggle instanceof HTMLElement && nav instanceof HTMLElement && !toggle.dataset.bound) {
+          toggle.dataset.bound = "true";
+          toggle.addEventListener("click", () => {
+            const opening = toggle.getAttribute("aria-expanded") !== "true";
+            toggle.setAttribute("aria-expanded", String(opening));
+            nav.classList.toggle("open", opening);
+            document.body.classList.toggle("menu-open", opening);
+          });
 
-      fontButtons.forEach((button) => button.addEventListener("click", () => {
-        settings.font = button.getAttribute("data-font") || "normal";
+          nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMobileMenu));
+        }
+
+        const accessibilityToggle = document.querySelector("#accessibility-toggle");
+        const accessibilityPanel = document.querySelector("#accessibility-panel");
+        const contrastInput = document.querySelector("#accessibility-contrast");
+        const spacingInput = document.querySelector("#accessibility-spacing");
+        const imagesInput = document.querySelector("#accessibility-images");
+        const resetButton = document.querySelector("#accessibility-reset");
+        const fontButtons = document.querySelectorAll("[data-font]");
+        let settings = { ...defaultSettings };
+
+        try {
+          settings = { ...settings, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+        } catch {
+          settings = { ...defaultSettings };
+        }
+
+        const applyAccessibility = () => {
+          const root = document.documentElement;
+          root.classList.toggle("a11y-on", settings.font !== "normal" || settings.contrast || settings.spacing || settings.images);
+          root.classList.toggle("a11y-font-large", settings.font === "large");
+          root.classList.toggle("a11y-font-extra", settings.font === "extra");
+          root.classList.toggle("a11y-contrast", settings.contrast);
+          root.classList.toggle("a11y-spacing", settings.spacing);
+          root.classList.toggle("a11y-images-hidden", settings.images);
+
+          if (contrastInput instanceof HTMLInputElement) contrastInput.checked = settings.contrast;
+          if (spacingInput instanceof HTMLInputElement) spacingInput.checked = settings.spacing;
+          if (imagesInput instanceof HTMLInputElement) imagesInput.checked = settings.images;
+          fontButtons.forEach((button) => {
+            button.classList.toggle("is-selected", button.getAttribute("data-font") === settings.font);
+            button.setAttribute("aria-pressed", String(button.getAttribute("data-font") === settings.font));
+          });
+          localStorage.setItem(storageKey, JSON.stringify(settings));
+        };
+
         applyAccessibility();
-      }));
-      contrastInput?.addEventListener("change", () => {
-        settings.contrast = contrastInput instanceof HTMLInputElement && contrastInput.checked;
-        applyAccessibility();
-      });
-      spacingInput?.addEventListener("change", () => {
-        settings.spacing = spacingInput instanceof HTMLInputElement && spacingInput.checked;
-        applyAccessibility();
-      });
-      imagesInput?.addEventListener("change", () => {
-        settings.images = imagesInput instanceof HTMLInputElement && imagesInput.checked;
-        applyAccessibility();
-      });
-      resetButton?.addEventListener("click", () => {
-        settings = { ...defaultSettings };
-        applyAccessibility();
-      });
+
+        if (accessibilityToggle instanceof HTMLElement && accessibilityPanel instanceof HTMLElement && !accessibilityToggle.dataset.bound) {
+          accessibilityToggle.dataset.bound = "true";
+          accessibilityToggle.addEventListener("click", () => {
+            const opening = accessibilityPanel.hidden;
+            accessibilityPanel.hidden = !opening;
+            accessibilityToggle.setAttribute("aria-expanded", String(opening));
+          });
+        }
+
+        fontButtons.forEach((button) => {
+          if (!(button instanceof HTMLElement) || button.dataset.bound) return;
+          button.dataset.bound = "true";
+          button.addEventListener("click", () => {
+            settings.font = button.getAttribute("data-font") || "normal";
+            applyAccessibility();
+          });
+        });
+
+        if (contrastInput instanceof HTMLInputElement && !contrastInput.dataset.bound) {
+          contrastInput.dataset.bound = "true";
+          contrastInput.addEventListener("change", () => { settings.contrast = contrastInput.checked; applyAccessibility(); });
+        }
+        if (spacingInput instanceof HTMLInputElement && !spacingInput.dataset.bound) {
+          spacingInput.dataset.bound = "true";
+          spacingInput.addEventListener("change", () => { settings.spacing = spacingInput.checked; applyAccessibility(); });
+        }
+        if (imagesInput instanceof HTMLInputElement && !imagesInput.dataset.bound) {
+          imagesInput.dataset.bound = "true";
+          imagesInput.addEventListener("change", () => { settings.images = imagesInput.checked; applyAccessibility(); });
+        }
+        if (resetButton instanceof HTMLElement && !resetButton.dataset.bound) {
+          resetButton.dataset.bound = "true";
+          resetButton.addEventListener("click", () => { settings = { ...defaultSettings }; applyAccessibility(); });
+        }
+      };
+
+      if (!document.documentElement.dataset.layoutEvents) {
+        document.documentElement.dataset.layoutEvents = "true";
+        document.addEventListener("astro:page-load", initializeLayout);
+        document.addEventListener("keydown", (event) => {
+          if (event.key !== "Escape") return;
+          closeMobileMenu();
+          const panel = document.querySelector("#accessibility-panel");
+          const panelToggle = document.querySelector("#accessibility-toggle");
+          if (panel instanceof HTMLElement) panel.hidden = true;
+          panelToggle?.setAttribute("aria-expanded", "false");
+        });
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 820) closeMobileMenu();
+        }, { passive: true });
+      }
+
+      initializeLayout();
     </script>
   </body>
 </html>
