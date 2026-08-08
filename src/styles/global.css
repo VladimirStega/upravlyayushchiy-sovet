@@ -5476,8 +5476,12 @@ select {
 .home-network-page .hero {
   min-height: 740px;
   margin: 0 16px 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 0 0 38px 38px;
-  background: transparent;
+  background: rgba(9, 39, 76, 0.66);
+  box-shadow: 0 28px 80px rgba(7, 27, 48, 0.18);
+  backdrop-filter: blur(7px);
 }
 
 .home-network-page .hero-video-visual::after {
@@ -5497,20 +5501,22 @@ select {
 .home-network-page .decisions-section {
   margin: 24px 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 38px;
   background:
-    linear-gradient(115deg, rgba(9, 39, 76, 0.38), rgba(12, 50, 94, 0.12));
-  backdrop-filter: blur(1px);
+    linear-gradient(115deg, rgba(8, 35, 69, 0.69), rgba(12, 50, 94, 0.58));
+  box-shadow: 0 28px 80px rgba(7, 27, 48, 0.18);
+  backdrop-filter: blur(7px);
 }
 
 .home-network-page .cta-section {
   margin: 24px 16px 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 38px 38px 0 0;
-  background: rgba(10, 45, 88, 0.2);
-  backdrop-filter: blur(1px);
+  background: rgba(9, 39, 76, 0.68);
+  box-shadow: 0 28px 80px rgba(7, 27, 48, 0.18);
+  backdrop-filter: blur(7px);
 }
 
 .home-network-page .photo-placeholder-main {
