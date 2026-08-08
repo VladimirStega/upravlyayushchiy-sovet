@@ -369,9 +369,11 @@ const sitePath = (href: string) => `${base}${href}`;
             const visibility = primary ? 0.68 + pulse * 0.32 : smoothstep(0.25, 0.72, pulse);
             const opacity = (primary ? 0.18 : 0.085) + (1 - distance / connectionDistance) * (primary ? 0.32 : 0.18);
             const connectionAlpha = Math.min(points[i].alpha, points[j].alpha);
-            const signalSpeed = 0.00012;
+            const signalSpeed = 0.00013;
             const signalOffset = ((points[i].id * 13 + points[j].id * 17) % 97) / 97;
-            const signalCycle = (time * signalSpeed + signalOffset) % 1;
+            const signalClock = time * signalSpeed + signalOffset;
+            const signalCycle = signalClock % 1;
+            const signalGeneration = Math.floor(signalClock);
             const signalStartTime = time - signalCycle / signalSpeed;
             const startLifecycleA = ((signalStartTime * points[i].lifeSpeed + points[i].lifeOffset) % 1 + 1) % 1;
             const startLifecycleB = ((signalStartTime * points[j].lifeSpeed + points[j].lifeOffset) % 1 + 1) % 1;
@@ -381,13 +383,14 @@ const sitePath = (href: string) => `${base}${href}`;
             const startY1 = points[i].worldY - window.scrollY + Math.cos(signalStartTime * 0.00012 * points[i].speed + points[i].phase * 1.37) * points[i].amplitude * 0.62;
             const startY2 = points[j].worldY - window.scrollY + Math.cos(signalStartTime * 0.00012 * points[j].speed + points[j].phase * 1.37) * points[j].amplitude * 0.62;
             const startDistance = Math.hypot(startX1 - startX2, startY1 - startY2);
-            const stableSignal = primary
-              && (points[i].id * 5 + points[j].id * 3) % 9 === 0
-              && startDistance < connectionDistance * 0.86
-              && startX1 > 150
-              && startX1 < width - 150
-              && startX2 > 150
-              && startX2 < width - 150
+            const edgeMargin = width < 560 ? 34 : 120;
+            const signalModulo = width < 560 ? 5 : 7;
+            const stableSignal = (points[i].id * 5 + points[j].id * 3 + signalGeneration * 2) % signalModulo === 0
+              && startDistance < connectionDistance * 0.92
+              && startX1 > edgeMargin
+              && startX1 < width - edgeMargin
+              && startX2 > edgeMargin
+              && startX2 < width - edgeMargin
               && startLifecycleA > 0.14
               && startLifecycleA < 0.68
               && startLifecycleB > 0.14
@@ -403,15 +406,15 @@ const sitePath = (href: string) => `${base}${href}`;
             context.stroke();
 
             if (carriesSignal) {
-              const growthEnd = 0.24;
-              const arrivalStart = 0.48;
+              const growthEnd = 0.26;
+              const arrivalStart = 0.38;
               const growth = Math.max(0, Math.min(1, signalCycle / growthEnd));
               const rush = Math.max(0, Math.min(1, (signalCycle - growthEnd) / (arrivalStart - growthEnd)));
               const progress = signalCycle <= growthEnd
-                ? 0.18 * (0.35 * growth + 0.65 * growth * growth)
-                : 0.18 + 0.82 * (0.55 * rush + 0.45 * rush * rush);
+                ? 0.2 * (0.35 * growth + 0.65 * growth * growth)
+                : 0.2 + 0.8 * (0.22 * rush + 0.78 * rush * rush * rush);
               const size = 0.16 + smoothstep(0, 1, growth) * 0.84;
-              const trailLength = 0.014 + size * 0.09;
+              const trailLength = 0.014 + size * 0.085 + rush * 0.105;
               const tailProgress = Math.max(0, progress - trailLength);
               const startX = points[i].drawX;
               const startY = points[i].drawY;
@@ -438,17 +441,23 @@ const sitePath = (href: string) => `${base}${href}`;
               context.stroke();
 
               context.strokeStyle = signalGradient;
-              context.lineWidth = 1.2 + size * 3.3;
+              context.lineWidth = 1.2 + size * 3.8;
               context.lineCap = "round";
               context.shadowColor = `rgba(174, 235, 214, ${signalAlpha * 0.9})`;
-              context.shadowBlur = 7 + size * 11;
+              context.shadowBlur = 8 + size * 15;
               context.beginPath();
               context.moveTo(tailX, tailY);
               context.lineTo(headX, headY);
               context.stroke();
+
+              context.fillStyle = `rgba(246, 255, 252, ${signalAlpha * (0.5 + rush * 0.5)})`;
+              context.shadowBlur = 12 + rush * 12;
+              context.beginPath();
+              context.arc(headX, headY, 0.8 + size * 1.45, 0, Math.PI * 2);
+              context.fill();
               context.restore();
 
-              const sourceCharge = smoothstep(0, 1, growth) * (1 - smoothstep(0.24, 0.38, signalCycle));
+              const sourceCharge = smoothstep(0, 1, growth) * (1 - smoothstep(0.26, 0.38, signalCycle));
               if (sourceCharge > 0.01) {
                 sourceGlows.push({
                   x: startX,
@@ -458,8 +467,8 @@ const sitePath = (href: string) => `${base}${href}`;
                 });
               }
 
-              if (signalCycle > 0.44) {
-                const arrival = smoothstep(0.44, 0.51, signalCycle) * (1 - smoothstep(0.66, 0.74, signalCycle));
+              if (signalCycle > 0.34) {
+                const arrival = smoothstep(0.34, 0.4, signalCycle) * (1 - smoothstep(0.64, 0.74, signalCycle));
                 endpointGlows.push({
                   x: endX,
                   y: endY,
