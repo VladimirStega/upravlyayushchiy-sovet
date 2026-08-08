@@ -68,7 +68,6 @@ const networkMode = isHomeNetwork
   </head>
   <body class:list={[pageClass, { "network-page": !isHomeNetwork }]}>
     <a class="skip-link" href="#main">Перейти к содержанию</a>
-    <CouncilNetwork mode={networkMode} />
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href={sitePath("/")} aria-label="На главную">
@@ -123,6 +122,7 @@ const networkMode = isHomeNetwork
       </div>
     </aside>
     <main id="main">
+      <CouncilNetwork mode={networkMode} />
       <slot />
     </main>
     <footer id="contacts" class="site-footer">
