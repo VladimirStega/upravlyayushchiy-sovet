@@ -1,22 +1,54 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const achievements = [
+  {
+    image: `${base}/images/achievements/bezopasnost-truda-2024.jpg`,
+    year: "2024",
+    title: "II место в форум-театре по охране труда",
+    description: "МБОУ СОШ № 47 заняла II место в форум-театре по охране труда «Проверка на внимательность».",
+    recipient: "Награждена МБОУ СОШ № 47"
+  },
+  {
+    image: `${base}/images/achievements/komanda-ohrana-truda-2023.jpeg`,
+    year: "2023",
+    title: "III место в викторине по охране труда",
+    description: "Команда «Эксперты» заняла III место в викторине «Охрана труда: от школы до производства».",
+    recipient: "Награждена команда МБОУ СОШ № 47"
+  },
+  {
+    image: `${base}/images/achievements/roditelskiy-patrul-2023.jpeg`,
+    year: "2023",
+    title: "I место в конкурсе «Родительский патруль»",
+    description: "МБОУ СОШ № 47 заняла I место на муниципальном этапе областного конкурса в номинации «Организация работы “Родительского патруля” в образовательных организациях муниципального образования».",
+    recipient: "Награждена МБОУ СОШ № 47"
+  },
+  {
+    image: `${base}/images/achievements/chistyy-lipetsk-2023.jpeg`,
+    year: "2023",
+    title: "Диплом III степени «Чистый Липецк»",
+    description: "Школа получила диплом III степени за победу в осеннем марафоне «Чистый Липецк: эстафета созидания».",
+    recipient: "Награждена МБОУ СОШ № 47"
+  }
+];
 ---
 
 <BaseLayout title="Достижения и медиа — Управляющий совет" current="Достижения и медиа">
-  <PageHero eyebrow="Подтверждённые результаты" title="Достижения" accent="и медиа" description="Награды, благодарности, выступления, публикации в СМИ, повышение квалификации и стажировки членов совета." />
+  <PageHero eyebrow="Результаты совместной работы" title="Достижения" accent="школьного сообщества" description="Награды школы и команд в направлениях, связанных с безопасностью, участием родителей и развитием городской среды." />
   <section class="section content-section">
-    <div class="container content-grid">
-      <article class="content-card"><PhotoPlaceholder title="Скан диплома или фотография награды" /><h3>Награды Управляющего совета</h3><p>Добавить дипломы, грамоты, кубки и краткое описание достижения.</p></article>
-      <article class="content-card"><PhotoPlaceholder title="Скан благодарственного письма" /><h3>Благодарности</h3><p>Добавить письма от органов власти, общественных и коммерческих организаций.</p></article>
-      <article class="content-card"><PhotoPlaceholder title="Обложка или скриншот публикации" /><h3>Публикации и выступления</h3><p>Добавить ссылки на федеральные, региональные и муниципальные материалы.</p></article>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container content-grid two-columns">
-      <article class="content-card dark"><span class="content-card-number">Повышение квалификации</span><h2>Документы членов совета</h2><p>Разместить разрешённые к публикации подтверждения за последние три года и показать долю обученных участников.</p></article>
-      <article class="content-card accent"><span class="content-card-number">Стажировки НАВУСОО</span><h2>Федеральные стажировочные площадки</h2><p>Добавить документы о прохождении стажировок и краткие итоги полученного опыта.</p></article>
+    <div class="container">
+      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Дипломы и грамоты</p><h2>Наши <em>достижения</em></h2></div><p>В каждой карточке указан фактический получатель награды.</p></div>
+      <div class="achievement-grid">
+        {achievements.map((item) => (
+          <article class="achievement-card">
+            <a class="achievement-image" href={item.image} target="_blank" rel="noopener" aria-label={`Открыть награду: ${item.title}`}><img src={item.image} alt={item.title} loading="lazy" /></a>
+            <div><span>{item.year}</span><h3>{item.title}</h3><p>{item.description}</p><small>{item.recipient}</small></div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>

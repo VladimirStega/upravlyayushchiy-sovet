@@ -1,41 +1,45 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const surveyMetrics = [
+  ["Доброжелательность и вежливость", 90],
+  ["Компетентность работников", 94],
+  ["Удовлетворённость услугами", 90],
+  ["Готовность рекомендовать школу", 88],
+  ["Организация воспитательной работы", 99]
+];
 ---
 
 <BaseLayout title="Опросы и решения — Управляющий совет" current="Деятельность">
-  <PageHero eyebrow="Мнение сообщества" title="Опросы и" accent="принятые решения" description="Здесь будут публиковаться анкеты, обезличенные результаты, аналитика и решения, которые совет принял на их основе." />
+  <PageHero eyebrow="Мнение сообщества" title="Опросы и" accent="результаты" description="Обезличенные результаты исследований, которые помогают совету учитывать мнение учеников и родителей." />
   <section class="section content-section">
     <div class="container">
       <div class="survey-toolbar">
         <div>
-          <p class="eyebrow eyebrow-dark"><span></span> Сейчас проводится</p>
-          <h2>Актуальный <em>опрос</em></h2>
-        </div>
-        <div class="category-filter survey-filters" aria-label="Фильтры опросов">
-          <button type="button" class="active" data-survey-filter="all" aria-pressed="true">Все</button>
-          <button type="button" data-survey-filter="active" aria-pressed="false">Активные</button>
-          <button type="button" data-survey-filter="done" aria-pressed="false">Завершённые</button>
-          <button type="button" data-survey-filter="archive" aria-pressed="false">Архив</button>
+          <p class="eyebrow eyebrow-dark"><span></span> Актуальная информация</p>
+          <h2>Опросы <em>Управляющего совета</em></h2>
         </div>
       </div>
 
-      <article class="survey-featured" data-survey-item="active">
+      <article class="survey-featured">
         <div>
-          <span class="survey-status active">Идёт сбор ответов</span>
-          <h2>Название текущего опроса Управляющего совета</h2>
-          <p>Здесь будет кратко сформулирована цель опроса и объяснено, на какое решение смогут повлиять ответы участников.</p>
+          <span class="survey-status done">Сбор ответов завершён</span>
+          <h2>Удовлетворённость качеством условий образовательной деятельности</h2>
+          <p>Анонимный опрос обучающихся и родителей проведён Управляющим советом в апреле 2026 года.</p>
           <dl class="survey-meta">
-            <div><dt>Аудитория</dt><dd>Родители, обучающиеся и работники</dd></div>
-            <div><dt>Срок проведения</dt><dd>Указать даты</dd></div>
-            <div><dt>Заполнение</dt><dd>Примерно 5 минут</dd></div>
+            <div><dt>Обучающиеся</dt><dd>13% учеников 4–11 классов</dd></div>
+            <div><dt>Родители</dt><dd>14% родителей 2–11 классов</dd></div>
+            <div><dt>Формат</dt><dd>Анонимное анкетирование</dd></div>
           </dl>
-          <span class="button button-primary button-disabled" aria-disabled="true">Опрос пока не опубликован</span>
         </div>
         <div class="survey-featured-visual">
-          <strong>Вопросы опроса</strong>
-          <span></span><span></span><span></span><span></span>
-          <small>Здесь будет ссылка на анкету со свободным доступом</small>
+          <strong>Главный результат</strong>
+          <b>99%</b>
+          <p>положительно оценили организацию воспитательной работы</p>
+          <small>Результаты представлены в обезличенном виде</small>
         </div>
       </article>
     </div>
@@ -44,30 +48,20 @@ import PageHero from "../../components/PageHero.astro";
   <section class="section survey-results-section">
     <div class="container">
       <div class="page-section-heading">
-        <div><p class="eyebrow eyebrow-dark"><span></span> Завершённые исследования</p><h2>Результаты и <em>решения</em></h2></div>
-        <p>Каждая публикация связывает данные опроса с конкретным решением совета и итогом его исполнения.</p>
+        <div><p class="eyebrow eyebrow-dark"><span></span> Апрель 2026</p><h2>Основные <em>показатели</em></h2></div>
+        <p>Доля положительных оценок по ключевым направлениям работы образовательной организации.</p>
       </div>
-      <div class="survey-results-grid">
-        {[
-          ["Организация школьного пространства", "___ участников", "Большинство участников поддержало предложенное изменение.", "Принято решение с указанием номера протокола.", "Добавить подтверждённый результат исполнения."],
-          ["Выбор направлений внеурочной деятельности", "___ участников", "Определены наиболее востребованные направления.", "План работы скорректирован по результатам опроса.", "Добавить перечень запущенных направлений."],
-          ["Безопасность и комфорт", "___ участников", "Собраны замечания и предложения школьного сообщества.", "Утверждён перечень первоочередных мер.", "Добавить статус выполнения и фотографии."]
-        ].map(([title, participants, conclusion, decision, result]) => (
-          <article class="survey-result-card" data-survey-item="done">
-            <header><span class="survey-status done">Опрос завершён</span><time>Указать дату</time></header>
-            <h3>{title}</h3>
-            <p class="survey-participants">{participants}</p>
-            <div class="survey-chart" aria-label="Заглушка диаграммы результатов"><i style="width: 74%"></i><i style="width: 52%"></i><i style="width: 31%"></i></div>
-            <dl>
-              <div><dt>Основной вывод</dt><dd>{conclusion}</dd></div>
-              <div><dt>Решение совета</dt><dd>{decision}</dd></div>
-              <div><dt>Результат</dt><dd>{result}</dd></div>
-            </dl>
-            <span class="text-link text-link-disabled">Результаты будут добавлены после получения материалов</span>
+      <div class="survey-metrics-grid">
+        {surveyMetrics.map(([label, value]) => (
+          <article class="survey-metric-card">
+            <strong>{value}%</strong>
+            <h3>{label}</h3>
+            <div class="survey-metric-bar" aria-label={`${value}% положительных оценок`}><i style={`width: ${value}%`}></i></div>
           </article>
         ))}
       </div>
-      <p class="survey-empty" data-survey-empty hidden>В этой категории пока нет опубликованных материалов.</p>
+      <article class="survey-conclusion"><span>Вывод</span><p>Результаты показывают высокий уровень положительной оценки условий образовательной деятельности. Материалы опроса использованы Управляющим советом при подведении итогов работы за учебный год.</p></article>
+      <a class="button button-primary survey-download" href={`${base}/documents/rezultaty-oprosa-us-2026.pdf`} target="_blank" rel="noopener">Открыть полные результаты опроса →</a>
     </div>
   </section>
 
@@ -86,32 +80,4 @@ import PageHero from "../../components/PageHero.astro";
     </div>
   </section>
 
-  <script>
-    const setupSurveyFilters = () => {
-      const buttons = document.querySelectorAll("[data-survey-filter]");
-      const items = document.querySelectorAll("[data-survey-item]");
-      const empty = document.querySelector("[data-survey-empty]");
-      buttons.forEach((button) => {
-        if (!(button instanceof HTMLElement) || button.dataset.bound) return;
-        button.dataset.bound = "true";
-        button.addEventListener("click", () => {
-          const filter = button.getAttribute("data-survey-filter") || "all";
-          let visibleCount = 0;
-          buttons.forEach((item) => {
-            const selected = item === button;
-            item.classList.toggle("active", selected);
-            item.setAttribute("aria-pressed", String(selected));
-          });
-          items.forEach((item) => {
-            const visible = filter === "all" || item.getAttribute("data-survey-item") === filter;
-            item.toggleAttribute("hidden", !visible);
-            if (visible) visibleCount += 1;
-          });
-          if (empty instanceof HTMLElement) empty.hidden = visibleCount !== 0;
-        });
-      });
-    };
-    document.addEventListener("astro:page-load", setupSurveyFilters);
-    setupSurveyFilters();
-  </script>
 </BaseLayout>

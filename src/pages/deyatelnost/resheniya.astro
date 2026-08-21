@@ -1,26 +1,32 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <BaseLayout title="Решения и заседания — Управляющий совет" current="Деятельность">
-  <PageHero eyebrow="Контроль исполнения" title="Решения и" accent="заседания" description="Календарь заседаний, повестки, протоколы и публичный реестр исполнения решений Управляющего совета." />
+  <PageHero eyebrow="Работа совета" title="Решения и" accent="заседания" description="Основные вопросы, рассмотренные Управляющим советом в течение 2025–2026 учебного года." />
   <section class="section content-section">
     <div class="container">
-      <div class="page-section-heading"><h2>Ближайшие <em>заседания</em></h2><p>Добавить утверждённый календарь, темы и порядок направления предложений в повестку.</p></div>
+      <div class="page-section-heading"><h2>Заседания <em>2025–2026</em></h2><p>За учебный год состоялось пять заседаний Управляющего совета.</p></div>
       <div class="directory-list">
-        <div class="directory-row"><time>Указать дату</time><strong>Тема ближайшего заседания Управляющего совета</strong><small>Добавить повестку</small><span class="status-pill active"><i></i>Запланировано</span></div>
-        <div class="directory-row"><time>Указать дату</time><strong>Тема следующего заседания Управляющего совета</strong><small>Добавить повестку</small><span class="status-pill waiting"><i></i>Проект</span></div>
+        <div class="directory-row"><time>28 августа 2025</time><strong>Организация работы совета и подготовка школы к учебному году</strong><a href={`${base}/documents/protokol-us-1-2025-08-28.pdf`} target="_blank" rel="noopener">Протокол № 1 →</a><span class="status-pill done"><i></i>Проведено</span></div>
+        <div class="directory-row"><time>22 октября 2025</time><strong>Условия обучения, безопасность и реализация школьных инициатив</strong><a href={`${base}/documents/protokol-us-2-2025-10-22.pdf`} target="_blank" rel="noopener">Протокол № 2 →</a><span class="status-pill done"><i></i>Проведено</span></div>
+        <div class="directory-row"><time>24 декабря 2025</time><strong>Итоги первой половины учебного года и текущие вопросы</strong><a href={`${base}/documents/protokol-us-3-2025-12-24.pdf`} target="_blank" rel="noopener">Протокол № 3 →</a><span class="status-pill done"><i></i>Проведено</span></div>
+        <div class="directory-row"><time>26 марта 2026</time><strong>Организация образовательной среды и планирование работы</strong><a href={`${base}/documents/protokol-us-4-2026-03-26.pdf`} target="_blank" rel="noopener">Протокол № 4 →</a><span class="status-pill done"><i></i>Проведено</span></div>
+        <div class="directory-row"><time>20 мая 2026</time><strong>Итоги учебного года и задачи на следующий период</strong><a href={`${base}/documents/protokol-us-5-2026-05-20.pdf`} target="_blank" rel="noopener">Протокол № 5 →</a><span class="status-pill done"><i></i>Проведено</span></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
-      <div class="page-section-heading"><h2>Реестр <em>решений</em></h2><p>Каждая запись будет связана с протоколом, ответственным и подтверждённым результатом.</p></div>
-      <div class="directory-list">
-        <div class="directory-row"><time>№ __ · дата</time><strong>Название принятого решения</strong><small>Ответственный: указать</small><span class="status-pill active"><i></i>В работе</span></div>
-        <div class="directory-row"><time>№ __ · дата</time><strong>Название выполненного решения</strong><small>Результат: добавить</small><span class="status-pill done"><i></i>Выполнено</span></div>
-        <div class="directory-row"><time>№ __ · дата</time><strong>Название решения на контроле</strong><small>Срок: указать</small><span class="status-pill waiting"><i></i>Принято</span></div>
+      <div class="page-section-heading"><h2>Основные <em>направления решений</em></h2><p>Вопросы, которые совет рассматривал и сопровождал в течение года.</p></div>
+      <div class="decision-topic-grid">
+        <article><span>Образование</span><h3>Качество и условия обучения</h3><p>Рассмотрение организации образовательного процесса, внеурочной деятельности и дополнительного образования.</p></article>
+        <article><span>Безопасность</span><h3>Охрана труда и здоровье</h3><p>Контроль безопасных условий, организации питания и сохранения здоровья участников образовательного процесса.</p></article>
+        <article><span>Развитие</span><h3>Материально-техническая база</h3><p>Участие в планировании ремонта, развитии школьной среды и использовании имеющихся ресурсов.</p></article>
+        <article><span>Сообщество</span><h3>Поддержка инициатив</h3><p>Обсуждение и сопровождение проектов родителей, обучающихся и педагогов.</p></article>
       </div>
     </div>
   </section>
