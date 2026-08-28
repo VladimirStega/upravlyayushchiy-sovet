@@ -69,12 +69,14 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
 
   <section class="section">
     <div class="container">
-      <div class="page-section-heading"><h2>Как формируется <em>совет</em></h2></div>
-      <div class="content-grid">
-        <article class="content-card"><span class="content-card-number">01</span><h3>Выдвижение кандидатов</h3><p>Добавить описание сроков, категорий и порядка выдвижения.</p></article>
-        <article class="content-card"><span class="content-card-number">02</span><h3>Выборы и назначение</h3><p>Добавить процедуру голосования и утверждения результатов.</p></article>
-        <article class="content-card"><span class="content-card-number">03</span><h3>Начало полномочий</h3><p>Добавить срок полномочий и документ об утверждении состава.</p></article>
+      <div class="page-section-heading">
+        <div><p class="eyebrow eyebrow-dark"><span></span> Представительство</p><h2>Как устроен <em>совет</em></h2></div>
+        <p>Интерактивная схема показывает, кто формирует Управляющий совет и как организована его работа.</p>
       </div>
+      <a class="content-card task-card" href={`${import.meta.env.BASE_URL}sostav/#structure`}>
+        <h3>Открыть состав и структуру →</h3>
+        <p>Посмотреть категории участников, руководство, постоянные комиссии и рабочие группы.</p>
+      </a>
     </div>
   </section>
 </BaseLayout>

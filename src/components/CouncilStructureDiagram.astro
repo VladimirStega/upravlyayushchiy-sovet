@@ -1,0 +1,643 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const formationPaths = [
+  {
+    key: "parents",
+    source: "Прямое тайное голосование среди всех родителей (законных представителей) обучающихся",
+    member: "Представители родителей (законных представителей) обучающихся"
+  },
+  {
+    key: "students",
+    source: "Общее собрание (конференция представителей) обучающихся от 14 лет",
+    member: "Представители обучающихся от 14 лет"
+  },
+  {
+    key: "staff",
+    source: "Общее собрание работников ОО",
+    member: "Представители работников ОО"
+  },
+  {
+    key: "leader",
+    source: null,
+    member: "Руководитель учреждения"
+  },
+  {
+    key: "founder",
+    source: "Учредитель образовательного учреждения",
+    member: "Представитель учредителя"
+  },
+  {
+    key: "community",
+    source: "Представители общественности",
+    member: "Кооптированные члены"
+  }
+];
+
+const structureImageHref = `${base}/images/structure/struktura-upravlyayushchego-soveta.png`;
+const commissionRegulationHref = `${base}/documents/polozhenie-o-komissiyah-us.pdf`;
+---
+
+<section class="section council-structure-section" id="structure" data-council-structure>
+  <div class="container">
+    <div class="page-section-heading council-structure-heading">
+      <div>
+        <p class="eyebrow eyebrow-dark"><span></span> Организация работы</p>
+        <h2>От представительства <em>к общей работе</em></h2>
+      </div>
+      <p>Выберите категорию участника или направление — схема подсветит его место и покажет пояснение.</p>
+    </div>
+
+    <div class="council-structure-diagram" aria-label="Интерактивная схема структуры Управляющего совета">
+      <svg class="council-structure-connectors" aria-hidden="true"></svg>
+
+      <div class="council-formation-grid">
+        {formationPaths.map(({ key, source, member }, index) => (
+          <div class:list={["council-formation-path", { "is-direct": !source }]} data-cs-lane={key}>
+            {source && (
+              <span
+                class:list={["council-source-node", { "is-active": index === 0 }]}
+                data-cs-source={key}
+              >
+                {source}
+              </span>
+            )}
+            {source && <span class="council-mobile-arrow" aria-hidden="true">↓</span>}
+            <button
+              class="council-member-node"
+              type="button"
+              data-cs-member={key}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              {member}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div class="council-core-wrap">
+        <div class="council-core" data-cs-core>
+          <h3>Управляющий совет ОО</h3>
+        </div>
+        <div class="council-focus-copy" aria-live="polite" data-cs-focus>
+          <strong>Представители родителей (законных представителей) обучающихся</strong>
+          <span>Избираются прямым тайным голосованием среди всех родителей (законных представителей) обучающихся.</span>
+        </div>
+      </div>
+
+      <div class="council-branch-grid" aria-label="Ветви структуры Управляющего совета">
+        <button type="button" data-cs-branch="leadership" aria-pressed="true">Организуют деятельность УС</button>
+        <button type="button" data-cs-branch="commissions" aria-pressed="false">Постоянно действующие комиссии (комитеты) УС</button>
+        <button type="button" data-cs-branch="groups" aria-pressed="false">Рабочие группы УС</button>
+      </div>
+
+      <div class="council-branch-detail" aria-live="polite">
+        <h3 data-cs-detail-title>Организуют деятельность УС</h3>
+        <ul data-cs-detail-list>
+          <li>Председатель УС</li>
+          <li>Заместитель председателя УС</li>
+          <li>Секретарь УС</li>
+        </ul>
+        <a data-cs-detail-link href={commissionRegulationHref} target="_blank" rel="noopener" hidden>Открыть Положение о комиссиях →</a>
+      </div>
+    </div>
+
+    <div class="council-structure-downloads">
+      <div>
+        <strong>Полная схема одним файлом</strong>
+        <span>PNG · можно сохранить, открыть отдельно или распечатать</span>
+      </div>
+      <a class="button button-blue" href={structureImageHref} download>Скачать PNG ↓</a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  const setupCouncilStructure = () => {
+    document.querySelectorAll("[data-council-structure]").forEach((root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.bound === "true") return;
+      root.dataset.bound = "true";
+
+      const diagram = root.querySelector(".council-structure-diagram");
+      const svg = root.querySelector(".council-structure-connectors");
+      const core = root.querySelector("[data-cs-core]");
+      const focus = root.querySelector("[data-cs-focus]");
+      const detailTitle = root.querySelector("[data-cs-detail-title]");
+      const detailList = root.querySelector("[data-cs-detail-list]");
+      const detailLink = root.querySelector("[data-cs-detail-link]");
+      if (!(diagram instanceof HTMLElement) || !(svg instanceof SVGElement) || !(core instanceof HTMLElement)) return;
+
+      const memberCopy = {
+        parents: [
+          "Представители родителей (законных представителей) обучающихся",
+          "Избираются прямым тайным голосованием среди всех родителей (законных представителей) обучающихся."
+        ],
+        students: [
+          "Представители обучающихся от 14 лет",
+          "Определяются общим собранием (конференцией представителей) обучающихся от 14 лет."
+        ],
+        staff: [
+          "Представители работников ОО",
+          "Определяются общим собранием работников образовательной организации."
+        ],
+        leader: [
+          "Руководитель учреждения",
+          "Входит в структуру Управляющего совета непосредственно."
+        ],
+        founder: [
+          "Представитель учредителя",
+          "Представляет учредителя образовательного учреждения."
+        ],
+        community: [
+          "Кооптированные члены",
+          "Включаются из числа представителей общественности."
+        ]
+      };
+
+      const branchCopy = {
+        leadership: {
+          title: "Организуют деятельность УС",
+          items: ["Председатель УС", "Заместитель председателя УС", "Секретарь УС"],
+          showLink: false
+        },
+        commissions: {
+          title: "Постоянно действующие комиссии (комитеты) УС",
+          items: [
+            "Организационно-правовая комиссия",
+            "Комиссия по финансово-хозяйственной деятельности",
+            "Комиссии по образовательному процессу",
+            "Комиссия по вопросам образования детей с ОВЗ и инвалидностью",
+            "Комиссия по воспитанию",
+            "Комиссия по работе с родителями и местным сообществом",
+            "Комиссия по контролю за организацией и качеством питания",
+            "Комиссия по ремонту и благоустройству",
+            "Комиссия по безопасности",
+            "Комиссия по развитию молодежи",
+            "Конфликтная комиссия",
+            "Другие комиссии"
+          ],
+          showLink: true
+        },
+        groups: {
+          title: "Рабочие группы УС",
+          items: ["Создаются на определенное время для решения конкретной задачи"],
+          showLink: false
+        }
+      };
+
+      const point = (element, edge, bounds) => {
+        const box = element.getBoundingClientRect();
+        return {
+          x: box.left - bounds.left + box.width / 2,
+          y: edge === "top" ? box.top - bounds.top : box.bottom - bounds.top
+        };
+      };
+
+      const connector = (start, end, active) => {
+        const distance = Math.max(30, Math.abs(end.y - start.y) * 0.45);
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", `M ${start.x} ${start.y} C ${start.x} ${start.y + distance}, ${end.x} ${end.y - distance}, ${end.x} ${end.y}`);
+        path.setAttribute("class", `council-structure-connector${active ? " is-active" : ""}`);
+        return path;
+      };
+
+      const drawConnectors = () => {
+        if (window.matchMedia("(max-width: 760px)").matches) {
+          svg.replaceChildren();
+          return;
+        }
+
+        const bounds = diagram.getBoundingClientRect();
+        svg.setAttribute("viewBox", `0 0 ${bounds.width} ${bounds.height}`);
+        svg.replaceChildren();
+        const coreTop = point(core, "top", bounds);
+        const coreBottom = point(core, "bottom", bounds);
+
+        root.querySelectorAll("[data-cs-member]").forEach((member) => {
+          if (!(member instanceof HTMLElement)) return;
+          const key = member.dataset.csMember || "";
+          const active = member.getAttribute("aria-pressed") === "true";
+          const source = root.querySelector(`[data-cs-source="${key}"]`);
+          if (source instanceof HTMLElement) {
+            svg.appendChild(connector(point(source, "bottom", bounds), point(member, "top", bounds), active));
+          }
+          svg.appendChild(connector(point(member, "bottom", bounds), coreTop, active));
+        });
+
+        root.querySelectorAll("[data-cs-branch]").forEach((branch) => {
+          if (!(branch instanceof HTMLElement)) return;
+          svg.appendChild(connector(coreBottom, point(branch, "top", bounds), branch.getAttribute("aria-pressed") === "true"));
+        });
+      };
+
+      root.querySelectorAll("[data-cs-member]").forEach((member) => {
+        member.addEventListener("click", () => {
+          const key = member.getAttribute("data-cs-member") || "parents";
+          root.querySelectorAll("[data-cs-member]").forEach((item) => item.setAttribute("aria-pressed", String(item === member)));
+          root.querySelectorAll("[data-cs-source]").forEach((source) => source.classList.toggle("is-active", source.getAttribute("data-cs-source") === key));
+          const copy = memberCopy[key];
+          if (focus instanceof HTMLElement && copy) {
+            focus.replaceChildren();
+            const strong = document.createElement("strong");
+            const span = document.createElement("span");
+            strong.textContent = copy[0];
+            span.textContent = copy[1];
+            focus.append(strong, span);
+          }
+          drawConnectors();
+        });
+      });
+
+      root.querySelectorAll("[data-cs-branch]").forEach((branch) => {
+        branch.addEventListener("click", () => {
+          const key = branch.getAttribute("data-cs-branch") || "leadership";
+          const copy = branchCopy[key];
+          root.querySelectorAll("[data-cs-branch]").forEach((item) => item.setAttribute("aria-pressed", String(item === branch)));
+          if (copy && detailTitle instanceof HTMLElement && detailList instanceof HTMLElement) {
+            detailTitle.textContent = copy.title;
+            detailList.replaceChildren(...copy.items.map((text) => {
+              const item = document.createElement("li");
+              item.textContent = text;
+              return item;
+            }));
+            if (detailLink instanceof HTMLElement) detailLink.hidden = !copy.showLink;
+          }
+          drawConnectors();
+        });
+      });
+
+      const observer = new ResizeObserver(drawConnectors);
+      observer.observe(diagram);
+      requestAnimationFrame(drawConnectors);
+    });
+  };
+
+  document.addEventListener("astro:page-load", setupCouncilStructure);
+  if (document.readyState !== "loading") setupCouncilStructure();
+</script>
+
+<style>
+  .council-structure-section {
+    position: relative;
+  }
+
+  .council-structure-heading {
+    align-items: end;
+  }
+
+  .council-structure-diagram {
+    position: relative;
+    padding: clamp(22px, 3.5vw, 42px);
+    border-radius: 24px;
+    color: var(--ink);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+
+  .council-structure-connectors {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  :global(.council-structure-connector) {
+    fill: none;
+    stroke: #c7d9e9;
+    stroke-width: 2;
+    opacity: 0.72;
+    transition: stroke 220ms ease, stroke-width 220ms ease, opacity 220ms ease;
+  }
+
+  :global(.council-structure-connector.is-active) {
+    stroke: var(--mint-bright);
+    stroke-width: 4;
+    opacity: 1;
+  }
+
+  .council-formation-grid,
+  .council-core-wrap,
+  .council-branch-grid,
+  .council-branch-detail {
+    position: relative;
+    z-index: 1;
+  }
+
+  .council-formation-grid {
+    display: grid;
+    grid-template-columns: repeat(30, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+    row-gap: 74px;
+  }
+
+  .council-formation-path {
+    display: contents;
+  }
+
+  .council-source-node,
+  .council-member-node {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 118px;
+    margin-inline: 6px;
+    padding: 16px;
+    border-radius: 15px;
+    text-align: left;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .council-source-node {
+    grid-row: 1;
+    border: 1px solid #bdd0e2;
+    color: var(--ink-soft);
+    background: var(--white);
+    transition: color 220ms ease, border-color 220ms ease;
+  }
+
+  .council-source-node.is-active {
+    border-color: var(--navy);
+    color: var(--navy-deep);
+  }
+
+  .council-member-node {
+    appearance: none;
+    grid-row: 2;
+    border: 1px solid transparent;
+    color: var(--navy-deep);
+    background: #eaf2fb;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 220ms ease, border-color 220ms ease, background 220ms ease, transform 220ms ease;
+  }
+
+  .council-member-node:hover,
+  .council-member-node:focus-visible,
+  .council-member-node[aria-pressed="true"] {
+    border-color: var(--mint-bright);
+    background: #e5f7f0;
+    transform: translateY(-2px);
+  }
+
+  .council-mobile-arrow {
+    display: none;
+  }
+
+  [data-cs-lane="parents"] .council-source-node { grid-column: 1 / span 6; }
+  [data-cs-lane="students"] .council-source-node { grid-column: 7 / span 6; }
+  [data-cs-lane="staff"] .council-source-node { grid-column: 13 / span 6; }
+  [data-cs-lane="founder"] .council-source-node { grid-column: 19 / span 6; }
+  [data-cs-lane="community"] .council-source-node { grid-column: 25 / span 6; }
+
+  [data-cs-lane="parents"] .council-member-node { grid-column: 1 / span 5; }
+  [data-cs-lane="students"] .council-member-node { grid-column: 6 / span 5; }
+  [data-cs-lane="staff"] .council-member-node { grid-column: 11 / span 5; }
+  [data-cs-lane="leader"] .council-member-node { grid-column: 16 / span 5; }
+  [data-cs-lane="founder"] .council-member-node { grid-column: 21 / span 5; }
+  [data-cs-lane="community"] .council-member-node { grid-column: 26 / span 5; }
+
+  .council-core-wrap {
+    max-width: 680px;
+    margin: 86px auto 0;
+  }
+
+  .council-core {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 94px;
+    padding: 22px;
+    border-radius: 17px;
+    color: var(--white);
+    text-align: center;
+    background: var(--navy-deep);
+  }
+
+  .council-core h3 {
+    margin: 0;
+    color: inherit;
+    font-size: clamp(23px, 3vw, 36px);
+  }
+
+  .council-focus-copy {
+    display: grid;
+    gap: 4px;
+    margin-top: 14px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--mint-bright);
+    color: var(--ink-soft);
+    background: var(--white);
+  }
+
+  .council-focus-copy strong {
+    color: var(--navy-deep);
+  }
+
+  .council-branch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 94px;
+  }
+
+  .council-branch-grid button {
+    min-height: 92px;
+    padding: 18px;
+    border: 1px solid #bdd0e2;
+    border-radius: 15px;
+    color: var(--navy-deep);
+    text-align: left;
+    background: var(--white);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 220ms ease, border-color 220ms ease, background 220ms ease, transform 220ms ease;
+  }
+
+  .council-branch-grid button:hover,
+  .council-branch-grid button:focus-visible,
+  .council-branch-grid button[aria-pressed="true"] {
+    border-color: var(--navy);
+    color: var(--white);
+    background: var(--navy);
+    transform: translateY(-2px);
+  }
+
+  .council-branch-detail {
+    min-height: 188px;
+    margin-top: 20px;
+    padding: clamp(20px, 3vw, 32px);
+    border-top: 4px solid var(--mint-bright);
+    background: var(--white);
+  }
+
+  .council-branch-detail h3 {
+    margin: 0 0 18px;
+    color: var(--navy-deep);
+  }
+
+  .council-branch-detail ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 26px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .council-branch-detail li {
+    position: relative;
+    padding: 12px 0 12px 18px;
+    border-top: 1px solid #d5e0e9;
+  }
+
+  .council-branch-detail li::before {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    content: "";
+    background: var(--mint-bright);
+  }
+
+  .council-branch-detail a {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .council-branch-detail a[hidden] {
+    display: none;
+  }
+
+  .council-structure-downloads {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 22px;
+    padding: 20px 22px;
+    border-radius: 16px;
+    color: var(--navy-deep);
+    background: #eaf2fb;
+  }
+
+  .council-structure-downloads div {
+    display: grid;
+    gap: 3px;
+  }
+
+  .council-structure-downloads span {
+    color: var(--ink-soft);
+  }
+
+  .council-structure-downloads .button {
+    flex: 0 0 auto;
+  }
+
+  @media (max-width: 980px) {
+    .council-source-node,
+    .council-member-node {
+      margin-inline: 4px;
+      padding: 12px 9px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .council-structure-diagram {
+      padding: 18px;
+    }
+
+    .council-structure-connectors {
+      display: none;
+    }
+
+    .council-formation-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      gap: 16px;
+    }
+
+    .council-formation-path {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .council-source-node,
+    .council-member-node {
+      grid-column: 1 !important;
+      grid-row: auto !important;
+      width: 100%;
+      min-height: 76px;
+      margin: 0;
+      padding: 15px;
+      font-size: inherit;
+    }
+
+    .council-mobile-arrow {
+      display: flex;
+      justify-content: center;
+      color: var(--mint-bright);
+    }
+
+    .council-formation-path.is-direct {
+      display: block;
+    }
+
+    .council-core-wrap {
+      margin-top: 42px;
+    }
+
+    .council-core-wrap::before,
+    .council-branch-grid::before {
+      display: block;
+      width: 2px;
+      height: 28px;
+      margin: -28px auto 0;
+      content: "";
+      background: var(--mint-bright);
+    }
+
+    .council-branch-grid {
+      grid-template-columns: 1fr;
+      margin-top: 54px;
+    }
+
+    .council-branch-grid button {
+      min-height: 76px;
+    }
+
+    .council-branch-detail ul {
+      grid-template-columns: 1fr;
+    }
+
+    .council-structure-downloads {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .council-structure-downloads .button {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .council-source-node,
+    .council-member-node,
+    .council-branch-grid button,
+    :global(.council-structure-connector) {
+      transition: none;
+    }
+  }
+</style>
