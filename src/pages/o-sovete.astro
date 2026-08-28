@@ -73,10 +73,7 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
         <div><p class="eyebrow eyebrow-dark"><span></span> Представительство</p><h2>Как устроен <em>совет</em></h2></div>
         <p>Интерактивная схема показывает, кто формирует Управляющий совет и как организована его работа.</p>
       </div>
-      <a class="content-card task-card" href={`${import.meta.env.BASE_URL}sostav/#structure`}>
-        <h3>Открыть состав и структуру →</h3>
-        <p>Посмотреть категории участников, руководство, постоянные комиссии и рабочие группы.</p>
-      </a>
+      <a class="button button-light" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/sostav/#structure`}>Открыть состав и структуру →</a>
     </div>
   </section>
 </BaseLayout>

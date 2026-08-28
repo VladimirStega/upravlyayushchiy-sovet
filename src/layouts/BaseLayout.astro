@@ -157,7 +157,9 @@ const networkMode = isHomeNetwork
     <script>
       if (!document.documentElement.dataset.pageScrollReset) {
         document.documentElement.dataset.pageScrollReset = "true";
-        document.addEventListener("astro:page-load", () => window.scrollTo(0, 0));
+        document.addEventListener("astro:page-load", () => {
+          if (!window.location.hash) window.scrollTo(0, 0);
+        });
       }
 
       const storageKey = "governing-council-accessibility";
