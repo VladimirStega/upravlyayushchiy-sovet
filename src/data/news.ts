@@ -13,6 +13,10 @@ export interface NewsItem {
   media: "photo" | "gallery" | "video";
   mediaLabel: string;
   sourceUrl: string;
+  images?: Array<{
+    src: string;
+    alt: string;
+  }>;
   archived?: boolean;
 }
 
@@ -32,7 +36,29 @@ export const news: NewsItem[] = [
     ],
     media: "gallery",
     mediaLabel: "Фотографии итогового мероприятия и награждения",
-    sourceUrl: "https://vk.ru/wall-104609113_12778"
+    sourceUrl: "https://vk.ru/wall-104609113_12778",
+    images: [
+      {
+        src: "/images/news/roditeli-i-deti-itogi/obshchaya-fotografiya.jpg",
+        alt: "Участники проекта «Родители и дети» на общей фотографии"
+      },
+      {
+        src: "/images/news/roditeli-i-deti-itogi/otkrytie-proekta.jpg",
+        alt: "Открытие итогового мероприятия проекта"
+      },
+      {
+        src: "/images/news/roditeli-i-deti-itogi/igrovaya-stanciya.jpg",
+        alt: "Семьи выполняют задание на игровой станции"
+      },
+      {
+        src: "/images/news/roditeli-i-deti-itogi/uchastniki-proekta.jpg",
+        alt: "Участники школьного семейного проекта"
+      },
+      {
+        src: "/images/news/roditeli-i-deti-itogi/master-klass.jpg",
+        alt: "Совместный мастер-класс для детей и родителей"
+      }
+    ]
   },
   {
     slug: "igraem-v-starinu-prazdnik",

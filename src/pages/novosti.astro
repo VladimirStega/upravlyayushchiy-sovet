@@ -33,7 +33,11 @@ const categories = [
       <div class="editorial-news-grid news-catalog">
         {currentNews.map((item, index) => (
           <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]} data-news-category={item.category}>
-            <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
+            {item.images?.[0] ? (
+              <img class="editorial-news-image" src={`${base}${item.images[0].src}`} alt={item.images[0].alt} loading={index === 0 ? "eager" : "lazy"} />
+            ) : (
+              <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
+            )}
             <div>
               <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
               <h3>{item.title}</h3>

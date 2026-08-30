@@ -31,7 +31,15 @@ const mediaTitle = item.media === "video" ? "Здесь будет размещ�
 
     <div class="container news-article-layout">
       <div class="news-article-main">
-        {item.media === "video" ? (
+        {item.images?.length ? (
+          <div class="news-photo-gallery" aria-label={item.mediaLabel}>
+            {item.images.map((image, index) => (
+              <figure>
+                <img src={`${base}${image.src}`} alt={image.alt} loading={index === 0 ? "eager" : "lazy"} />
+              </figure>
+            ))}
+          </div>
+        ) : item.media === "video" ? (
           <div class="photo-placeholder news-article-photo external-video-placeholder">
             <span class="external-video-play" aria-hidden="true">▶</span>
             <strong>{mediaTitle}</strong>
@@ -53,13 +61,8 @@ const mediaTitle = item.media === "video" ? "Здесь будет размещ�
 
       <aside class="news-article-aside">
         <span>Медиаматериалы</span>
-        <h2>{item.media === "video" ? "Видео доступно во ВКонтакте" : item.media === "gallery" ? "Нужны оригиналы фотографий" : "Нужна оригинальная фотография"}</h2>
-        <p>{item.media === "video" ? "Ролик остаётся в исходной публикации: посетитель сможет открыть его по кнопке, поэтому загружать MP4 на сайт не требуется." : "Скриншот публикации используется только как источник информации и не будет размещён на сайте."}</p>
-        <ul>
-          <li>{item.media === "video" ? "При желании можно добавить отдельную обложку" : "Файлы JPG или PNG без интерфейса ВК"}</li>
-          <li>Краткая подпись к материалам</li>
-          <li>При необходимости — имя автора</li>
-        </ul>
+        <h2>{item.images?.length ? "Фотографии мероприятия" : item.media === "video" ? "Видео доступно во ВКонтакте" : item.media === "gallery" ? "Фотогалерея" : "Фотография"}</h2>
+        <p>{item.images?.length ? `В галерее размещено ${item.images.length} фотографий из официальной публикации школы.` : item.media === "video" ? "Ролик можно открыть в официальной публикации школы во ВКонтакте." : "Медиаматериалы будут добавлены после получения оригиналов."}</p>
       </aside>
     </div>
   </article>
