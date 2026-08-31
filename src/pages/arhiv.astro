@@ -24,9 +24,18 @@ const years = [...new Set(archivedNews.map((item) => item.year))].sort((a, b) =>
             <span>{archivedNews.filter((item) => item.year === year).length} публикации</span>
           </div>
           <div class="editorial-news-grid archive-news-grid">
-            {archivedNews.filter((item) => item.year === year).map((item) => (
+            {archivedNews.filter((item) => item.year === year).map((item, index) => (
               <article class="editorial-news-card">
-                <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
+                {item.coverImage || item.images?.[0] ? (
+                  <img
+                    class="editorial-news-image"
+                    src={`${base}${(item.coverImage ?? item.images![0]).src}`}
+                    alt={(item.coverImage ?? item.images![0]).alt}
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                ) : (
+                  <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
+                )}
                 <div>
                   <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
                   <h3>{item.title}</h3>
