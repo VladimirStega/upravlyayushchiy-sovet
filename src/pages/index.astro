@@ -97,8 +97,8 @@ const sitePath = (href: string) => `${base}${href}`;
       <div class="editorial-news-grid">
         {currentNews.slice(0, 3).map((item, index) => (
           <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]}>
-            {item.images?.[0] ? (
-              <img class="editorial-news-image" src={sitePath(item.images[0].src)} alt={item.images[0].alt} loading={index === 0 ? "eager" : "lazy"} />
+            {item.coverImage || item.images?.[0] ? (
+              <img class="editorial-news-image" src={sitePath((item.coverImage ?? item.images![0]).src)} alt={(item.coverImage ?? item.images![0]).alt} loading={index === 0 ? "eager" : "lazy"} />
             ) : (
               <div class="photo-placeholder editorial-news-image">
                 <span class="placeholder-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m6 37 11-13 8 8 6-7 11 12"/><circle cx="34" cy="14" r="5"/></svg></span>
@@ -111,7 +111,7 @@ const sitePath = (href: string) => `${base}${href}`;
               <p>{item.excerpt}</p>
               <div class="news-card-actions">
                 <a href={sitePath(`/novosti/${item.slug}/`)}>Читать новость <span>→</span></a>
-                <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>
+                {item.sourceUrl && <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
               </div>
             </div>
           </article>

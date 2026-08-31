@@ -33,8 +33,8 @@ const categories = [
       <div class="editorial-news-grid news-catalog">
         {currentNews.map((item, index) => (
           <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]} data-news-category={item.category}>
-            {item.images?.[0] ? (
-              <img class="editorial-news-image" src={`${base}${item.images[0].src}`} alt={item.images[0].alt} loading={index === 0 ? "eager" : "lazy"} />
+            {item.coverImage || item.images?.[0] ? (
+              <img class="editorial-news-image" src={`${base}${(item.coverImage ?? item.images![0]).src}`} alt={(item.coverImage ?? item.images![0]).alt} loading={index === 0 ? "eager" : "lazy"} />
             ) : (
               <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
             )}
@@ -44,7 +44,7 @@ const categories = [
               <p>{item.excerpt}</p>
               <div class="news-card-actions">
                 <a href={`${base}/novosti/${item.slug}/`}>Читать новость <span>→</span></a>
-                <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>
+                {item.sourceUrl && <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
               </div>
             </div>
           </article>
