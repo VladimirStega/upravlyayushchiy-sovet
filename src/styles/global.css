@@ -2156,6 +2156,13 @@ h2 {
   border: 0;
 }
 
+.person-photo-image {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
 .person-card-featured .person-photo {
   height: 350px;
   color: rgba(255, 255, 255, 0.76);
