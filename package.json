@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:server": "vinext dev",
-    "build": "astro build && node scripts/generate-vinext-wrapper.mjs && vinext build",
+    "build": "astro build && node scripts/generate-vinext-wrapper.mjs && vinext build && node scripts/prune-vinext-server-assets.mjs",
     "build:astro": "astro check && astro build",
     "preview": "astro preview"
   },
