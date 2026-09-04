@@ -9,8 +9,8 @@
   --mint-bright: #69d6ae;
   --coral: #f07862;
   --orange: #f4b560;
-  --cream: #f4f7fa;
-  --paper: #ffffff;
+  --cream: #e8f0f5;
+  --paper: #f8fbfd;
   --white: #ffffff;
   --line: #dce5ed;
   --line-strong: #c8d5e1;
@@ -259,25 +259,27 @@ input:focus-visible {
   position: relative;
   isolation: isolate;
   padding: 0;
-  overflow: hidden;
-  background: var(--cream);
+  overflow: visible;
+  background:
+    radial-gradient(circle at 8% 24%, rgba(105, 214, 174, 0.16), transparent 25rem),
+    radial-gradient(circle at 92% 66%, rgba(39, 103, 170, 0.14), transparent 31rem),
+    linear-gradient(180deg, #dce9f1 0%, #eef4f7 46%, #dce8f0 100%);
+  background-attachment: fixed;
 }
 
 .home-network-canvas {
-  position: absolute;
-  z-index: 0;
-  inset: 0 0 auto;
+  position: fixed;
+  z-index: 1;
+  inset: 0;
   width: 100%;
-  height: 620px;
-  opacity: 0.3;
+  height: 100vh;
+  opacity: 0.52;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(#000 60%, transparent 100%);
-  mask-image: linear-gradient(#000 60%, transparent 100%);
 }
 
 .network-page .home-network-canvas {
-  height: 380px;
-  opacity: 0.19;
+  height: 100vh;
+  opacity: 0.46;
 }
 
 .home-network-page main > section,
@@ -286,7 +288,7 @@ input:focus-visible {
 .network-page main > section:nth-of-type(odd):not(.inner-hero),
 .network-page main > section:nth-of-type(even) {
   position: relative;
-  z-index: 1;
+  z-index: auto;
   width: 100%;
   margin: 0;
   overflow: visible;
@@ -294,6 +296,14 @@ input:focus-visible {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.home-network-page main > section > .container,
+.network-page main > section > .container,
+.home-network-page main > nav,
+.network-page main > article {
+  position: relative;
+  z-index: 2;
 }
 
 .section {

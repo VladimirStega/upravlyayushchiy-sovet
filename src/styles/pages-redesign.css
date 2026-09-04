@@ -2224,3 +2224,94 @@
     font-size: 38px;
   }
 }
+
+/* Colour composition: translucent bands keep the council network present
+   while solid cards preserve comfortable reading contrast. */
+.home-network-page .home-hero,
+.home-network-page .hero {
+  background:
+    radial-gradient(circle at 72% 10%, rgba(105, 214, 174, 0.24), transparent 32%),
+    linear-gradient(120deg, rgba(13, 47, 87, 0.96), rgba(23, 74, 139, 0.94) 74%, rgba(40, 106, 169, 0.92));
+}
+
+.home-network-page .home-about {
+  background:
+    linear-gradient(115deg, rgba(231, 243, 247, 0.92), rgba(239, 247, 244, 0.86));
+}
+
+.home-network-page .news-section {
+  background: rgba(248, 251, 252, 0.9);
+}
+
+.home-network-page .home-project-section {
+  padding: 72px 0;
+  background: rgba(213, 229, 238, 0.88);
+}
+
+.home-network-page .home-achievements-section {
+  background:
+    linear-gradient(120deg, rgba(225, 242, 236, 0.92), rgba(233, 242, 248, 0.88));
+}
+
+.home-network-page .home-decisions,
+.home-network-page .cta-section {
+  background:
+    radial-gradient(circle at 8% 20%, rgba(105, 214, 174, 0.18), transparent 27%),
+    rgba(13, 47, 87, 0.94);
+}
+
+.home-network-page .home-decisions :is(.eyebrow, .eyebrow-light),
+.home-network-page .cta-section :is(.eyebrow, .eyebrow-light) {
+  color: var(--mint);
+}
+
+.home-quick-grid a:nth-child(2) {
+  background: #eef7f4;
+}
+
+.home-quick-grid a:nth-child(3) {
+  background: #edf4fa;
+}
+
+.home-quick-grid a:nth-child(4) {
+  background: #fff4ef;
+}
+
+.network-page main > section:not(.inner-hero) {
+  background: rgba(247, 250, 252, 0.88);
+}
+
+.network-page main > section:nth-of-type(odd):not(.inner-hero) {
+  background:
+    linear-gradient(120deg, rgba(222, 237, 244, 0.9), rgba(231, 243, 239, 0.86));
+}
+
+.network-page main > .inner-hero {
+  background:
+    radial-gradient(circle at 83% 15%, rgba(105, 214, 174, 0.24), transparent 28%),
+    linear-gradient(125deg, rgba(13, 47, 87, 0.96), rgba(23, 74, 139, 0.94) 66%, rgba(39, 104, 168, 0.92));
+}
+
+.content-card,
+.task-card,
+.editorial-news-card,
+.person-card,
+.document-category,
+.survey-metric-card,
+.achievement-card,
+.contact-panel,
+.contact-message-panel {
+  border-color: rgba(170, 194, 212, 0.72);
+  box-shadow: 0 18px 45px rgba(13, 47, 87, 0.1);
+}
+
+@media (max-width: 620px) {
+  .home-network-page .home-project-section {
+    padding: 48px 0;
+  }
+
+  .home-network-canvas,
+  .network-page .home-network-canvas {
+    opacity: 0.4;
+  }
+}

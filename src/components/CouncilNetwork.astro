@@ -126,9 +126,12 @@ const { mode = "standard" } = Astro.props;
 
         if (kind === "dot") {
           context.fillStyle = "#0d253f";
+          context.strokeStyle = "rgba(174, 235, 214, 0.88)";
+          context.lineWidth = 1.2;
           context.beginPath();
           context.arc(0, 0, radius, 0, Math.PI * 2);
           context.fill();
+          context.stroke();
           context.restore();
           return;
         }
@@ -321,7 +324,14 @@ const { mode = "standard" } = Astro.props;
             const carriesSignal = stableSignal && signalCycle < 0.74;
             if (distance > connectionDistance && !(carriesSignal && distance < connectionDistance * 1.48)) continue;
             const lineAlpha = Math.max(0, opacity) * Math.max(visibility, carriesSignal ? 0.9 : 0) * connectionAlpha;
+            context.strokeStyle = `rgba(210, 244, 233, ${lineAlpha * 0.56})`;
+            context.lineWidth = primary ? 2.4 : 1.8;
+            context.beginPath();
+            context.moveTo(points[i].drawX, points[i].drawY);
+            context.lineTo(points[j].drawX, points[j].drawY);
+            context.stroke();
             context.strokeStyle = `rgba(13, 37, 63, ${lineAlpha})`;
+            context.lineWidth = 1;
             context.beginPath();
             context.moveTo(points[i].drawX, points[i].drawY);
             context.lineTo(points[j].drawX, points[j].drawY);
