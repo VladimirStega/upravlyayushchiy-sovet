@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <BaseLayout title="О совете — Управляющий совет" current="О совете">
@@ -9,7 +9,7 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
     eyebrow="Открытость и участие"
     title="О нашем"
     accent="Управляющем совете"
-    description="Здесь будет собрана полная информация о назначении совета, его полномочиях, принципах работы, процедуре формирования и истории."
+    description="Коллегиальный орган управления, в котором родители, ученики, работники школы, учредитель и партнёры вместе участвуют в развитии школы."
   />
 
   <section class="section content-section">
@@ -19,9 +19,9 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
         <h2>Объединяем интересы<br /><em>школьного сообщества</em></h2>
       </div>
       <p>
-        Здесь будет официальный текст миссии Управляющего совета. В нём следует объяснить,
-        как родители, обучающиеся, работники, учредитель и партнёры участвуют в развитии
-        образовательной организации.
+        Управляющий совет помогает согласовывать интересы всех участников школьной жизни.
+        Он рассматривает вопросы развития школы, условий обучения, безопасности, поддержки
+        инициатив и открыто информирует сообщество о принятых решениях.
       </p>
     </div>
   </section>
@@ -30,7 +30,7 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
     <div class="container">
       <div class="page-section-heading">
         <h2>Основные <em>задачи</em></h2>
-        <p>Формулировки будут приведены в соответствие с Положением об Управляющем совете.</p>
+        <p>Основные направления работы закреплены в Положении об Управляющем совете школы.</p>
       </div>
       <div class="content-grid">
         {[
@@ -52,10 +52,10 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
 
   <section class="section impact-section">
     <div class="container content-grid two-columns about-media-grid">
-      <PhotoPlaceholder
-        title="Главная фотография Управляющего совета"
-        note="Общий снимок участников совета или фотография совместной работы"
-      />
+      <figure class="about-photo">
+        <img src={`${base}/images/news/roditelskoe-sobranie-i-zasedanie-soveta-2025/zasedanie-soveta.jpg`} alt="Участники заседания Управляющего совета" loading="lazy" />
+        <figcaption>Обсуждение вопросов школьной жизни на заседании совета</figcaption>
+      </figure>
       <article class="content-card dark about-media-copy">
         <span class="content-card-number">Главное о работе совета</span>
         <h2>Диалог, ответственность и прозрачность</h2>
@@ -73,7 +73,10 @@ import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
         <div><p class="eyebrow eyebrow-dark"><span></span> Представительство</p><h2>Как устроен <em>совет</em></h2></div>
         <p>Интерактивная схема показывает, кто формирует Управляющий совет и как организована его работа.</p>
       </div>
-      <a class="button button-light" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/sostav/#structure`}>Открыть состав и структуру →</a>
+      <div class="about-actions">
+        <a class="button button-primary" href={`${base}/sostav/#structure`}>Открыть состав и структуру</a>
+        <a class="button button-light" href={`${base}/documents/polozhenie-ob-upravlyayushchem-sovete.pdf`} target="_blank" rel="noopener">Положение о совете</a>
+      </div>
     </div>
   </section>
 </BaseLayout>

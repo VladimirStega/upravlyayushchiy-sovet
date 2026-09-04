@@ -1,17 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/PageHero.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<BaseLayout title="Видеовизитка — Управляющий совет" current="Видеовизитка">
-  <PageHero eyebrow="Презентационный ролик" title="Видеовизитка" accent="Управляющего совета" description="Ролик до пяти минут о структуре, принципах, проектах, результатах и стратегическом видении совета." />
-  <section class="section content-section">
-    <div class="container video-grid">
-      <div class="video-placeholder"><div class="video-screen"><span class="video-play-placeholder" aria-hidden="true">▶</span><strong>Разместить видеовизитку</strong><small>MP4 · 16:9 · не ниже 1280×720 · до 5 минут</small></div></div>
-      <div class="video-copy"><p class="eyebrow eyebrow-dark"><span></span> Содержание</p><h2>Пять минут<br /><em>о главном</em></h2><p>Добавить краткое описание ролика, ссылку на просмотр со свободным доступом и возможность скачивания.</p></div>
+<BaseLayout title="Видеовизитка — Управляющий совет">
+  <section class="section alias-page">
+    <div class="container alias-card">
+      <p class="eyebrow eyebrow-dark"><span></span> Раздел объединён</p>
+      <h1>Видеовизитка находится<br />в разделе «Видео»</h1>
+      <p>Мы объединили видеоматериалы на одной странице, чтобы их было проще находить.</p>
+      <a class="button button-primary" href={`${base}/video/`}>Перейти к видео</a>
     </div>
-  </section>
-  <section class="section">
-    <div class="container page-cta"><h2>Здесь появятся <em>тайм-коды и расшифровка</em></h2><p>Текстовая версия повысит доступность ролика и позволит экспертам быстро найти подтверждение каждого критерия.</p></div>
   </section>
 </BaseLayout>

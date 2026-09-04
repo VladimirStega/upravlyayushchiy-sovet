@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
 import { currentNews } from "../data/news";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -32,12 +31,10 @@ const categories = [
 
       <div class="editorial-news-grid news-catalog">
         {currentNews.map((item, index) => (
-          <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]} data-news-category={item.category}>
+          <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0, "editorial-news-no-image": !item.coverImage && !item.images?.[0] }]} data-news-category={item.category}>
             {item.coverImage || item.images?.[0] ? (
               <img class="editorial-news-image" src={`${base}${(item.coverImage ?? item.images![0]).src}`} alt={(item.coverImage ?? item.images![0]).alt} loading={index === 0 ? "eager" : "lazy"} />
-            ) : (
-              <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
-            )}
+            ) : null}
             <div>
               <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
               <h3>{item.title}</h3>
@@ -64,6 +61,8 @@ const categories = [
       const cards = document.querySelectorAll("[data-news-category]");
       const emptyState = document.querySelector("[data-news-empty]");
       buttons.forEach((button) => {
+        if (!(button instanceof HTMLElement) || button.dataset.bound) return;
+        button.dataset.bound = "true";
         button.addEventListener("click", () => {
           const filter = button.getAttribute("data-news-filter") || "all";
           let visibleCount = 0;

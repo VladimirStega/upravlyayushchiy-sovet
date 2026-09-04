@@ -5,47 +5,26 @@ import PageHero from "../components/PageHero.astro";
 
 <BaseLayout title="Видео — Управляющий совет">
   <PageHero
-    eyebrow="Медиатека совета"
-    title="Видео"
-    accent="Управляющего совета"
-    description="Презентационный ролик, записи мероприятий, интервью, отчёты о проектах и другие видеоматериалы."
+    eyebrow="Видеовизитка"
+    title="Видео о"
+    accent="работе совета"
+    description="Короткий рассказ о составе, принципах работы, проектах и результатах Управляющего совета школы."
   />
 
   <section class="section content-section">
     <div class="container video-grid">
-      <div class="video-placeholder">
+      <div class="video-placeholder video-placeholder-pending">
         <div class="video-screen">
           <span class="video-play-placeholder" aria-hidden="true">▶</span>
-          <strong>Презентационный ролик Управляющего совета</strong>
-          <small>Ссылка на просмотр · 16:9 · до 5 минут · добавить субтитры</small>
+          <strong>Видеовизитка готовится к публикации</strong>
+          <small>После загрузки здесь появится ролик в формате 16:9</small>
         </div>
       </div>
       <div class="video-copy">
-        <p class="eyebrow eyebrow-dark"><span></span> Главное видео</p>
-        <h2>Пять минут<br /><em>о работе совета</em></h2>
-        <p>Здесь появятся описание ролика, ссылка на свободный просмотр, дата публикации и текстовая расшифровка.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section video-library-section">
-    <div class="container">
-      <div class="page-section-heading">
-        <div><p class="eyebrow eyebrow-dark"><span></span> Все материалы</p><h2>Видеотека <em>совета</em></h2></div>
-        <p>Каждая карточка будет содержать обложку, дату, продолжительность, краткое описание и ссылку на просмотр.</p>
-      </div>
-      <div class="video-library-grid">
-        {[
-          ["Запись мероприятия Управляющего совета", "Видео с заседания, встречи или общественного обсуждения"],
-          ["Интервью с участником совета", "Разговор о роли, опыте и результатах работы"],
-          ["Видеоотчёт о проекте", "Ход реализации проекта и достигнутые результаты"],
-          ["Выступление или презентация", "Материал муниципального, регионального или федерального уровня"]
-        ].map(([title, description]) => (
-          <article class="video-card">
-            <div class="video-card-preview"><span>▶</span><strong>Обложка видеоролика</strong><small>Продолжительность: __:__</small></div>
-            <div><time>Указать дату</time><h3>{title}</h3><p>{description}</p><span class="video-link-pending">Ссылка появится после публикации</span></div>
-          </article>
-        ))}
+        <p class="eyebrow eyebrow-dark"><span></span> Скоро на сайте</p>
+        <h2>Пять минут<br /><em>о главном</em></h2>
+        <p>В ролике будут представлены участники совета, порядок принятия решений, реализованные проекты и планы дальнейшей работы.</p>
+        <p class="video-accessibility-note">Вместе с видео будет опубликована текстовая расшифровка.</p>
       </div>
     </div>
   </section>

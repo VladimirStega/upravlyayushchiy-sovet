@@ -3,6 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const documentCategories = [
+  ["all", "Все документы"],
+  ["normative", "Нормативная база"],
+  ["plans", "Планы работы"],
+  ["protocols", "Протоколы"],
+  ["reports", "Отчёты"],
+  ["elections", "Состав и выборы"],
+  ["projects", "Проекты"]
+];
 const documents = [
   {
     category: "normative",
@@ -111,37 +120,27 @@ const documents = [
 
 <BaseLayout title="Документы — Управляющий совет" current="Документы">
   <PageHero eyebrow="Открытая документация" title="Документы и" accent="отчётность" description="Нормативные документы, планы, протоколы, отчёты и материалы комиссий с фильтрацией по категориям и учебным годам." />
-  <section class="section content-section">
+  <section class="section content-section document-library-section">
     <div class="container">
-      <div class="document-filter-heading">
-        <div><p class="eyebrow eyebrow-dark"><span></span> Фильтр документов</p><h2>Выберите <em>категорию</em></h2></div>
-        <button class="document-filter-reset active" type="button" data-document-filter="all" aria-pressed="true">Все документы</button>
+      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Открытая библиотека</p><h2>Все <em>документы</em></h2></div><p>Официальные материалы Управляющего совета доступны для просмотра и скачивания.</p></div>
+      <div class="document-toolbar">
+        <label class="document-search">
+          <span class="sr-only">Поиск по названию документа</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
+          <input type="search" placeholder="Найти документ" data-document-search />
+        </label>
+        <div class="category-filter document-filter-chips" aria-label="Категории документов">
+          {documentCategories.map(([key, label], index) => (
+            <button class:list={{ active: index === 0 }} type="button" data-document-filter={key} aria-pressed={index === 0 ? "true" : "false"}>{label}</button>
+          ))}
+        </div>
       </div>
-      <div class="document-category-grid">
-        {[
-          ["normative", "Нормативная база", "Устав, Положение об УС, регламенты и локальные акты"],
-          ["plans", "Планы работы", "Текущий план и планы прошлых учебных лет"],
-          ["protocols", "Протоколы", "Протоколы заседаний и публичные выписки"],
-          ["reports", "Отчёты", "Годовые отчёты совета и комиссий"],
-          ["elections", "Состав и выборы", "Приказы, результаты выборов и утверждённый состав"],
-          ["projects", "Проектные документы", "Решения о поддержке и подтверждающие материалы"],
-          ["training", "Обучение и стажировки", "Повышение квалификации и стажировки членов совета"],
-          ["archive", "Архив", "Документы прошлых учебных лет"]
-        ].map(([key, title, text]) => (
-          <button class="document-category" type="button" data-document-filter={key} aria-pressed="false"><h3>{title}</h3><p>{text}</p><span>Показать документы →</span></button>
-        ))}
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="page-section-heading"><h2>Последние <em>документы</em></h2><p>Официальные документы Управляющего совета доступны для просмотра и скачивания в формате PDF.</p></div>
       <div class="document-list standalone-documents">
         {documents.map(({ category, title, meta, href }) => (
-          <a href={href} data-document-category={category} target="_blank" rel="noopener">
-            <span class="file-icon">PDF</span>
+          <a href={href} data-document-category={category} data-document-title={`${title} ${meta}`.toLowerCase()} target="_blank" rel="noopener">
+            <span class="file-icon">{href.endsWith(".pptx") ? "PPTX" : "PDF"}</span>
             <span><strong>{title}</strong><small>{meta}</small></span>
-            <i aria-hidden="true">↓</i>
+            <i aria-hidden="true">↗</i>
           </a>
         ))}
       </div>
@@ -154,23 +153,40 @@ const documents = [
       const buttons = document.querySelectorAll("[data-document-filter]");
       const documents = document.querySelectorAll("[data-document-category]");
       const emptyState = document.querySelector("[data-document-empty]");
+      const search = document.querySelector("[data-document-search]");
+      let activeFilter = "all";
+
+      const updateDocuments = () => {
+        const query = search instanceof HTMLInputElement ? search.value.trim().toLowerCase() : "";
+        let visibleCount = 0;
+        documents.forEach((documentItem) => {
+          const matchesCategory = activeFilter === "all" || documentItem.getAttribute("data-document-category") === activeFilter;
+          const matchesSearch = !query || (documentItem.getAttribute("data-document-title") || "").includes(query);
+          const visible = matchesCategory && matchesSearch;
+          documentItem.toggleAttribute("hidden", !visible);
+          if (visible) visibleCount += 1;
+        });
+        emptyState?.toggleAttribute("hidden", visibleCount > 0);
+      };
+
       buttons.forEach((button) => {
+        if (!(button instanceof HTMLElement) || button.dataset.bound) return;
+        button.dataset.bound = "true";
         button.addEventListener("click", () => {
-          const filter = button.getAttribute("data-document-filter") || "all";
-          let visibleCount = 0;
+          activeFilter = button.getAttribute("data-document-filter") || "all";
           buttons.forEach((item) => {
             const selected = item === button;
             item.classList.toggle("active", selected);
             item.setAttribute("aria-pressed", String(selected));
           });
-          documents.forEach((documentItem) => {
-            const visible = filter === "all" || documentItem.getAttribute("data-document-category") === filter;
-            documentItem.toggleAttribute("hidden", !visible);
-            if (visible) visibleCount += 1;
-          });
-          emptyState?.toggleAttribute("hidden", visibleCount > 0);
+          updateDocuments();
         });
       });
+
+      if (search instanceof HTMLInputElement && !search.dataset.bound) {
+        search.dataset.bound = "true";
+        search.addEventListener("input", updateDocuments);
+      }
     };
     document.addEventListener("astro:page-load", setupDocumentFilters);
   </script>

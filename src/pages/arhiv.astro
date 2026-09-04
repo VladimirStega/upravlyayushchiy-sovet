@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
 import { archivedNews } from "../data/news";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -25,7 +24,7 @@ const years = [...new Set(archivedNews.map((item) => item.year))].sort((a, b) =>
           </div>
           <div class="editorial-news-grid archive-news-grid">
             {archivedNews.filter((item) => item.year === year).map((item, index) => (
-              <article class="editorial-news-card">
+              <article class:list={["editorial-news-card", { "editorial-news-no-image": !item.coverImage && !item.images?.[0] }]}>
                 {item.coverImage || item.images?.[0] ? (
                   <img
                     class="editorial-news-image"
@@ -33,9 +32,7 @@ const years = [...new Set(archivedNews.map((item) => item.year))].sort((a, b) =>
                     alt={(item.coverImage ?? item.images![0]).alt}
                     loading={index === 0 ? "eager" : "lazy"}
                   />
-                ) : (
-                  <PhotoPlaceholder title={item.mediaLabel} className="editorial-news-image" />
-                )}
+                ) : null}
                 <div>
                   <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
                   <h3>{item.title}</h3>

@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import "../styles/redesign.css";
+import "../styles/pages-redesign.css";
 import { ClientRouter } from "astro:transitions";
 import CouncilNetwork from "../components/CouncilNetwork.astro";
 
@@ -19,16 +21,18 @@ const {
 const navigation = [
   ["Главная", "/"],
   ["О совете", "/o-sovete/"],
-  ["Состав", "/sostav/"],
-  ["Документы", "/dokumenty/"],
-  ["Новости", "/novosti/"],
-  ["Видео", "/video/"]
+  ["Состав", "/sostav/"]
 ];
 
 const activityNavigation = [
-  ["Решения и заседания", "/deyatelnost/resheniya/"],
+  ["Заседания и решения", "/deyatelnost/resheniya/"],
   ["Проекты", "/deyatelnost/proekty/"],
   ["Опросы", "/deyatelnost/oprosy/"]
+];
+
+const mediaNavigation = [
+  ["Видео", "/video/"],
+  ["Награды и достижения", "/dostizheniya/"]
 ];
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -39,6 +43,12 @@ const isActive = (href: string) => {
   return path.startsWith(href);
 };
 const activityActive = path.startsWith("/deyatelnost/");
+const mediaActive = path.startsWith("/video") || path.startsWith("/dostizheniya");
+const updatedAt = new Intl.DateTimeFormat("ru-RU", {
+  day: "numeric",
+  month: "long",
+  year: "numeric"
+}).format(new Date());
 const isHomeNetwork = pageClass.includes("home-network-page");
 const networkMode = isHomeNetwork
   ? "home"
@@ -81,7 +91,7 @@ const networkMode = isHomeNetwork
           <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
         </button>
         <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
-          {navigation.slice(0, 3).map(([label, href]) => (
+          {navigation.map(([label, href]) => (
             <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
           ))}
           <details class="nav-more">
@@ -92,15 +102,22 @@ const networkMode = isHomeNetwork
               ))}
             </div>
           </details>
-          {navigation.slice(3).map(([label, href]) => (
-            <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
-          ))}
+          <a href={sitePath("/dokumenty/")} class:list={{ active: isActive("/dokumenty/") }} aria-current={isActive("/dokumenty/") ? "page" : undefined}>Документы</a>
+          <a href={sitePath("/novosti/")} class:list={{ active: isActive("/novosti/") }} aria-current={isActive("/novosti/") ? "page" : undefined}>Новости</a>
+          <details class="nav-more">
+            <summary class:list={{ active: mediaActive }}>Медиа <span aria-hidden="true">⌄</span></summary>
+            <div class="nav-submenu nav-submenu-right">
+              {mediaNavigation.map(([label, href]) => (
+                <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+              ))}
+            </div>
+          </details>
           <div class="nav-utility-actions">
             <button class="nav-utility-button" id="accessibility-toggle" type="button" aria-expanded="false" aria-controls="accessibility-panel">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/></svg>
               <span>Для слабовидящих</span>
             </button>
-            <a class="nav-contact-link" href="#contacts">Связаться</a>
+            <a class="nav-contact-link" href={sitePath("/kontakty/")}>Связаться</a>
           </div>
         </nav>
       </div>
@@ -150,7 +167,7 @@ const networkMode = isHomeNetwork
       </div>
       <div class="container footer-bottom">
         <span>© 2026 Управляющий совет</span>
-        <span>Дата последнего обновления: <strong>30 августа 2026 года</strong></span>
+        <span>Дата последнего обновления: <strong>{updatedAt}</strong></span>
       </div>
     </footer>
 

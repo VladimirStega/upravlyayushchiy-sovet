@@ -526,5 +526,9 @@ export const news: NewsItem[] = [
   }
 ];
 
-export const currentNews = news.filter((item) => !item.archived);
-export const archivedNews = news.filter((item) => item.archived);
+export const currentNews = news
+  .filter((item) => !item.archived)
+  .sort((a, b) => b.date.localeCompare(a.date));
+export const archivedNews = news
+  .filter((item) => item.archived)
+  .sort((a, b) => b.date.localeCompare(a.date));

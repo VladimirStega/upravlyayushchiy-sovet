@@ -1,41 +1,75 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { currentNews } from "../data/news";
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const sitePath = (href: string) => `${base}${href}`;
+
+const quickLinks = [
+  ["Состав совета", "Кто представляет школьное сообщество", "/sostav/", "12"],
+  ["Заседания", "Решения и протоколы 2025–2026", "/deyatelnost/resheniya/", "05"],
+  ["Документы", "Нормативные акты, планы и отчёты", "/dokumenty/", "17"],
+  ["Написать в совет", "Вопрос, предложение или инициатива", "/kontakty/", "→"]
+];
+
+const achievements = [
+  {
+    image: "/images/achievements/bezopasnost-truda-2024.jpg",
+    year: "2024",
+    title: "II место в форум-театре по охране труда"
+  },
+  {
+    image: "/images/achievements/roditelskiy-patrul-2023.jpeg",
+    year: "2023",
+    title: "I место в конкурсе «Родительский патруль»"
+  }
+];
 ---
 
 <BaseLayout
-  title="Управляющий совет — решения, которые меняют школу"
-  description="Решения и новости Управляющего совета образовательной организации."
+  title="Управляющий совет школы № 47 города Липецка"
+  description="Состав, решения, документы, проекты и новости Управляющего совета МБОУ СОШ № 47 города Липецка."
   pageClass="home-network-page"
 >
-  <section class="hero">
+  <section class="hero home-hero">
     <div class="container hero-grid">
       <div class="hero-content">
-        <p class="eyebrow"><span></span> Управляющий совет</p>
-        <h1>Решения, которые <em>меняют школу</em></h1>
+        <p class="eyebrow"><span></span> МБОУ СОШ № 47 · Липецк</p>
+        <h1>Управляющий совет <em>школы № 47</em></h1>
         <p class="hero-lead">
-          Объединяем учеников, родителей, педагогов и партнёров, чтобы вместе создавать
-          открытую, безопасную и современную образовательную среду.
+          Родители, ученики, педагоги и партнёры вместе обсуждают важные вопросы
+          и принимают решения, которые делают школьную жизнь лучше.
         </p>
         <div class="hero-actions">
-          <a class="button button-primary" href={sitePath("/o-sovete/")}>Узнать о совете</a>
+          <a class="button button-primary" href={sitePath("/sostav/")}>Состав совета</a>
           <a class="button button-ghost" href={sitePath("/kontakty/")}>Предложить инициативу</a>
         </div>
       </div>
 
-      <div class="hero-visual hero-video-visual">
-        <div class="photo-placeholder photo-placeholder-main hero-video-main">
-          <a class="video-play-link" href={sitePath("/video/")} aria-label="Перейти к видеоматериалам">▶</a>
-          <strong>Презентационный ролик</strong>
-          <small>Видео об Управляющем совете · до 5 минут · 16:9</small>
-        </div>
-      </div>
+      <figure class="home-hero-photo">
+        <img
+          src={sitePath("/images/news/roditelskoe-sobranie-i-zasedanie-soveta-2025/zasedanie-soveta.jpg")}
+          alt="Заседание Управляющего совета школы № 47"
+          loading="eager"
+        />
+        <figcaption><span>Совет в работе</span> Заседание Управляющего совета</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="section impact-section" id="about">
+  <nav class="home-quick-nav" aria-label="Быстрый доступ">
+    <div class="container home-quick-grid">
+      {quickLinks.map(([title, description, href, value]) => (
+        <a href={sitePath(href)}>
+          <span>{value}</span>
+          <strong>{title}</strong>
+          <small>{description}</small>
+        </a>
+      ))}
+    </div>
+  </nav>
+
+  <section class="section home-about" id="about">
     <div class="container">
       <div class="section-heading heading-split">
         <div>
@@ -43,43 +77,41 @@ const sitePath = (href: string) => `${base}${href}`;
           <h2>Открыто говорим.<br /><em>Вместе решаем.</em></h2>
         </div>
         <p>
-          Здесь появится краткое описание миссии и полномочий Управляющего совета.
-          Текст должен объяснять, какие вопросы решает совет и как жители школьного
-          сообщества могут участвовать в его работе.
+          Управляющий совет участвует в развитии школы, рассматривает условия обучения,
+          безопасность, школьные проекты и предложения участников образовательных отношений.
+          Решения совета и подтверждающие документы публикуются открыто.
         </p>
       </div>
-      <div class="stats-grid">
-        <article><span class="stat-value">12</span><strong>членов совета</strong><p>Утверждённый состав на 2025–2026 учебный год</p></article>
-        <article><span class="stat-value">__</span><strong>заседаний за год</strong><p>Здесь будет подтверждённое число проведённых заседаний</p></article>
-        <article class="stat-accent"><span class="stat-value">__</span><strong>реализованных проектов</strong><p>Количество инициатив с измеримым результатом</p></article>
-        <article><span class="stat-value">__</span><strong>участников опросов</strong><p>Обучающиеся, родители и работники образовательной организации</p></article>
+      <div class="stats-grid verified-stats">
+        <article><span class="stat-value">12</span><strong>членов совета</strong><p>Представляют родителей, учеников, работников школы и учредителя</p></article>
+        <article><span class="stat-value">5</span><strong>заседаний за год</strong><p>Проведено в 2025–2026 учебном году</p></article>
+        <article class="stat-accent"><span class="stat-value">17</span><strong>материалов</strong><p>Документы, протоколы, планы, отчёты и материалы проектов</p></article>
+        <article><span class="stat-value">99%</span><strong>положительных оценок</strong><p>Организации воспитательной работы по итогам опроса</p></article>
       </div>
     </div>
   </section>
 
-  <section class="section decisions-section" id="decisions">
+  <section class="section decisions-section home-decisions" id="decisions">
     <div class="container decisions-grid">
       <div>
-        <p class="eyebrow eyebrow-light"><span></span> От предложения к результату</p>
-        <h2>Каждое решение<br /><em>можно проверить</em></h2>
+        <p class="eyebrow eyebrow-light"><span></span> Заседания и решения</p>
+        <h2>Работу совета<br /><em>можно проверить</em></h2>
         <p class="section-lead">
-          Здесь показываем путь от предложения до исполненного решения. Полный архив
-          решений и протоколов размещён на отдельной странице.
+          Для каждого заседания опубликован протокол. Документы открываются в новом окне
+          и доступны для скачивания.
         </p>
-        <a class="button button-light" href={sitePath("/deyatelnost/resheniya/")}>Все решения</a>
+        <a class="button button-light" href={sitePath("/deyatelnost/resheniya/")}>Все заседания</a>
       </div>
       <div class="decision-list">
         <article>
-          <div class="decision-top"><span class="status-chip status-progress"><i></i> В работе</span><time>Указать дату</time></div>
-          <h3>Здесь будет название актуального решения Управляющего совета</h3>
-          <div class="progress"><span style="width: 62%"></span></div>
-          <p>Ответственный: <strong>указать комиссию или участника</strong></p>
+          <div class="decision-top"><span class="status-chip status-done"><i></i> Проведено</span><time datetime="2026-05-20">20 мая 2026</time></div>
+          <h3>Итоги учебного года и задачи на следующий период</h3>
+          <a class="decision-document-link" href={sitePath("/documents/protokol-us-5-2026-05-20.pdf")} target="_blank" rel="noopener">Открыть протокол № 5 <span>→</span></a>
         </article>
         <article>
-          <div class="decision-top"><span class="status-chip status-done"><i></i> Выполнено</span><time>Указать дату</time></div>
-          <h3>Здесь будет название выполненного решения Управляющего совета</h3>
-          <div class="progress"><span style="width: 100%"></span></div>
-          <p>Результат: <strong>добавить подтверждённый результат</strong></p>
+          <div class="decision-top"><span class="status-chip status-done"><i></i> Проведено</span><time datetime="2026-03-26">26 марта 2026</time></div>
+          <h3>Организация образовательной среды и планирование работы</h3>
+          <a class="decision-document-link" href={sitePath("/documents/protokol-us-4-2026-03-26.pdf")} target="_blank" rel="noopener">Открыть протокол № 4 <span>→</span></a>
         </article>
       </div>
     </div>
@@ -89,32 +121,55 @@ const sitePath = (href: string) => `${base}${href}`;
     <div class="container">
       <div class="section-heading heading-row">
         <div>
-          <p class="eyebrow eyebrow-dark"><span></span> Новости совета</p>
-          <h2>Работа совета — <em>в деталях</em></h2>
+          <p class="eyebrow eyebrow-dark"><span></span> Последние события</p>
+          <h2>Новости <em>школьного сообщества</em></h2>
         </div>
         <a class="text-link" href={sitePath("/novosti/")}>Все новости <span>→</span></a>
       </div>
-      <div class="editorial-news-grid">
+      <div class="editorial-news-grid home-news-grid">
         {currentNews.slice(0, 3).map((item, index) => (
           <article class:list={["editorial-news-card", { "editorial-news-featured": index === 0 }]}>
             {item.coverImage || item.images?.[0] ? (
               <img class="editorial-news-image" src={sitePath((item.coverImage ?? item.images![0]).src)} alt={(item.coverImage ?? item.images![0]).alt} loading={index === 0 ? "eager" : "lazy"} />
-            ) : (
-              <div class="photo-placeholder editorial-news-image">
-                <span class="placeholder-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m6 37 11-13 8 8 6-7 11 12"/><circle cx="34" cy="14" r="5"/></svg></span>
-                <strong>{item.mediaLabel}</strong>
-              </div>
-            )}
+            ) : null}
             <div>
               <div class="news-card-meta"><span>{item.categoryLabel}</span><time datetime={item.date}>{item.dateLabel}</time></div>
               <h3>{item.title}</h3>
               <p>{item.excerpt}</p>
-              <div class="news-card-actions">
-                <a href={sitePath(`/novosti/${item.slug}/`)}>Читать новость <span>→</span></a>
-                {item.sourceUrl && <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
-              </div>
+              <a class="news-card-primary-link" href={sitePath(`/novosti/${item.slug}/`)}>Читать новость <span>→</span></a>
             </div>
           </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section home-project-section">
+    <div class="container home-project-card">
+      <img src={sitePath("/images/news/roditeli-i-deti-itogi/obshchaya-fotografiya.jpg")} alt="Участники проекта «Родители и дети»" loading="lazy" />
+      <div>
+        <p class="eyebrow eyebrow-light"><span></span> Проект года</p>
+        <h2>Играем в старину,<br /><em>живём в современности</em></h2>
+        <p>Семейный проект объединил учеников 1–11 классов и их родителей вокруг традиционных игр, движения, общения и культурного наследия.</p>
+        <a class="button button-light" href={sitePath("/deyatelnost/proekty/")}>Подробнее о проектах</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section home-achievements-section">
+    <div class="container home-achievements-grid">
+      <div class="home-achievements-copy">
+        <p class="eyebrow eyebrow-dark"><span></span> Награды</p>
+        <h2>Результаты <em>общей работы</em></h2>
+        <p>Дипломы школы и команд в направлениях, связанных с безопасностью, участием родителей и развитием городской среды.</p>
+        <a class="text-link" href={sitePath("/dostizheniya/")}>Все достижения <span>→</span></a>
+      </div>
+      <div class="home-awards-list">
+        {achievements.map((item) => (
+          <a href={sitePath("/dostizheniya/")}>
+            <img src={sitePath(item.image)} alt="" loading="lazy" />
+            <span><small>{item.year}</small><strong>{item.title}</strong></span>
+          </a>
         ))}
       </div>
     </div>
@@ -127,10 +182,9 @@ const sitePath = (href: string) => `${base}${href}`;
         <h2>Ваш голос помогает<br /><em>принимать решения</em></h2>
       </div>
       <div>
-        <p>Здесь будет краткое приглашение направить вопрос, инициативу или предложение в Управляющий совет.</p>
+        <p>Направьте в Управляющий совет вопрос, предложение или инициативу. Ответ придёт на указанную вами электронную почту.</p>
         <a class="button button-coral" href={sitePath("/kontakty/")}>Написать в совет</a>
       </div>
     </div>
   </section>
-
 </BaseLayout>

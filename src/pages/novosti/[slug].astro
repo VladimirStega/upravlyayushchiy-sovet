@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PhotoPlaceholder from "../../components/PhotoPlaceholder.astro";
 import { news, type NewsItem } from "../../data/news";
 
 export function getStaticPaths() {
@@ -12,7 +11,6 @@ const { item } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const backHref = item.archived ? `${base}/arhiv/` : `${base}/novosti/`;
 const backLabel = item.archived ? "Вернуться в архив" : "Вернуться к новостям";
-const mediaTitle = item.media === "video" ? "Здесь будет размещён видеоролик" : item.media === "gallery" ? "Здесь будет фотогалерея" : item.media === "none" ? "Публикация без фотографии" : "Здесь будет фотография";
 ---
 
 <BaseLayout title={`${item.title} — Управляющий совет`} description={item.excerpt} current="Новости">
@@ -53,15 +51,11 @@ const mediaTitle = item.media === "video" ? "Здесь будет размещ�
         ) : item.media === "video" ? (
           <div class="photo-placeholder news-article-photo external-video-placeholder">
             <span class="external-video-play" aria-hidden="true">▶</span>
-            <strong>{mediaTitle}</strong>
+            <strong>{item.title}</strong>
             <small>{item.mediaLabel}</small>
             {item.sourceUrl && <a class="button button-primary" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
           </div>
-        ) : item.media === "none" ? (
-          <PhotoPlaceholder title="Публикация без фотографии" note="В исходной публикации ВКонтакте фотография отсутствует." className="news-article-photo" />
-        ) : (
-          <PhotoPlaceholder title={mediaTitle} note={item.mediaLabel} className="news-article-photo" />
-        )}
+        ) : null}
         <div class="news-article-copy">
           {item.body.map((paragraph) => <p>{paragraph}</p>)}
           {item.sourceUrl && (
@@ -74,11 +68,6 @@ const mediaTitle = item.media === "video" ? "Здесь будет размещ�
         </div>
       </div>
 
-      <aside class="news-article-aside">
-        <span>Медиаматериалы</span>
-        <h2>{item.images?.length ? "Фотографии мероприятия" : item.media === "video" ? "Видео доступно во ВКонтакте" : item.media === "gallery" ? "Фотогалерея" : item.media === "none" ? "Без фотографии" : "Фотография"}</h2>
-        <p>{item.images?.length ? `В галерее размещено ${item.images.length} фотографий из официальной публикации школы.` : item.media === "video" ? "Ролик можно открыть в официальной публикации школы во ВКонтакте." : item.media === "none" ? "В оригинальной публикации ВКонтакте фотография отсутствует." : "Медиаматериалы будут добавлены после получения оригиналов."}</p>
-      </aside>
     </div>
   </article>
 </BaseLayout>
