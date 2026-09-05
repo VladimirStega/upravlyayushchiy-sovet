@@ -12,7 +12,7 @@ export interface NewsItem {
   body: string[];
   media: "photo" | "gallery" | "video" | "none";
   mediaLabel: string;
-  sourceUrl: string;
+  sourceUrl?: string;
   coverImage?: {
     src: string;
     alt: string;
@@ -25,6 +25,27 @@ export interface NewsItem {
 }
 
 export const news: NewsItem[] = [
+  {
+    slug: "itogovoe-zasedanie-soveta-avgust-2026",
+    title: "Управляющий совет утвердил планы перед новым учебным годом",
+    date: "2026-08-29",
+    dateLabel: "29 августа 2026",
+    year: 2026,
+    category: "meetings",
+    categoryLabel: "Заседания",
+    excerpt: "На итоговом заседании обсудили стратегические задачи и утвердили планы перед началом учебного года.",
+    body: [
+      "В преддверии 1 сентября состоялось ключевое событие — итоговое заседание Управляющего совета нашей школы.",
+      "Мы обсудили стратегические задачи и утвердили планы перед началом учебного года. Благодарим всех членов Управляющего совета за активную позицию и неравнодушие! Именно совместными усилиями мы делаем нашу школу лучше и безопаснее.",
+      "Следующее заседание состоится уже в сентябре."
+    ],
+    media: "photo",
+    mediaLabel: "Фотография итогового заседания Управляющего совета",
+    coverImage: {
+      src: "/images/news/itogovoe-zasedanie-soveta-avgust-2026/upravlyayushchiy-sovet.png",
+      alt: "Члены Управляющего совета голосуют на итоговом заседании перед началом учебного года"
+    }
+  },
   {
     slug: "roditeli-i-deti-itogi-igry",
     title: "Подведены итоги проекта «Родители и дети: играем в старину, живём в современности»",
