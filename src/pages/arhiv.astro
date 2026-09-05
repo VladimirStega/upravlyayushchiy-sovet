@@ -39,7 +39,7 @@ const years = [...new Set(archivedNews.map((item) => item.year))].sort((a, b) =>
                   <p>{item.excerpt}</p>
                   <div class="news-card-actions">
                     <a href={`${base}/novosti/${item.slug}/`}>Читать публикацию <span>→</span></a>
-                    {item.sourceUrl && <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
+                    {item.sourceUrl && <a class="news-source-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">{item.sourceLabel ?? "Посмотреть во ВКонтакте"}</a>}
                   </div>
                 </div>
               </article>

@@ -13,6 +13,8 @@ export interface NewsItem {
   media: "photo" | "gallery" | "video" | "none";
   mediaLabel: string;
   sourceUrl?: string;
+  sourceLabel?: string;
+  sourceDescription?: string;
   coverImage?: {
     src: string;
     alt: string;
@@ -41,6 +43,9 @@ export const news: NewsItem[] = [
     ],
     media: "photo",
     mediaLabel: "Фотография итогового заседания Управляющего совета",
+    sourceUrl: "https://sc47lip.gosuslugi.ru/roditelyam-i-uchenikam/novosti/novosti_543.html",
+    sourceLabel: "Открыть на сайте школы",
+    sourceDescription: "Полная публикация размещена на официальном сайте школы.",
     coverImage: {
       src: "/images/news/itogovoe-zasedanie-soveta-avgust-2026/upravlyayushchiy-sovet.png",
       alt: "Члены Управляющего совета голосуют на итоговом заседании перед началом учебного года"

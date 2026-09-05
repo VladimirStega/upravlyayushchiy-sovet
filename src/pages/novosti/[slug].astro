@@ -35,7 +35,7 @@ const backLabel = item.archived ? "Вернуться в архив" : "Верн
             <div class="news-video-cover-action">
               <span class="external-video-play" aria-hidden="true">▶</span>
               <strong>{item.mediaLabel}</strong>
-              {item.sourceUrl && <a class="button button-primary" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
+              {item.sourceUrl && <a class="button button-primary" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">{item.sourceLabel ?? "Посмотреть во ВКонтакте"}</a>}
             </div>
           </div>
         ) : item.images?.length ? (
@@ -53,7 +53,7 @@ const backLabel = item.archived ? "Вернуться в архив" : "Верн
             <span class="external-video-play" aria-hidden="true">▶</span>
             <strong>{item.title}</strong>
             <small>{item.mediaLabel}</small>
-            {item.sourceUrl && <a class="button button-primary" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Посмотреть во ВКонтакте</a>}
+            {item.sourceUrl && <a class="button button-primary" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">{item.sourceLabel ?? "Посмотреть во ВКонтакте"}</a>}
           </div>
         ) : null}
         <div class="news-article-copy">
@@ -61,7 +61,7 @@ const backLabel = item.archived ? "Вернуться в архив" : "Верн
           {item.sourceUrl && (
             <div class="news-source-note">
               <strong>Источник публикации</strong>
-              <p>Полная публикация размещена в официальном сообществе школы во ВКонтакте.</p>
+              <p>{item.sourceDescription ?? "Полная публикация размещена в официальном сообществе школы во ВКонтакте."}</p>
               <a class="text-link" href={item.sourceUrl} target="_blank" rel="noopener noreferrer">Открыть исходную публикацию <span>→</span></a>
             </div>
           )}
