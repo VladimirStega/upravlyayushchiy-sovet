@@ -2350,3 +2350,26 @@
 .a11y-contrast :is(b, em) {
   color: #fff !important;
 }
+
+/* Единая типографика сайта: выбранный вариант Onest. */
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Onest", Arial, sans-serif;
+}
+
+body :where(*) {
+  font-family: "Onest", Arial, sans-serif !important;
+}
+
+body :where(h1, h2, h3, h4, h5, h6, h1 em, h2 em, h3 em) {
+  font-style: normal !important;
+  font-weight: 600;
+}
+
+body :where(.stat-value, .home-quick-grid a > span) {
+  font-weight: 500;
+}
