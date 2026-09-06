@@ -2394,7 +2394,10 @@ body :where(.stat-value, .home-quick-grid a > span) {
 
 /* Видеовизитка на главной странице. */
 .home-network-page .home-video-feature {
-  margin: 24px 16px;
+  width: var(--container);
+  margin: 32px auto;
+  padding: 32px;
+  box-sizing: border-box;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 38px;
@@ -2402,10 +2405,12 @@ body :where(.stat-value, .home-quick-grid a > span) {
 }
 
 .home-video-feature-card {
+  width: 100%;
+  margin: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(310px, 0.65fr);
   align-items: center;
-  gap: 52px;
+  gap: 32px;
 }
 
 .home-video-feature-player {
@@ -2425,7 +2430,13 @@ body :where(.stat-value, .home-quick-grid a > span) {
 }
 
 .home-video-feature-copy {
-  padding: 34px 26px 34px 0;
+  padding: 0;
+}
+
+.video-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .home-video-feature-copy h2 {
@@ -2451,11 +2462,11 @@ body :where(.stat-value, .home-quick-grid a > span) {
 @media (max-width: 900px) {
   .home-video-feature-card {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: 24px;
   }
 
   .home-video-feature-copy {
-    padding: 38px;
+    padding: 0;
   }
 }
 
@@ -2467,15 +2478,16 @@ body :where(.stat-value, .home-quick-grid a > span) {
   }
 
   .home-network-page .home-video-feature {
-    margin: 18px 7px;
+    margin: 24px auto;
+    padding: 20px;
     border-radius: 22px;
   }
 
   .home-video-feature-player {
-    border-radius: 18px 18px 0 0;
+    border-radius: 16px;
   }
 
   .home-video-feature-copy {
-    padding: 30px 24px 34px;
+    padding: 0;
   }
 }

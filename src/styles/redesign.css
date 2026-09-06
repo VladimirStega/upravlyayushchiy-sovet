@@ -21,7 +21,7 @@
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -29,7 +29,7 @@ body,
 .home-network-page,
 .network-page {
   min-width: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
   color: var(--ink);
   background: var(--cream);
   font-family: "Manrope", Arial, sans-serif;

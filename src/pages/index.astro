@@ -84,7 +84,10 @@ const achievements = [
         <p class="eyebrow eyebrow-light"><span></span> Видеовизитка</p>
         <h2 id="home-video-title">Совет,<br /><em>который действует</em></h2>
         <p>Участники Управляющего совета рассказывают о совместной работе, школьных инициативах и решениях.</p>
-        <a class="button button-light" href={sitePath("/video/")}>Открыть страницу видео</a>
+        <div class="video-actions">
+          <a class="button button-light" href={sitePath("/video/")}>Открыть страницу видео</a>
+          <a class="button button-light" href={sitePath("/media/upravlyayushchiy-sovet-47.mp4")} download>Скачать видео · MP4, 38 МБ</a>
+        </div>
       </div>
     </div>
   </section>
