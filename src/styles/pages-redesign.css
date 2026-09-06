@@ -2374,13 +2374,7 @@ body :where(.stat-value, .home-quick-grid a > span) {
   font-weight: 500;
 }
 
-/* Логотип школы и прокручиваемая вместе со страницей навигация. */
-.site-header,
-.accessibility-panel {
-  position: relative;
-  top: auto;
-}
-
+/* Логотип школы. Навигация сохраняет закрепление из базовых стилей. */
 .brand-logo-shell {
   width: 44px;
   height: 44px;
