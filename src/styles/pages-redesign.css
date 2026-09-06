@@ -1671,6 +1671,7 @@
 }
 
 .video-placeholder {
+  transform: none;
   overflow: hidden;
   border-radius: 22px;
   background: var(--navy-deep);

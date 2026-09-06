@@ -2467,7 +2467,6 @@ h2 {
   border-radius: 22px;
   background: var(--paper);
   box-shadow: var(--shadow);
-  transform: rotate(-1.5deg);
 }
 
 .video-screen {
