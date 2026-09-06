@@ -1,7 +1,7 @@
 /* 2026 redesign: calm editorial portal with people and decisions in focus. */
 :root {
   --ink: #17324d;
-  --ink-soft: #637589;
+  --ink-soft: #506378;
   --navy: #174a8b;
   --navy-deep: #0d2f57;
   --navy-bright: #2767aa;
@@ -87,6 +87,7 @@ input:focus-visible {
 }
 
 .brand-text strong {
+  color: var(--navy-deep);
   font-size: 14px;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -398,7 +399,7 @@ p {
 }
 
 .button-coral {
-  color: #fff;
+  color: var(--navy-deep);
   background: var(--coral);
 }
 
@@ -568,7 +569,17 @@ p {
   gap: 64px;
 }
 
+.footer-grid li span {
+  color: #c2d3e4;
+  font-size: 12px;
+}
+
+.content-card.dark .content-card-number {
+  color: var(--mint);
+}
+
 .footer-bottom {
+  color: #c2d3e4;
   margin-top: 48px;
   padding: 22px 0;
   border-top-color: rgba(255, 255, 255, 0.14);

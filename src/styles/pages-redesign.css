@@ -198,7 +198,7 @@
   position: absolute;
   top: 18px;
   right: 20px;
-  color: var(--mint-bright);
+  color: #237455;
   font-family: "Prata", Georgia, serif;
   font-size: 23px;
 }
@@ -434,6 +434,11 @@
   text-transform: uppercase;
 }
 
+.editorial-news-card .news-card-meta time,
+.editorial-news-card .news-source-link {
+  color: var(--ink-soft);
+}
+
 .editorial-news-card h3 {
   margin: 18px 0 10px;
   font-size: 22px;
@@ -536,6 +541,10 @@
 
 .home-project-card h2 em {
   color: var(--mint-bright);
+}
+
+.home-project-card .eyebrow {
+  color: var(--mint);
 }
 
 .home-project-card p:not(.eyebrow) {
@@ -993,6 +1002,7 @@
 .news-archive-link p {
   max-width: 680px;
   margin: 0;
+  color: var(--navy-deep);
   font-size: 14px;
 }
 
@@ -1206,7 +1216,8 @@
   text-decoration: none;
 }
 
-.status-pill {
+.status-pill,
+.status-pill.done {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1306,8 +1317,8 @@
   color: #fff;
 }
 
-.project-card-text p {
-  color: rgba(255, 255, 255, 0.68);
+.project-card.project-card-text p {
+  color: #d5e3f0;
 }
 
 .project-tag {
@@ -1411,7 +1422,7 @@
 }
 
 .survey-featured > div:first-child > p {
-  color: rgba(255, 255, 255, 0.68);
+  color: #d5e3f0;
 }
 
 .survey-meta {
@@ -1427,8 +1438,8 @@
 }
 
 .survey-meta dt {
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 10px;
+  color: #c2d3e4;
+  font-size: 12px;
   font-weight: 750;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1437,7 +1448,7 @@
 .survey-meta dd {
   margin: 7px 0 0;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.45;
 }
 
@@ -1453,13 +1464,15 @@
 }
 
 .survey-featured-visual strong {
-  font-size: 11px;
+  color: var(--navy-deep);
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .survey-featured-visual b {
   margin: 13px 0;
+  color: var(--navy-deep);
   font-family: "Prata", Georgia, serif;
   font-size: 88px;
   line-height: 1;
@@ -1467,11 +1480,13 @@
 
 .survey-featured-visual p {
   max-width: 280px;
-  font-size: 15px;
+  color: var(--navy-deep);
+  font-size: 16px;
 }
 
 .survey-featured-visual small {
-  font-size: 11px;
+  color: var(--navy-deep);
+  font-size: 13px;
 }
 
 .survey-results-section {
@@ -1524,13 +1539,16 @@
   gap: 24px;
   margin-top: 22px;
   padding: 24px;
+  border: 1px solid #a7d4c4;
+  border-left: 4px solid #28785d;
   border-radius: 16px;
+  color: var(--navy-deep);
   background: var(--mint);
 }
 
 .survey-conclusion span {
   color: var(--navy);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1538,7 +1556,8 @@
 
 .survey-conclusion p {
   margin: 0;
-  font-size: 14px;
+  color: var(--navy-deep);
+  font-size: 16px;
 }
 
 .survey-download {
@@ -2314,4 +2333,20 @@
   .network-page .home-network-canvas {
     opacity: 0.4;
   }
+}
+
+/* Keep the accessibility palette consistent inside coloured inset panels. */
+.a11y-contrast :is(.survey-featured, .survey-featured-visual, .survey-conclusion,
+  .survey-status, .home-quick-grid, .home-quick-grid a, .home-project-card,
+  .about-media-copy, .content-card, .stat-accent, .project-card, .practice-card,
+  .project-overview-download, .news-archive-link, .news-source-note,
+  .council-structure-downloads, .video-accessibility-note, .contact-message-panel,
+  .news-card-meta span, .status-pill, .file-icon) {
+  border-color: #fff !important;
+  color: #fff !important;
+  background: #000 !important;
+}
+
+.a11y-contrast :is(b, em) {
+  color: #fff !important;
 }
