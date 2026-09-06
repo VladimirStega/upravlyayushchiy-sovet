@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const sitePath = (href: string) => `${base}${href}`;
 ---
 
 <BaseLayout title="Видео — Управляющий совет">
@@ -15,16 +18,17 @@ import PageHero from "../components/PageHero.astro";
     <div class="container video-grid">
       <div class="video-placeholder video-placeholder-pending">
         <div class="video-screen">
-          <span class="video-play-placeholder" aria-hidden="true">▶</span>
-          <strong>Видеовизитка готовится к публикации</strong>
-          <small>После загрузки здесь появится ролик в формате 16:9</small>
+          <video controls preload="metadata" poster={sitePath("/images/brand/upravlyayushchiy-sovet-school-47.png")} aria-label="Видеовизитка Управляющего совета школы № 47">
+            <source src={sitePath("/media/upravlyayushchiy-sovet-47.mp4")} type="video/mp4" />
+            Ваш браузер не поддерживает воспроизведение видео.
+          </video>
         </div>
       </div>
       <div class="video-copy">
-        <p class="eyebrow eyebrow-dark"><span></span> Скоро на сайте</p>
-        <h2>Пять минут<br /><em>о главном</em></h2>
-        <p>В ролике будут представлены участники совета, порядок принятия решений, реализованные проекты и планы дальнейшей работы.</p>
-        <p class="video-accessibility-note">Вместе с видео будет опубликована текстовая расшифровка.</p>
+        <p class="eyebrow eyebrow-dark"><span></span> Смотрите сейчас</p>
+        <h2>Открыто<br /><em>о нашей работе</em></h2>
+        <p>Участники совета рассказывают о совместной работе, школьных инициативах, реализованных проектах и планах.</p>
+        <p class="video-accessibility-note">Продолжительность ролика — 2 минуты 32 секунды. Для просмотра доступны пауза, перемотка, громкость и полноэкранный режим.</p>
       </div>
     </div>
   </section>

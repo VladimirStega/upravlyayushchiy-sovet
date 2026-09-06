@@ -5,13 +5,6 @@ import { currentNews } from "../data/news";
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const sitePath = (href: string) => `${base}${href}`;
 
-const quickLinks = [
-  ["Состав совета", "Кто представляет школьное сообщество", "/sostav/", "12"],
-  ["Заседания", "Решения и протоколы 2025–2026", "/deyatelnost/resheniya/", "05"],
-  ["Документы", "Нормативные акты, планы и отчёты", "/dokumenty/", "17"],
-  ["Написать в совет", "Вопрос, предложение или инициатива", "/kontakty/", "→"]
-];
-
 const achievements = [
   {
     image: "/images/achievements/bezopasnost-truda-2024.jpg",
@@ -48,26 +41,14 @@ const achievements = [
 
       <figure class="home-hero-photo">
         <img
-          src={sitePath("/images/news/roditelskoe-sobranie-i-zasedanie-soveta-2025/zasedanie-soveta.jpg")}
-          alt="Заседание Управляющего совета школы № 47"
+          src={sitePath("/images/brand/upravlyayushchiy-sovet-school-47.png")}
+          alt="Управляющий совет школы № 47 у входа в школу"
           loading="eager"
         />
-        <figcaption><span>Совет в работе</span> Заседание Управляющего совета</figcaption>
+        <figcaption><span>Мы вместе</span> Управляющий совет школы № 47</figcaption>
       </figure>
     </div>
   </section>
-
-  <nav class="home-quick-nav" aria-label="Быстрый доступ">
-    <div class="container home-quick-grid">
-      {quickLinks.map(([title, description, href, value]) => (
-        <a href={sitePath(href)}>
-          <span>{value}</span>
-          <strong>{title}</strong>
-          <small>{description}</small>
-        </a>
-      ))}
-    </div>
-  </nav>
 
   <section class="section home-about" id="about">
     <div class="container">
@@ -87,6 +68,23 @@ const achievements = [
         <article><span class="stat-value">5</span><strong>заседаний за год</strong><p>Проведено в 2025–2026 учебном году</p></article>
         <article class="stat-accent"><span class="stat-value">17</span><strong>материалов</strong><p>Документы, протоколы, планы, отчёты и материалы проектов</p></article>
         <article><span class="stat-value">99%</span><strong>положительных оценок</strong><p>Организации воспитательной работы по итогам опроса</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section home-video-feature" aria-labelledby="home-video-title">
+    <div class="container home-video-feature-card">
+      <div class="home-video-feature-player">
+        <video controls preload="metadata" poster={sitePath("/images/brand/upravlyayushchiy-sovet-school-47.png")} aria-label="Видеовизитка Управляющего совета школы № 47">
+          <source src={sitePath("/media/upravlyayushchiy-sovet-47.mp4")} type="video/mp4" />
+          Ваш браузер не поддерживает воспроизведение видео.
+        </video>
+      </div>
+      <div class="home-video-feature-copy">
+        <p class="eyebrow eyebrow-light"><span></span> Видеовизитка</p>
+        <h2 id="home-video-title">Совет,<br /><em>который действует</em></h2>
+        <p>Участники Управляющего совета рассказывают о совместной работе, школьных инициативах и решениях.</p>
+        <a class="button button-light" href={sitePath("/video/")}>Открыть страницу видео</a>
       </div>
     </div>
   </section>
