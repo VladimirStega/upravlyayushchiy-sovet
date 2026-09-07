@@ -2375,6 +2375,15 @@ body :where(.stat-value, .home-quick-grid a > span) {
   font-weight: 500;
 }
 
+/* Filtering must override card layouts at every responsive breakpoint. */
+[data-news-category][hidden],
+[data-member-category][hidden],
+[data-document-category][hidden],
+[data-news-empty][hidden],
+[data-document-empty][hidden] {
+  display: none !important;
+}
+
 /* Логотип школы. Навигация сохраняет закрепление из базовых стилей. */
 .brand-logo-shell {
   width: 44px;
