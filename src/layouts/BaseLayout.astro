@@ -44,11 +44,6 @@ const isActive = (href: string) => {
 };
 const activityActive = path.startsWith("/deyatelnost/");
 const mediaActive = path.startsWith("/video") || path.startsWith("/dostizheniya");
-const updatedAt = new Intl.DateTimeFormat("ru-RU", {
-  day: "numeric",
-  month: "long",
-  year: "numeric"
-}).format(new Date());
 const isHomeNetwork = pageClass.includes("home-network-page");
 const networkMode = isHomeNetwork
   ? "home"
@@ -167,7 +162,6 @@ const networkMode = isHomeNetwork
       </div>
       <div class="container footer-bottom">
         <span>© 2026 Управляющий совет</span>
-        <span>Дата последнего обновления: <strong>{updatedAt}</strong></span>
       </div>
     </footer>
 
