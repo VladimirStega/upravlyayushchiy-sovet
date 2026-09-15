@@ -2336,6 +2336,15 @@
   }
 }
 
+.home-network-page main > .home-ai-practice {
+  z-index: 2;
+}
+
+.home-network-page .home-ai-practice .section-lead {
+  color: var(--ink);
+  text-shadow: none;
+}
+
 /* Keep the accessibility palette consistent inside coloured inset panels. */
 .a11y-contrast :is(.survey-featured, .survey-featured-visual, .survey-conclusion,
   .survey-status, .home-quick-grid, .home-quick-grid a, .home-project-card,
