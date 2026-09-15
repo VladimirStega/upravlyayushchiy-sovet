@@ -1,0 +1,114 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const fields = [
+  ["question", "Какой вопрос нужно решить?", "Например: как использовать свободное помещение в школе?"],
+  ["facts", "Какие факты уже известны?", "Укажите подтверждённые данные. Если сведений нет, так и напишите."],
+  ["people", "Чьи интересы затрагивает решение?", "Ученики, родители, педагоги — без имён и контактов."],
+  ["limits", "Какие есть ограничения и сроки?", "Бюджет, помещение, время, условия реализации."],
+  ["options", "Какие варианты уже рассматриваются?", "Перечислите идеи участников, если они есть."],
+  ["criteria", "Что важно при выборе?", "Например: доступность, польза для учеников, стоимость, срок запуска."]
+];
+---
+<BaseLayout title="ИИ-советник — практики Управляющего совета" description="Методика подготовки решений с помощью ИИ: конструктор запроса, учебный пример и материалы для участников." >
+  <PageHero eyebrow="Практики совета" title="ИИ-советник:" accent="от вопроса к решению" description="Искусственный интеллект помогает подготовить обсуждение. Управляющий совет проверяет предложения и принимает итоговое решение." />
+  <div class="container ai-page">
+    <div class="ai-intro">
+      <span class="ai-badge">Готовится к апробации</span>
+      <p>Методика для учеников, родителей и педагогов: уточнить проблему, рассмотреть альтернативы и договориться о следующих шагах. Результаты реального применения будут добавлены после апробации.</p>
+      <div class="ai-actions"><a class="button button-primary" href="#constructor">Попробовать методику</a><a class="button button-ghost" href="#example">Посмотреть пример</a></div>
+    </div>
+
+    <section class="ai-section" aria-labelledby="steps-title">
+      <p class="eyebrow eyebrow-dark">01 / Методика</p><h2 id="steps-title">Четыре шага <em>к обсуждению</em></h2>
+      <ol class="ai-steps">
+        <li><span>01</span><h3>Описываем ситуацию</h3><p>Собираем факты, ограничения и критерии выбора. Отделяем известное от предположений.</p></li>
+        <li><span>02</span><h3>Получаем варианты</h3><p>Просим ИИ задать уточняющие вопросы, предложить альтернативы и указать риски.</p></li>
+        <li><span>03</span><h3>Проверяем вместе</h3><p>Проверяем факты и реализуемость. Обсуждаем интересы всех сторон, исправляем ошибки ИИ.</p></li>
+        <li><span>04</span><h3>Принимаем решение</h3><p>Совет выбирает дальнейшие действия, фиксирует ответственных, сроки и способ оценки результата.</p></li>
+      </ol>
+    </section>
+
+    <section class="ai-section" id="constructor" aria-labelledby="constructor-title">
+      <p class="eyebrow eyebrow-dark">02 / Подготовка запроса</p><h2 id="constructor-title">Ваш вопрос <em>для ИИ</em></h2>
+      <p>Форма составляет запрос. Скопируйте его в выбранный сервис ИИ, чтобы получить ответ. Здесь данные обрабатываются в браузере и не отправляются в нейросеть.</p>
+      <p class="ai-note">Не вводите фамилии, контакты и другие персональные данные. Обязательно заполнить только первый вопрос.</p>
+      <noscript><p>Для конструктора включите JavaScript или скачайте шаблон запроса в разделе материалов ниже.</p></noscript>
+      <form id="ai-form" class="ai-panel">
+        <div class="ai-fields">{fields.map(([name, label, placeholder], index) => <label for={`ai-${name}`}>{label}{index === 0 ? " *" : ""}<textarea id={`ai-${name}`} name={name} placeholder={placeholder} rows="3" maxlength="4000" required={index === 0}></textarea></label>)}</div>
+        <div class="ai-actions"><button class="button button-primary" type="submit">Сформировать запрос</button><button class="button button-ghost" type="reset">Очистить</button></div>
+        <section id="ai-result" class="ai-result" hidden aria-labelledby="result-title">
+          <h3 id="result-title">Запрос готов</h3><p>Скопируйте текст и вставьте его в диалог с нейросетью. Ответ обсудите с участниками совета.</p>
+          <label for="ai-output">Текст запроса</label><textarea id="ai-output" rows="16" readonly></textarea>
+          <button type="button" class="button button-primary" id="ai-copy">Скопировать запрос</button>
+        </section>
+        <p id="ai-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="ai-section" id="example" aria-labelledby="example-title">
+      <p class="eyebrow eyebrow-dark">03 / Учебный пример</p><h2 id="example-title">Одно помещение — <em>несколько возможностей</em></h2>
+      <p class="ai-note">Вымышленная ситуация для знакомства с методикой. Это не ответ реального сервиса ИИ, не решение совета школы № 47 и не результат апробации.</p>
+      <div class="ai-panel"><h3>Исходная ситуация</h3><p>Школа рассматривает способы использования свободного помещения. Предложены зона отдыха, пространство для проектов и комната школьных объединений. Бюджет и потребности учеников пока не уточнены.</p>
+      <h3>Какие вопросы стоит задать</h3><p>Сколько учеников будут пользоваться помещением? Какие занятия уже обеспечены пространством? Кто отвечает за расписание и присмотр? Какие ограничения есть у помещения?</p>
+      <div class="ai-table-wrap" role="region" aria-label="Сравнение вариантов" tabindex="0"><table><thead><tr><th scope="col">Вариант</th><th scope="col">Возможная польза</th><th scope="col">Что проверить</th></tr></thead><tbody>
+        <tr><th scope="row">Зона отдыха</th><td>Место для спокойного общения на переменах</td><td>Вместимость, шум и организация присмотра</td></tr>
+        <tr><th scope="row">Пространство для проектов</th><td>Место для командной работы</td><td>Оборудование, хранение материалов и расписание</td></tr>
+        <tr><th scope="row">Комната объединений</th><td>Регулярные встречи ученических команд</td><td>Число участников и доступность для разных групп</td></tr>
+        <tr><th scope="row">Сначала собрать данные</th><td>Выбор с учётом потребностей и ресурсов</td><td>Срок опроса и ответственный за сбор сведений</td></tr>
+      </tbody></table></div>
+      <h3>Проверка участниками</h3><p>Без сведений о бюджете и спросе нельзя уверенно выбрать лучший вариант. Участники проверяют условия помещения и собирают мнения учеников. ИИ не должен приписывать им предпочтения.</p>
+      <h3>Возможный следующий шаг</h3><p>Подготовить короткий опрос, уточнить ресурсы и вернуться к сравнению на заседании. Ответственного и дату назначает совет. Фактическое решение и результат в этом учебном примере отсутствуют.</p></div>
+    </section>
+
+    <section class="ai-section" id="materials" aria-labelledby="materials-title">
+      <p class="eyebrow eyebrow-dark">04 / Материалы</p><h2 id="materials-title">Повторить <em>в своём совете</em></h2>
+      <div class="ai-downloads">
+        <a href={`${base}/documents/ai-instruction.txt`} download><strong>Инструкция для участников</strong><span>Порядок встречи и проверка ответов · TXT ↓</span></a>
+        <a href={`${base}/documents/ai-prompt.txt`} download><strong>Шаблон запроса к ИИ</strong><span>Для самостоятельного заполнения · TXT ↓</span></a>
+        <a href={`${base}/documents/ai-decision-sheet.txt`} download><strong>Лист сравнения и решения</strong><span>Варианты, замечания и итог · TXT ↓</span></a>
+      </div>
+    </section>
+    <section class="ai-section ai-panel" aria-labelledby="pilot-title"><h2 id="pilot-title">Как пройдёт апробация</h2><p>Предлагаемый формат — одна встреча на 40–60 минут по реальному вопросу. До обращения к ИИ участники фиксируют свои варианты; после — отмечают полезные дополнения, ошибки и изменения в решении.</p><p>Для отчёта понадобятся дата, обезличенное описание вопроса, использованный сервис и модель, запрос, проверенные предложения, решение совета и последующий результат. Пока апробация не проведена, её эффективность не оценивается.</p><h3>Правила совместной работы</h3><ul><li>Проверять факты и ссылки, которые предлагает ИИ.</li><li>Обозначать предположения и запрашивать недостающие сведения.</li><li>Не передавать персональные данные участников.</li><li>Не поручать ИИ оценку конкретных детей или разрешение персональных конфликтов.</li><li>Фиксировать решение совета и основания выбора.</li></ul></section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { buildDecisionPrompt } from "../../lib/decision-prompt";
+  function initializeAdvisor() {
+    const form = document.querySelector<HTMLFormElement>("#ai-form");
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = "true";
+    const output = form.querySelector<HTMLTextAreaElement>("#ai-output")!;
+    const result = form.querySelector<HTMLElement>("#ai-result")!;
+    const status = form.querySelector<HTMLElement>("#ai-status")!;
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const question = form.querySelector<HTMLTextAreaElement>('[name="question"]')!;
+      question.setCustomValidity(question.value.trim() ? "" : "Опишите вопрос, который нужно решить.");
+      if (!form.reportValidity()) return;
+      output.value = buildDecisionPrompt(Object.fromEntries(data.entries()) as Record<string, string>);
+      result.hidden = false;
+      status.textContent = "Запрос сформирован. Теперь его можно скопировать.";
+      output.focus();
+    });
+    form.addEventListener("input", () => {
+      form.querySelector<HTMLTextAreaElement>('[name="question"]')!.setCustomValidity("");
+      if (!result.hidden) { result.hidden = true; output.value = ""; status.textContent = "Данные изменены. Сформируйте запрос заново."; }
+    });
+    form.addEventListener("reset", () => { result.hidden = true; output.value = ""; status.textContent = "Форма очищена."; form.querySelector<HTMLTextAreaElement>('[name="question"]')!.setCustomValidity(""); });
+    form.querySelector("#ai-copy")!.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(output.value); status.textContent = "Запрос скопирован."; }
+      catch { output.focus(); output.select(); status.textContent = "Не удалось скопировать автоматически. Текст выделен — скопируйте его вручную."; }
+    });
+  }
+  initializeAdvisor();
+  document.addEventListener("astro:page-load", initializeAdvisor);
+</script>
+
+<style>
+  .ai-page .button-ghost{color:var(--navy-deep);border:1px solid var(--navy);background:transparent}
+  .ai-page{padding-bottom:80px}.ai-intro{max-width:850px;padding:28px 0}.ai-badge{display:inline-block;padding:9px 15px;border-radius:30px;background:#fff0d8;color:#754910;font-weight:600;font-size:14px}.ai-page p{line-height:1.75}.ai-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.ai-section{margin-top:58px;scroll-margin-top:110px}.ai-section h2{margin:10px 0 24px}.ai-section h3{margin:20px 0 10px}.ai-panel{padding:32px;border:1px solid var(--line);border-radius:22px;background:var(--paper)}.ai-steps{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.ai-steps li{padding:24px;border-top:3px solid var(--navy);background:var(--paper);border-radius:0 0 16px 16px}.ai-steps li>span{font-size:30px;color:var(--navy);font-weight:700}.ai-steps h3{font-size:20px}.ai-fields{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ai-page label{display:block;font-weight:600}.ai-page textarea{display:block;width:100%;min-width:0;box-sizing:border-box;margin-top:10px;padding:14px;font:inherit;font-weight:400;line-height:1.6;color:var(--ink);background:var(--white);border:1px solid #81949c;border-radius:12px;resize:vertical}.ai-page textarea:focus-visible,.ai-page a:focus-visible,.ai-page button:focus-visible{outline:3px solid var(--navy);outline-offset:4px}.ai-note{padding:16px 20px;border-left:3px solid var(--navy);background:#edf3fa}.ai-result{margin-top:30px;border-top:1px solid var(--line);padding-top:16px}.ai-result[hidden]{display:none!important}.ai-result button{margin-top:16px}#ai-status{margin-bottom:0}.ai-table-wrap{overflow-x:auto;margin:24px 0}.ai-page table{width:100%;border-collapse:collapse;text-align:left;font-size:16px}.ai-page th,.ai-page td{padding:16px;border-bottom:1px solid var(--line);vertical-align:top}.ai-page thead{background:#e9eff6}.ai-downloads{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.ai-downloads a{padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--paper);text-decoration:none;color:var(--ink)}.ai-downloads a:hover{border-color:var(--navy)}.ai-downloads strong,.ai-downloads span{display:block}.ai-downloads span{font-size:14px;line-height:1.6;margin-top:12px}.ai-section ul{padding-left:24px;line-height:1.9}@media(max-width:900px){.ai-steps{grid-template-columns:1fr 1fr}.ai-downloads{grid-template-columns:1fr}}@media(max-width:600px){.ai-fields,.ai-steps{grid-template-columns:1fr}.ai-panel{padding:20px}.ai-section{margin-top:40px}.ai-page table{min-width:570px}.ai-actions .button{width:100%;text-align:center}.ai-page h2{font-size:30px}}
+</style>

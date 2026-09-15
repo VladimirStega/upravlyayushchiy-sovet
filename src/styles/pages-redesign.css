@@ -2342,7 +2342,8 @@
   .about-media-copy, .content-card, .stat-accent, .project-card, .practice-card,
   .project-overview-download, .news-archive-link, .news-source-note,
   .council-structure-downloads, .video-accessibility-note, .contact-message-panel,
-  .news-card-meta span, .status-pill, .file-icon) {
+  .news-card-meta span, .status-pill, .file-icon, .ai-panel, .ai-badge,
+  .ai-note, .ai-steps li, .ai-downloads a, .ai-page thead, .ai-page th, .ai-page td) {
   border-color: #fff !important;
   color: #fff !important;
   background: #000 !important;
