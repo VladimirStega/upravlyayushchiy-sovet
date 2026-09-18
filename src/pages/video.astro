@@ -8,7 +8,7 @@ const sitePath = (href: string) => `${base}${href}`;
 
 <BaseLayout title="Видео — Управляющий совет">
   <PageHero
-    eyebrow="Видеовизитка"
+    eyebrow="Видеоматериалы"
     title="Видео о"
     accent="работе совета"
     description="Короткий рассказ о составе, принципах работы, проектах и результатах Управляющего совета школы."
@@ -30,6 +30,25 @@ const sitePath = (href: string) => `${base}${href}`;
         <p>Участники совета рассказывают о совместной работе, школьных инициативах, реализованных проектах и планах.</p>
         <p class="video-accessibility-note">Продолжительность ролика — 2 минуты 32 секунды. Для просмотра доступны пауза, перемотка, громкость и полноэкранный режим.</p>
         <a class="button" href={sitePath("/media/upravlyayushchiy-sovet-47.mp4")} download>Скачать видео · MP4, 38 МБ</a>
+      </div>
+    </div>
+  </section>
+  <section class="section content-section" id="igraem-v-starinu">
+    <div class="container video-grid">
+      <div class="video-placeholder">
+        <div class="video-screen">
+          <video controls preload="none" poster={sitePath("/images/news/igraem-v-starinu-prazdnik/oblozhka-video.png")} aria-label="Ролик о проекте «Играем в старину, живём в современности»">
+            <source src={sitePath("/media/igraem-v-starinu.mp4")} type="video/mp4" />
+            Ваш браузер не поддерживает воспроизведение видео.
+          </video>
+        </div>
+      </div>
+      <div class="video-copy">
+        <p class="eyebrow eyebrow-dark"><span></span> Наши проекты</p>
+        <h2>Играем в старину,<br /><em>живём в современности</em></h2>
+        <p>Ролик о проекте «Родители и дети: играем в старину, живём в современности», который объединяет школьников и родителей через традиционные игры и совместные занятия.</p>
+        <p class="video-accessibility-note">Продолжительность — 3 минуты 53 секунды. Доступны пауза, перемотка, регулировка громкости и полноэкранный просмотр.</p>
+        <a class="button" href={sitePath("/media/igraem-v-starinu.mp4")} download>Скачать видео · MP4</a>
       </div>
     </div>
   </section>
