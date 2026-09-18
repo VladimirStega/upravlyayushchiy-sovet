@@ -16,7 +16,9 @@ const members = [
   ["students", "Член Управляющего совета", "Овчинников Константин Олегович", "Представитель обучающихся МБОУ СОШ № 47", false, "/images/members/cutouts/ovchinnikov-konstantin-olegovich.webp", "50% 25%"],
   ["students", "Член Управляющего совета", "Смородина Александра Сергеевна", "Представитель обучающихся МБОУ СОШ № 47", false, "/images/members/cutouts/smorodina-aleksandra-sergeevna.webp", "50% 24%"],
   ["students", "Член Управляющего совета", "Коретник Светлана Александровна", "Представитель обучающихся МБОУ СОШ № 47", false, "/images/members/cutouts/koretnik-svetlana-aleksandrovna.webp", "50% 25%"],
-  ["coopted", "Член Управляющего совета", "Корнаухов Александр Сергеевич", "Кооптированный член · депутат Липецкого городского Совета депутатов, генеральный директор строительной компании «Палантир ТБ»", false, "/images/members/cutouts/kornaukhov-aleksandr-sergeevich.webp", "50% 28%"]
+  ["graduates", "Член Управляющего совета", "Коновалов Егор", "Выпускник МБОУ СОШ № 47 · студент Липецкого филиала ВЭПИ · член совета выпускников", false, "", ""],
+  ["coopted", "Член Управляющего совета", "Корнаухов Александр Сергеевич", "Кооптированный член · депутат Липецкого городского Совета депутатов, генеральный директор строительной компании «Палантир ТБ»", false, "/images/members/cutouts/kornaukhov-aleksandr-sergeevich.webp", "50% 28%"],
+  ["coopted", "Член Управляющего совета", "Стеганцев Владимир Сергеевич", "Кооптированный член · помощник депутата городского совета депутатов 7-го созыва по 23 избирательному округу", false, "", ""]
 ];
 ---
 
@@ -32,15 +34,16 @@ const members = [
     <div class="container">
       <div class="page-section-heading">
         <div><p class="eyebrow eyebrow-dark"><span></span> Текущий состав</p><h2>Представители <em>всего сообщества</em></h2></div>
-        <p>Состав утверждён приказом директора МБОУ СОШ № 47 от 1 сентября 2025 года № 159 на 2025–2026 учебный год.</p>
+        <p>Состав утверждён приказом директора МБОУ СОШ № 47 от 11 сентября 2025 года № 159 на 2025–2026 учебный год.</p>
       </div>
       <div class="category-filter" aria-label="Фильтр состава">
         <button class="active" type="button" data-member-filter="all" aria-pressed="true">Все участники</button>
         <button type="button" data-member-filter="parents" aria-pressed="false">Родители</button>
         <button type="button" data-member-filter="students" aria-pressed="false">Обучающиеся</button>
+        <button type="button" data-member-filter="graduates" aria-pressed="false">Выпускники</button>
         <button type="button" data-member-filter="employees" aria-pressed="false">Работники</button>
         <button type="button" data-member-filter="founder" aria-pressed="false">Представитель учредителя</button>
-        <button type="button" data-member-filter="coopted" aria-pressed="false">Кооптированный член</button>
+        <button type="button" data-member-filter="coopted" aria-pressed="false">Кооптированные члены</button>
       </div>
       <div class="member-directory">
         {members.map(([category, role, name, description, featured, photo, photoPosition]) => (
