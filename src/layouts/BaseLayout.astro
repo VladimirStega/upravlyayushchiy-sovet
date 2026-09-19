@@ -21,13 +21,13 @@ const {
 const navigationRows = [
   [
     ["Главная", "/"], ["О совете", "/o-sovete/"], ["Состав", "/sostav/"],
-    ["Документы", "/dokumenty/"], ["Новости", "/novosti/"],
-    ["Заседания и решения", "/deyatelnost/resheniya/"], ["Проекты", "/deyatelnost/proekty/"]
+    ["Документы", "/dokumenty/"], ["Новости", "/novosti/"], ["Видео", "/video/"]
   ],
   [
+    ["Заседания", "/deyatelnost/resheniya/"], ["Проекты", "/deyatelnost/proekty/"],
     ["Опросы", "/deyatelnost/oprosy/"], ["ИИ-советник", "/deyatelnost/ii-sovetnik/"],
-    ["Видео", "/video/"], ["Достижения", "/dostizheniya/"],
-    ["Стажировка", "/sertifikaty/"], ["Повышение квалификации", "/povyshenie-kvalifikatsii/"]
+    ["Достижения", "/dostizheniya/"], ["Стажировка", "/sertifikaty/"],
+    ["Квалификация", "/povyshenie-kvalifikatsii/"]
   ]
 ];
 
@@ -88,7 +88,7 @@ const networkMode = isHomeNetwork
             </div>
           ))}
           <div class="nav-utility-actions">
-            <button class="nav-utility-button" id="accessibility-toggle" type="button" aria-expanded="false" aria-controls="accessibility-panel">
+            <button class="nav-utility-button" id="accessibility-toggle" type="button" aria-label="Для слабовидящих" title="Для слабовидящих" aria-expanded="false" aria-controls="accessibility-panel">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/></svg>
               <span>Для слабовидящих</span>
             </button>

@@ -856,27 +856,35 @@ p {
   }
 }
 
-/* Flat navigation: two balanced rows on desktop, one list on mobile. */
-.two-row-header .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.two-row-header .nav-row a { position: relative; display: flex; align-items: center; min-height: 42px; padding: 8px 12px; border-radius: 8px; color: #40566d; font-size: 14px; font-weight: 650; line-height: 1.35; text-decoration: none; white-space: nowrap; }
-.two-row-header .nav-row a:hover, .two-row-header .nav-row a.active { color: var(--navy); background: #edf5fb; }
+/* Compact, flat navigation with two rows. */
+.two-row-header { background: rgba(255,255,255,.97); border-bottom: 0; box-shadow: 0 4px 24px rgba(22,59,98,.06); }
+.two-row-header .nav-row { display: flex; align-items: center; justify-content: flex-start; gap: 4px; }
+.two-row-header .nav-row a { position: relative; display: flex; align-items: center; min-height: 36px; padding: 8px 10px; border: 0; border-radius: 10px; color: #52657a; font-size: 13px; font-weight: 600; line-height: 1.3; text-decoration: none; white-space: nowrap; transition: background .18s ease, color .18s ease; }
+.two-row-header .nav-row a:hover { color: #174a8b; background: #f2f6fa; }
+.two-row-header .nav-row a.active { color: #174a8b; background: #eaf2fb; font-weight: 700; }
 .two-row-header .nav-row a::after { display: none; }
-.two-row-header .nav-row a.active { text-decoration: underline; text-underline-offset: 6px; }
+.two-row-header .nav-row a:focus-visible { outline: 2px solid #174a8b; outline-offset: 2px; }
 @media (min-width: 901px) {
-  .two-row-header .header-inner { position: relative; display: grid; grid-template-columns: 1fr; gap: 0; padding-top: 12px; padding-bottom: 8px; }
-  .two-row-header .brand { justify-self: start; margin-bottom: 10px; }
+  .two-row-header .header-inner { position: relative; display: flex; align-items: center; gap: 32px; min-height: 106px; padding-block: 12px; }
+  .two-row-header .brand { flex: 0 0 auto; margin: 0; }
+  .two-row-header .brand-text strong { font-size: 15px; }
+  .two-row-header .brand-text small { font-size: 10px; letter-spacing: .025em; }
   .two-row-header .menu-toggle { display: none; }
-  .two-row-header .main-nav { position: static; display: flex; flex-direction: column; align-items: stretch; width: 100%; gap: 0; padding: 0; }
-  .two-row-header .nav-row { border-top: 1px solid var(--line); }
-  .two-row-header .nav-utility-actions { position: absolute; top: 16px; right: 0; margin: 0; padding: 0; border: 0; }
-  .two-row-header .nav-utility-button span { display: inline; }
-  .two-row-header .nav-utility-button { width: auto; padding: 0 12px; }
-  .two-row-header + .accessibility-panel { top: var(--site-header-height, 160px); }
+  .two-row-header .main-nav { position: static; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; justify-content: start; flex: 0 1 auto; min-width: 0; width: auto; margin-left: auto; gap: 6px 14px; padding: 0; }
+  .two-row-header .nav-row:first-child { grid-row: 1; grid-column: 1; }
+  .two-row-header .nav-row:nth-child(2) { grid-row: 2; grid-column: 1 / -1; }
+  .two-row-header .nav-utility-actions { position: static; grid-row: 1; grid-column: 2; display: flex; gap: 8px; margin: 0; padding: 0; border: 0; }
+  .two-row-header .nav-utility-button { width: 34px; min-height: 34px; padding: 0; border-color: #e4eaf1; border-radius: 10px; }
+  .two-row-header .nav-utility-button span { display: none; }
+  .two-row-header .main-nav .nav-contact-link { min-height: 34px; padding: 0 13px; border-radius: 10px; font-size: 11px; }
+}
+@media (min-width: 901px) and (max-width: 1100px) {
+  .two-row-header .brand-text { display: none; }
+  .two-row-header .header-inner { gap: 22px; }
 }
 @media (max-width: 900px) {
-  .two-row-header .nav-row { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
-  .two-row-header .nav-row a { min-height: 48px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 15px; white-space: normal; }
+  .two-row-header .nav-row { flex-direction: column; align-items: stretch; gap: 4px; }
+  .two-row-header .nav-row a { min-height: 44px; padding: 10px 14px; font-size: 15px; white-space: normal; }
   .two-row-header .main-nav { max-height: calc(100dvh - 68px); }
 }
-
 .two-row-header + .accessibility-panel { top: var(--site-header-height, 68px); }
