@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const certificates = [
+  {
+    "slug": "baeva-kristina",
+    "name": "Баева Кристина Александровна",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "bitueva-natalya",
+    "name": "Битуева Наталья Викторовна",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "zavalenkova-tatyana",
+    "name": "Заваленкова Татьяна Валерьевна",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "zufarova-regina",
+    "name": "Зуфарова Регина Равильевна",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "ivanova-viktoriya",
+    "name": "Иванова Виктория Александровна",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "katasonov-igor",
+    "name": "Катасонов Игорь Александрович",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "stegantsev-vladimir",
+    "name": "Стеганцев Владимир Сергеевич",
+    "date": "17 сентября 2026",
+    "size": "298 КБ"
+  },
+  {
+    "slug": "telegina-svetlana",
+    "name": "Телегина Светлана Анатольевна",
+    "date": "10 сентября 2026",
+    "size": "298 КБ"
+  }
+];
+---
+<BaseLayout title="Сертификаты стажировки — Управляющий совет" description="Сертификаты участников онлайн-стажировки по развитию управляющего совета: просмотр и скачивание.">
+  <PageHero eyebrow="Обучение и развитие" title="Сертификаты" accent="участников стажировки" description="Развитие управляющего совета в общеобразовательной организации" />
+  <section class="section content-section certificates-section">
+    <div class="container">
+      <div class="page-section-heading">
+        <div><p class="eyebrow eyebrow-dark"><span></span> Сентябрь 2026</p><h2>Опыт для <em>совместной работы</em></h2></div>
+        <p>Онлайн-стажировка Национальной ассоциации взаимодействия управляющих советов образовательных организаций (НАВУСОО). Объём — 3 часа. Здесь можно просмотреть и скачать все 8 сертификатов.</p>
+      </div>
+      <p style="margin-bottom: 28px"><a class="text-link" href={`${base}/povyshenie-kvalifikatsii/`}>Повышение квалификации и образовательные мероприятия →</a></p>
+      <div class="certificates-grid">
+        {certificates.map((item) => (
+          <article class="certificate-card">
+            <a class="certificate-preview" href={`${base}/documents/certificates/${item.slug}.pdf`} target="_blank" rel="noopener" aria-label={`Открыть сертификат: ${item.name}`}>
+              <img src={`${base}/images/certificates/${item.slug}.webp`} alt={`Сертификат участника стажировки — ${item.name}`} loading="lazy" width="926" height="1296" />
+            </a>
+            <div class="certificate-info">
+              <p class="certificate-date">{item.date} · PDF · {item.size}</p>
+              <h3>{item.name}</h3>
+              <div class="certificate-actions">
+                <a href={`${base}/documents/certificates/${item.slug}.pdf`} target="_blank" rel="noopener">Открыть PDF ↗</a>
+                <a href={`${base}/documents/certificates/${item.slug}.pdf`} download>Скачать ↓<span class="sr-only"> — {item.name}</span></a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .certificates-section { position: relative; z-index: 2; }
+  .certificates-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .certificate-card { min-width: 0; background: #fff; border: 1px solid #dce5ed; border-radius: 18px; overflow: hidden; }
+  .certificate-preview { display: block; padding: 18px; background: #eef3f7; }
+  .certificate-preview img { display: block; width: 100%; height: auto; object-fit: contain; }
+  .certificate-info { padding: 24px; }
+  .certificate-date { color: #4b6076; font-size: 14px; margin: 0 0 12px; }
+  .certificate-info h3 { font-size: 22px; line-height: 1.35; margin: 0 0 20px; color: #163b62; }
+  .certificate-actions { display: flex; flex-wrap: wrap; gap: 12px 22px; }
+  .certificate-actions a { color: #174a8b; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 0; }
+  @media (max-width: 1000px) { .certificates-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .certificates-grid { grid-template-columns: 1fr; } }
+</style>

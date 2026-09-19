@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const documents = [
+  {
+    "slug": "katasonov-2025",
+    "name": "Катасонов Игорь Александрович",
+    "type": "Удостоверение о повышении квалификации",
+    "title": "Обеспечение единства образовательного пространства через внедрение новых подходов к организации учебно-воспитательного процесса",
+    "meta": "1–3 апреля 2025 · 16 часов",
+    "issuer": "Институт развития образования Калининградской области"
+  },
+  {
+    "slug": "katasonov-2024",
+    "name": "Катасонов Игорь Александрович",
+    "type": "Удостоверение о повышении квалификации",
+    "title": "Управление качеством образования в образовательных организациях",
+    "meta": "2–12 декабря 2024 · 72 часа",
+    "issuer": "Институт образовательных технологий, Самара"
+  },
+  {
+    "slug": "bitueva-2023",
+    "name": "Битуева Наталья Викторовна",
+    "type": "Удостоверение о повышении квалификации",
+    "title": "Федеральная рабочая программа воспитания в общеобразовательных организациях: модуль «Взаимодействие с родителями (законными представителями)»",
+    "meta": "4–17 декабря 2023 · 36 академических часов",
+    "issuer": "Институт изучения детства, семьи и воспитания"
+  },
+  {
+    "slug": "bitueva-forum-2024",
+    "name": "Битуева Наталья Викторовна",
+    "type": "Сертификат участия",
+    "title": "Форум для заместителей директоров по воспитательной работе «Ценности в системе воспитания: семья и школа»",
+    "meta": "5–8 июня 2024 · Пятигорск",
+    "issuer": "Центр знаний «Машук» и Институт изучения детства, семьи и воспитания"
+  }
+];
+const groups = [
+  { title: "Документы об обучении", description: "Удостоверения и сертификаты участников образовательных программ и мероприятий.", items: documents }
+];
+---
+<BaseLayout title="Повышение квалификации — Управляющий совет" description="Обучение и профессиональное развитие: удостоверения о повышении квалификации и сертификаты участия в образовательных мероприятиях.">
+  <PageHero eyebrow="Обучение и развитие" title="Повышение" accent="квалификации" description="Профессиональное развитие в области управления образованием, воспитания и взаимодействия семьи и школы." />
+  <section class="section content-section qualification-section">
+    <div class="container">
+      {groups.map((group) => (
+        <section class="qualification-group" aria-label={group.title}>
+          <div class="page-section-heading"><h2>{group.title}</h2><p>{group.description}</p></div>
+          <div class="qualification-grid">
+            {group.items.map((item) => (
+              <article class="qualification-card">
+                <a class="qualification-preview" href={`${base}/documents/qualification/${item.slug}.pdf`} target="_blank" rel="noopener" aria-label={`Открыть документ: ${item.name} — ${item.title}`}>
+                  <img src={`${base}/images/qualification/${item.slug}.webp`} alt={`${item.type} — ${item.name}`} loading="lazy" />
+                </a>
+                <div class="qualification-info">
+                  <p class="qualification-meta">{item.meta}</p>
+                  <h3>{item.name}</h3>
+                  <p class="qualification-title">{item.title}</p>
+                  <p class="qualification-issuer">{item.issuer}</p>
+                  <div class="qualification-actions">
+                    <a href={`${base}/documents/qualification/${item.slug}.pdf`} target="_blank" rel="noopener">Открыть PDF ↗<span class="sr-only"> — {item.name}, {item.title}</span></a>
+                    <a href={`${base}/documents/qualification/${item.slug}.pdf`} download>Скачать ↓<span class="sr-only"> — {item.name}, {item.title}</span></a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+      <a class="button button-blue" href={`${base}/sertifikaty/`}>Сертификаты участников стажировки →</a>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .qualification-section { position: relative; z-index: 2; }
+  .qualification-group { margin-bottom: 56px; }
+  .qualification-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .qualification-card { min-width: 0; background: #fff; border: 1px solid #dce5ed; border-radius: 18px; overflow: hidden; }
+  .qualification-preview { display: block; padding: 18px; background: #eef3f7; }
+  .qualification-preview img { display: block; width: 100%; height: auto; aspect-ratio: 1.42; object-fit: contain; }
+  .qualification-info { padding: 24px; }
+  .qualification-meta, .qualification-issuer { color: #4b6076; font-size: 14px; line-height: 1.6; }
+  .qualification-info h3 { font-size: 24px; line-height: 1.35; margin: 12px 0; color: #163b62; }
+  .qualification-title { color: #163b62; line-height: 1.6; }
+  .qualification-actions { display: flex; flex-wrap: wrap; gap: 12px 22px; margin-top: 16px; }
+  .qualification-actions a { color: #174a8b; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 0; }
+  @media (max-width: 700px) { .qualification-grid { grid-template-columns: 1fr; } }
+</style>
