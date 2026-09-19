@@ -878,7 +878,7 @@ p {
   .two-row-header .nav-utility-button span { display: inline; }
   .two-row-header .main-nav .nav-contact-link { min-height: 34px; padding: 0 13px; border-radius: 10px; font-size: 11px; }
 }
-@media (min-width: 901px) and (max-width: 1100px) {
+@media (min-width: 901px) and (max-width: 1200px) {
   .two-row-header .brand-text { display: none; }
   .two-row-header .header-inner { gap: 22px; }
 }
@@ -891,7 +891,8 @@ p {
 
 @media (min-width: 901px) {
   .two-row-header .header-inner { width: min(1440px, calc(100% - 48px)); }
-  .two-row-header .nav-row { flex-wrap: wrap; gap: 2px; }
-  .two-row-header .nav-row a { padding-inline: 8px; font-size: 12px; }
-  .two-row-header .nav-utility-actions { flex-wrap: nowrap; }
+  .two-row-header .nav-row { justify-content: center; flex-wrap: nowrap; gap: 2px; }
+  .two-row-header .nav-row a { padding-inline: 7px; font-size: 13px; flex-shrink: 0; }
+  .two-row-header .nav-utility-actions { flex-direction: row; flex-wrap: nowrap; align-items: center; width: max-content; }
+  .two-row-header .nav-utility-actions > * { flex: 0 0 auto; white-space: nowrap; }
 }
