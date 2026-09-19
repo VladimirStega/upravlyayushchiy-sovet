@@ -18,24 +18,17 @@ const {
   pageClass = ""
 } = Astro.props;
 
-const navigation = [
-  ["Главная", "/"],
-  ["О совете", "/o-sovete/"],
-  ["Состав", "/sostav/"]
-];
-
-const activityNavigation = [
-  ["Заседания и решения", "/deyatelnost/resheniya/"],
-  ["Проекты", "/deyatelnost/proekty/"],
-  ["Опросы", "/deyatelnost/oprosy/"],
-  ["Практики · ИИ-советник", "/deyatelnost/ii-sovetnik/"]
-];
-
-const mediaNavigation = [
-  ["Видео", "/video/"],
-  ["Награды и достижения", "/dostizheniya/"],
-  ["Сертификаты стажировки", "/sertifikaty/"],
-  ["Повышение квалификации", "/povyshenie-kvalifikatsii/"]
+const navigationRows = [
+  [
+    ["Главная", "/"], ["О совете", "/o-sovete/"], ["Состав", "/sostav/"],
+    ["Документы", "/dokumenty/"], ["Новости", "/novosti/"],
+    ["Заседания и решения", "/deyatelnost/resheniya/"], ["Проекты", "/deyatelnost/proekty/"]
+  ],
+  [
+    ["Опросы", "/deyatelnost/oprosy/"], ["ИИ-советник", "/deyatelnost/ii-sovetnik/"],
+    ["Видео", "/video/"], ["Достижения", "/dostizheniya/"],
+    ["Стажировка", "/sertifikaty/"], ["Повышение квалификации", "/povyshenie-kvalifikatsii/"]
+  ]
 ];
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -45,8 +38,6 @@ const isActive = (href: string) => {
   if (href === "/" || href === "/deyatelnost/") return path === href;
   return path.startsWith(href);
 };
-const activityActive = path.startsWith("/deyatelnost/");
-const mediaActive = path.startsWith("/video") || path.startsWith("/dostizheniya") || path.startsWith("/sertifikaty") || path.startsWith("/povyshenie-kvalifikatsii");
 const isHomeNetwork = pageClass.includes("home-network-page");
 const networkMode = isHomeNetwork
   ? "home"
@@ -76,7 +67,7 @@ const networkMode = isHomeNetwork
   </head>
   <body class:list={[pageClass, { "network-page": !isHomeNetwork }]}>
     <a class="skip-link" href="#main">Перейти к содержанию</a>
-    <header class="site-header">
+    <header class="site-header two-row-header">
       <div class="container header-inner">
         <a class="brand" href={sitePath("/")} aria-label="На главную">
           <span class="brand-logo-shell"><img class="brand-logo" src={sitePath("/images/brand/school-47-logo.png")} alt="" /></span>
@@ -89,27 +80,13 @@ const networkMode = isHomeNetwork
           <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
         </button>
         <nav class="main-nav" id="main-nav" aria-label="Основная навигация">
-          {navigation.map(([label, href]) => (
-            <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+          {navigationRows.map((row) => (
+            <div class="nav-row">
+              {row.map(([label, href]) => (
+                <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+              ))}
+            </div>
           ))}
-          <details class="nav-more">
-            <summary class:list={{ active: activityActive }}>Деятельность <span aria-hidden="true">⌄</span></summary>
-            <div class="nav-submenu">
-              {activityNavigation.map(([label, href]) => (
-                <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
-              ))}
-            </div>
-          </details>
-          <a href={sitePath("/dokumenty/")} class:list={{ active: isActive("/dokumenty/") }} aria-current={isActive("/dokumenty/") ? "page" : undefined}>Документы</a>
-          <a href={sitePath("/novosti/")} class:list={{ active: isActive("/novosti/") }} aria-current={isActive("/novosti/") ? "page" : undefined}>Новости</a>
-          <details class="nav-more">
-            <summary class:list={{ active: mediaActive }}>Медиа <span aria-hidden="true">⌄</span></summary>
-            <div class="nav-submenu nav-submenu-right">
-              {mediaNavigation.map(([label, href]) => (
-                <a href={sitePath(href)} class:list={{ active: isActive(href) }} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
-              ))}
-            </div>
-          </details>
           <div class="nav-utility-actions">
             <button class="nav-utility-button" id="accessibility-toggle" type="button" aria-expanded="false" aria-controls="accessibility-panel">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/></svg>
@@ -188,6 +165,13 @@ const networkMode = isHomeNetwork
       };
 
       const initializeLayout = () => {
+        const header = document.querySelector(".site-header");
+        if (header instanceof HTMLElement && !header.dataset.sizeObserved) {
+          header.dataset.sizeObserved = "true";
+          new ResizeObserver(() => {
+            document.documentElement.style.setProperty("--site-header-height", `${header.getBoundingClientRect().height}px`);
+          }).observe(header);
+        }
         const toggle = document.querySelector("#menu-toggle");
         const nav = document.querySelector("#main-nav");
 
@@ -287,7 +271,7 @@ const networkMode = isHomeNetwork
           panelToggle?.setAttribute("aria-expanded", "false");
         });
         window.addEventListener("resize", () => {
-          if (window.innerWidth > 820) closeMobileMenu();
+          if (window.innerWidth > 900) closeMobileMenu();
         }, { passive: true });
       }
 
