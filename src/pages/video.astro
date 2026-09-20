@@ -29,7 +29,10 @@ const sitePath = (href: string) => `${base}${href}`;
         <h2>Открыто<br /><em>о нашей работе</em></h2>
         <p>Участники совета рассказывают о совместной работе, школьных инициативах, реализованных проектах и планах.</p>
         <p class="video-accessibility-note">Продолжительность ролика — 2 минуты 32 секунды. Для просмотра доступны пауза, перемотка, громкость и полноэкранный режим.</p>
-        <a class="button" href={sitePath("/media/upravlyayushchiy-sovet-47.mp4")} download>Скачать видео · MP4, 38 МБ</a>
+        <div class="video-actions">
+          <a class="button" href={sitePath("/media/upravlyayushchiy-sovet-47.mp4")} download>Скачать видео · MP4, 38 МБ</a>
+          <a class="button" href="https://disk.360.yandex.ru/i/1CHk7is19cP6QA" target="_blank" rel="noopener noreferrer">Открыть на Яндекс Диске ↗</a>
+        </div>
       </div>
     </div>
   </section>
@@ -53,3 +56,11 @@ const sitePath = (href: string) => `${base}${href}`;
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .video-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>

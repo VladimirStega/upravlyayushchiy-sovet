@@ -6,6 +6,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 const achievements = [
   {
+    image: `${base}/images/achievements/pobeda-v-kri-2025.webp`,
+    document: `${base}/documents/pobeda-v-kri-2025.pdf`,
+    year: "2025",
+    title: "Победа в Конкурсе инициатив родительских сообществ",
+    description: "Проект «Родители и дети: играем в старину, живём в современности» вошёл в список победителей Конкурса инициатив родительских сообществ в 2025 году. Подтверждение — приложение к протоколу Всероссийского родительского комитета от 21 мая 2025 года: категория 2, страница 63, пункт 30.",
+    recipient: "Победитель — МБОУ СОШ № 47 г. Липецка. В реализации проекта участвовали члены Управляющего совета."
+  },
+  {
     image: `${base}/images/achievements/blagodarstvennoe-pismo-us-2025.jpg`,
     year: "2025",
     title: "Благодарственное письмо Управляющему совету",
@@ -44,19 +52,42 @@ const achievements = [
 ---
 
 <BaseLayout title="Достижения и медиа — Управляющий совет" current="Достижения и медиа">
-  <PageHero eyebrow="Результаты совместной работы" title="Достижения" accent="школьного сообщества" description="Награды и благодарности Управляющему совету, школе и командам за совместную работу и общественные инициативы." />
+  <PageHero eyebrow="Результаты совместной работы" title="Достижения" accent="школьного сообщества" description="Награды и благодарности Управляющему совету, достижения школы и команд с участием членов совета." />
   <section class="section content-section">
     <div class="container">
-      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Дипломы, грамоты и благодарности</p><h2>Наши <em>достижения</em></h2></div><p>В каждой карточке указан фактический получатель награды.</p></div>
+      <div class="page-section-heading"><div><p class="eyebrow eyebrow-dark"><span></span> Дипломы, грамоты и благодарности</p><h2>Наши <em>достижения</em></h2></div><p>Члены Управляющего совета участвовали в конкурсах в составе школьных команд и помогали реализовывать совместные проекты.</p></div>
       <p style="margin-bottom: 28px"><a class="button button-blue" href={`${base}/sertifikaty/`}>Сертификаты участников стажировки →</a></p>
       <div class="achievement-grid">
         {achievements.map((item) => (
           <article class="achievement-card">
-            <a class="achievement-image" href={item.image} target="_blank" rel="noopener" aria-label={`Открыть награду: ${item.title}`}><img src={item.image} alt={item.title} loading="lazy" /></a>
-            <div><span>{item.year}</span><h3>{item.title}</h3><p>{item.description}</p><small>{item.recipient}</small></div>
+            <a class="achievement-image" href={item.document ?? item.image} target="_blank" rel="noopener" aria-label={`Открыть награду: ${item.title}`}><img src={item.image} alt={item.title} loading="lazy" /></a>
+            <div>
+              <span>{item.year}</span><h3>{item.title}</h3><p>{item.description}</p><small>{item.recipient}</small>
+              {item.document && (
+                <div class="achievement-document-actions">
+                  <a href={item.document} target="_blank" rel="noopener">Открыть PDF ↗</a>
+                  <a href={item.document} download>Скачать PDF ↓</a>
+                </div>
+              )}
+            </div>
           </article>
         ))}
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .achievement-document-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin-top: 20px;
+    font-weight: 700;
+  }
+
+  .achievement-document-actions a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>
