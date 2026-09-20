@@ -3,19 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 const publications = [
   {
-    title: "Школа № 47 поделилась опытом работы Управляющего совета",
-    description: "Публикация о представлении опыта школы в рамках региональной инновационной площадки. Председатель и участники совета рассказали об организации работы, выборах, участии учеников в принятии решений и совместных проектах.",
-    url: "https://iom48.ru/news/v-ramkah-raboty-regionalnoj-innovaczionnoj-ploshhadki-mbou-sosh-%e2%84%9647-g-lipeczka-podelilas-opytom-raboty-svoego-upravlyayushhego-soveta/"
-  },
-  {
     title: "Управляющий совет школы № 47: состав, работа и инициативы",
     description: "Материал о работе совета и участии родителей, учеников и педагогов в жизни школы. Представлены проекты «Труд не уходит на каникулы», «Родители и дети: играем в старину, живём в современности» и «Родительский патруль».",
     url: "https://iom48.ru/prosveshhenie-roditelej-doshkolnikov/"
   }
 ];
 ---
-<BaseLayout title="Публикации в СМИ — Управляющий совет" description="Публикации о деятельности Управляющего совета школы № 47: опыт работы, проекты и совместные инициативы.">
-  <PageHero eyebrow="О нашей работе" title="Публикации" accent="в СМИ" description="Материалы о деятельности Управляющего совета, наших проектах и обмене опытом." />
+<BaseLayout title="Публикации в СМИ — Управляющий совет" description="Публикации о деятельности Управляющего совета школы № 47, проектах и совместных инициативах.">
+  <PageHero eyebrow="О нашей работе" title="Публикации" accent="в СМИ" description="Материалы о деятельности Управляющего совета, наших проектах и совместных инициативах." />
   <section class="section content-section press-section">
     <div class="container press-grid">
       {publications.map((item) => (
@@ -31,7 +26,7 @@ const publications = [
 </BaseLayout>
 <style>
   .press-section { position: relative; z-index: 2; }
-  .press-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .press-grid { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 960px; gap: 28px; }
   .press-card { display: flex; flex-direction: column; padding: clamp(24px, 3vw, 40px); border: 1px solid #dce5ed; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px rgba(22,59,98,.04); }
   .press-source { margin: 0 0 20px; color: #52677c; font-size: 14px; }
   .press-card h2 { margin: 0 0 20px; font-size: clamp(23px, 2vw, 30px); line-height: 1.3; }

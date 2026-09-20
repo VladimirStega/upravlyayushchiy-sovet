@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+
+const publication = {
+  title: "Школа № 47 поделилась опытом работы Управляющего совета",
+  description: "Публикация о представлении опыта школы в рамках региональной инновационной площадки. Председатель и участники совета рассказали об организации работы, выборах, участии учеников в принятии решений и совместных проектах.",
+  url: "https://iom48.ru/news/v-ramkah-raboty-regionalnoj-innovaczionnoj-ploshhadki-mbou-sosh-%e2%84%9647-g-lipeczka-podelilas-opytom-raboty-svoego-upravlyayushhego-soveta/"
+};
+---
+
+<BaseLayout title="Распространение опыта — Управляющий совет" description="Представление опыта работы Управляющего совета школы № 47: организация работы, участие школьного сообщества и совместные проекты.">
+  <PageHero eyebrow="Делимся практикой" title="Распространение" accent="опыта" description="Рассказываем коллегам об организации работы Управляющего совета и совместных проектах школы, родителей и учеников." />
+  <section class="section content-section experience-section">
+    <div class="container experience-content">
+      <article class="experience-card">
+        <p class="experience-source">ИРО Липецкой области · iom48.ru</p>
+        <h2><a href={publication.url} target="_blank" rel="noopener noreferrer">{publication.title}</a></h2>
+        <p class="experience-description">{publication.description}</p>
+        <a class="experience-link" href={publication.url} target="_blank" rel="noopener noreferrer">Читать публикацию <span aria-hidden="true">↗</span><span class="sr-only"> — {publication.title}</span></a>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .experience-section { position: relative; z-index: 2; }
+  .experience-content { max-width: 960px; }
+  .experience-card { display: flex; flex-direction: column; padding: clamp(24px, 3vw, 40px); border: 1px solid #dce5ed; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px rgba(22,59,98,.04); }
+  .experience-source { margin: 0 0 20px; color: #52677c; font-size: 14px; }
+  .experience-card h2 { margin: 0 0 20px; font-size: clamp(23px, 2vw, 30px); line-height: 1.3; }
+  .experience-card h2 a { color: #163b62; text-decoration: none; }
+  .experience-card h2 a:hover { text-decoration: underline; text-underline-offset: 5px; }
+  .experience-description { color: #40566d; line-height: 1.7; }
+  .experience-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 20px; border-top: 1px solid #e6edf3; color: #174a8b; font-weight: 700; text-decoration: none; }
+  .experience-link:hover { text-decoration: underline; }
+</style>
