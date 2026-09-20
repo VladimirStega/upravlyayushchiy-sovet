@@ -21,7 +21,7 @@ const {
 const navigationRows = [
   [
     ["Главная", "/"], ["О совете", "/o-sovete/"], ["Состав", "/sostav/"],
-    ["Документы", "/dokumenty/"], ["Новости", "/novosti/"], ["Видео", "/video/"]
+    ["Документы", "/dokumenty/"], ["Новости", "/novosti/"], ["Видео", "/video/"], ["СМИ", "/publikatsii-v-smi/"]
   ],
   [
     ["Заседания", "/deyatelnost/resheniya/"], ["Проекты", "/deyatelnost/proekty/"],
@@ -49,7 +49,7 @@ const networkMode = isHomeNetwork
       ? "news"
       : path.startsWith("/dokumenty") || path.startsWith("/arhiv") || path.startsWith("/komplektator")
         ? "documents"
-        : path.startsWith("/video") || path.startsWith("/dostizheniya") || path.startsWith("/sertifikaty") || path.startsWith("/povyshenie-kvalifikatsii")
+        : path.startsWith("/publikatsii-v-smi") || path.startsWith("/video") || path.startsWith("/dostizheniya") || path.startsWith("/sertifikaty") || path.startsWith("/povyshenie-kvalifikatsii")
           ? "media"
           : "standard";
 ---
