@@ -5,13 +5,11 @@ const publications = [
   {
     title: "Школа № 47 поделилась опытом работы Управляющего совета",
     description: "Публикация о представлении опыта школы в рамках региональной инновационной площадки. Председатель и участники совета рассказали об организации работы, выборах, участии учеников в принятии решений и совместных проектах.",
-    topics: "Обмен опытом · Участие школьников · Проекты совета",
     url: "https://iom48.ru/news/v-ramkah-raboty-regionalnoj-innovaczionnoj-ploshhadki-mbou-sosh-%e2%84%9647-g-lipeczka-podelilas-opytom-raboty-svoego-upravlyayushhego-soveta/"
   },
   {
     title: "Управляющий совет школы № 47: состав, работа и инициативы",
     description: "Материал о работе совета и участии родителей, учеников и педагогов в жизни школы. Представлены проекты «Труд не уходит на каникулы», «Родители и дети: играем в старину, живём в современности» и «Родительский патруль».",
-    topics: "Семья и школа · Совместные инициативы · Воспитание",
     url: "https://iom48.ru/prosveshhenie-roditelej-doshkolnikov/"
   }
 ];
@@ -25,7 +23,6 @@ const publications = [
           <p class="press-source">ИРО Липецкой области · iom48.ru</p>
           <h2><a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></h2>
           <p class="press-description">{item.description}</p>
-          <p class="press-topics">{item.topics}</p>
           <a class="press-link" href={item.url} target="_blank" rel="noopener noreferrer">Читать публикацию <span aria-hidden="true">↗</span><span class="sr-only"> — {item.title}</span></a>
         </article>
       ))}
@@ -41,7 +38,6 @@ const publications = [
   .press-card h2 a { color: #163b62; text-decoration: none; }
   .press-card h2 a:hover { text-decoration: underline; text-underline-offset: 5px; }
   .press-description { color: #40566d; line-height: 1.7; }
-  .press-topics { margin: 20px 0 28px; color: #52677c; font-size: 14px; line-height: 1.6; }
   .press-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 20px; border-top: 1px solid #e6edf3; color: #174a8b; font-weight: 700; text-decoration: none; }
   .press-link:hover { text-decoration: underline; }
   @media (max-width: 760px) { .press-grid { grid-template-columns: 1fr; } }
