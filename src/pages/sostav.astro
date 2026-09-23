@@ -10,7 +10,7 @@ const members = [
   ["employees", "Секретарь Управляющего совета", "Битуева Наталья Викторовна", "Работник образовательной организации · заместитель директора", false, "/images/members/cutouts/bitueva-natalya-viktorovna.webp", "50% 27%"],
   ["employees", "Член Управляющего совета", "Катасонов Игорь Александрович", "Руководитель образовательной организации · директор МБОУ СОШ № 47 г. Липецка", false, "/images/members/cutouts/katasonov-igor-aleksandrovich.webp", "50% 28%"],
   ["founder", "Член Управляющего совета", "Ермошина Антонина Николаевна", "Представитель учредителя · заместитель начальника отдела развития образования департамента образования администрации города Липецка", false, "/images/members/cutouts/ermoshina-antonina-nikolaevna.webp", "50% 25%"],
-  ["employees", "Член Управляющего совета", "Ушакова Кристина Сергеевна", "Работник образовательной организации · советник по воспитанию", false, "/images/members/cutouts/ushakova-kristina-sergeevna.webp", "50% 28%"],
+  ["employees", "Член Управляющего совета", "Иванова Виктория Александровна", "Работник образовательной организации · советник по воспитанию", false, "", "50% 28%"],
   ["employees", "Член Управляющего совета", "Телегина Светлана Анатольевна", "Работник образовательной организации · учитель начальных классов", false, "/images/members/cutouts/telegina-svetlana-anatolevna.webp", "50% 27%"],
   ["parents", "Член Управляющего совета", "Зуфарова Регина Равильевна", "Родитель (законный представитель) · ведущий бухгалтер ДОУ № 66", false, "/images/members/cutouts/zufarova-regina-ravilevna.webp", "50% 27%"],
   ["students", "Член Управляющего совета", "Овчинников Константин Олегович", "Представитель обучающихся МБОУ СОШ № 47", false, "/images/members/cutouts/ovchinnikov-konstantin-olegovich.webp", "50% 25%"],
@@ -34,8 +34,9 @@ const members = [
     <div class="container">
       <div class="page-section-heading">
         <div><p class="eyebrow eyebrow-dark"><span></span> Текущий состав</p><h2>Представители <em>всего сообщества</em></h2></div>
-        <p>Состав утверждён приказом директора МБОУ СОШ № 47 от 11 сентября 2025 года № 159 на 2025–2026 учебный год.</p>
+        <p>Состав на 2026–2027 учебный год утверждён приказом директора МБОУ СОШ № 47 от 10 сентября 2026 года № 249.</p>
       </div>
+      <p class="composition-document"><a href={`${base}/documents/sostav-us.pdf`} target="_blank" rel="noopener">Открыть утверждённый состав на 2026–2027 учебный год · PDF ↗</a></p>
       <div class="category-filter" aria-label="Фильтр состава">
         <button class="active" type="button" data-member-filter="all" aria-pressed="true">Все участники</button>
         <button type="button" data-member-filter="parents" aria-pressed="false">Родители</button>
@@ -89,3 +90,8 @@ const members = [
     document.addEventListener("astro:page-load", setupMemberFilters);
   </script>
 </BaseLayout>
+
+<style>
+  .composition-document { margin: 0 0 24px; }
+  .composition-document a { font-weight: 600; text-underline-offset: 4px; }
+</style>
