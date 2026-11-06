@@ -53,8 +53,8 @@ export const news: NewsItem[] = [
 {
   "slug": "luchshiy-upravlyayushchiy-sovet-oktyabr-2026",
   "title": "Управляющий совет школы — в числе лучших в России",
-  "date": "2026-10-05",
-  "dateLabel": "5 октября 2026",
+  "date": "2026-11-05",
+  "dateLabel": "5 ноября 2026",
   "year": 2026,
   "category": "achievements",
   "categoryLabel": "Достижения",
